@@ -1,0 +1,96 @@
+<div class="cadastroBackground">
+  <div class="cadastroContainer">
+    <div class="itensContainer">
+      <h1 class="titulo">Grupo G</h1>
+      <form (ngSubmit)="enviar()">
+        <div class="demo_wrap">
+          <h1>Brasil Hexa</h1>
+          <img src="https://cdn.countryflags.com/thumbs/brazil/flag-800.png" />
+          <div>
+            <select name="Brasil" required [(ngModel)]="Brasil">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="BrasilPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="BrasilPontos"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Sérvia</h1>
+          <img src="https://cdn.countryflags.com/thumbs/serbia/flag-800.png" />
+          <div>
+            <select name="Servia" required [(ngModel)]="Servia">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="ServiaPontos"
+              name="ServiaPts"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Suíça</h1>
+          <img
+            src="https://www.countryflags.com/wp-content/uploads/switzerland-flag-png-large.png"
+          />
+          <div>
+            <select name="Suica" required [(ngModel)]="Suica">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="SuicaPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="SuicaPontos"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Camarões</h1>
+          <img
+            src="https://cdn.countryflags.com/thumbs/cameroon/flag-800.png"
+          />
+          <div>
+            <select name="Camaroes" required [(ngModel)]="Camaroes">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="CamaroesPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="CamaroesPontos"
+            />
+          </div>
+        </div>
+
+        <div class="submitContainer">
+          <button *ngIf="HabilitaPalpite == true" type="submit" class="button">
+            Registrar
+          </button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+.itens_container {
+  margin: auto;
+  min-width: 300px;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.grupo_container {
+  height: 200px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.escrita {
+  color: white;
+  font-family: cursive;
+  font-size: 24px;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  background: none;
+  border: 0;
+  text-decoration: none;
+}
+.pais_container {
+  border-radius: 30px;
+  margin-top: 8px;
+  height: 28px;
+  width: 275px;
+  background-color: white;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  display: flex;
+}
+.pais_escrita {
+  margin: 15px;
+  font-family: cursive;
+  font-size: medium;
+}
+.grupo_container_oitavas {
+  height: 632px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.grupo_container_quartas {
+  height: 344px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.grupo_container_semis {
+  height: 199px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.grupo_container_finais {
+  height: 129px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.grupo_container_campeao {
+  height: 92px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.grupo_container_brasil {
+  height: 308px;
+  width: 300px;
+  border-radius: 20px;
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.espaco {
+  background: url("https://st2.depositphotos.com/3725083/5769/i/450/depositphotos_57693407-stock-photo-light-of-american-stadium.jpg");
+  background-size: cover;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+.espaco2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 628px;
+}

@@ -1,0 +1,202 @@
+<div class="cadastroBackground">
+  <div class="cadastroContainer">
+    <div class="itensContainer">
+      <h1 class="titulo">Jogos do Brasil</h1>
+      <form *ngIf="HabilitaPalpite == true" (ngSubmit)="enviarGrupos()">
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilGrupos1"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioGrupos1"
+            />
+          </div>
+          <h3>Servia</h3>
+        </div>
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilGrupos2"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioGrupos2"
+            />
+          </div>
+          <h3>Suiça</h3>
+        </div>
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilGrupos3"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioGrupos3"
+            />
+          </div>
+          <h3>Camaroes</h3>
+        </div>
+        <div class="submitContainer">
+          <button type="submit" class="button">Registrar</button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+
+      <form *ngIf="HabilitaPalpiteOitavas == true" (ngSubmit)="enviarOitavas()">
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilOitavas"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioOitavas"
+            />
+          </div>
+          <h3>Oitavas</h3>
+        </div>
+        <div class="submitContainer">
+          <button type="submit" class="button">Registrar</button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+
+      <form *ngIf="HabilitaPalpiteQuartas == true" (ngSubmit)="enviarQuartas()">
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilQuartas"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioQuartas"
+            />
+          </div>
+          <h3>Quartas</h3>
+        </div>
+        <div class="submitContainer">
+          <button type="submit" class="button">Registrar</button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+
+      <form *ngIf="HabilitaPalpiteSemis == true" (ngSubmit)="enviarSemis()">
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilSemis"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioSemis"
+            />
+          </div>
+          <h3>Semis</h3>
+        </div>
+        <div class="submitContainer">
+          <button type="submit" class="button">Registrar</button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+
+      <form *ngIf="HabilitaPalpiteFinais == true" (ngSubmit)="enviarFinais()">
+        <div class="demo_wrap">
+          <h3>Brasil</h3>
+          <div>
+            <input
+              required
+              name="brasilgols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarBrasilFinais"
+            />
+            <pre> X</pre>
+            <input
+              required
+              name="adversariogols1"
+              type="number"
+              min="0"
+              max="9"
+              [(ngModel)]="PlacarAdversarioFinais"
+            />
+          </div>
+          <h3>Finais</h3>
+        </div>
+        <div class="submitContainer">
+          <button type="submit" class="button">Registrar</button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

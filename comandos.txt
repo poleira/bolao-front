@@ -1,0 +1,7 @@
+ng g m painel --routing (modulo com routing)
+ng g c painel/lista-paineis (component em painel)
+
+
+--------------------------------------------- rascunho
+
+{time1: 'Equador', time2: 'Argentina', time3: 'Japao', time4: 'Brasil', time5: 'Inglaterra', …}time1: "Equador"time2: "Argentina"time3: "Japao"time4: "Brasil"time5: "Inglaterra"time6: "ArabiaSaudita"time7: "Espanha"time8: "Suica"[[Prototype]]: Object {time1: 'Argentina', time2: 'Brasil', time3: 'ArabiaSaudita', time4: 'Espanha'}time1: "Argentina"time2: "Brasil"time3: "ArabiaSaudita"time4: "Espanha"[[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ ()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__() {time1: 'Brasil', time2: 'Espanha'}time1: "Brasil"time2: "Espanha"[[Prototype]]: Object {time: 'Brasil'}time: "Brasil"[[Prototype]]: Object

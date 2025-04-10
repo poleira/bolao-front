@@ -1,0 +1,97 @@
+<div class="cadastroBackground">
+  <div class="cadastroContainer">
+    <div class="itensContainer">
+      <h1 class="titulo">Grupo E</h1>
+      <form (ngSubmit)="enviar()">
+        <div class="demo_wrap">
+          <h1>Espanha</h1>
+          <img
+            src="https://cdn.countryflags.com/thumbs/spain/flag-square-250.png"
+          />
+          <div>
+            <select name="Espanha" required [(ngModel)]="Espanha">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="EspanhaPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="EspanhaPontos"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Costa Rica</h1>
+          <img
+            src="https://cdn.countryflags.com/thumbs/costa-rica/flag-400.png"
+          />
+          <div>
+            <select name="CostaRica" required [(ngModel)]="CostaRica">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="CostaRicaPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="CostaRicaPontos"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Alemanha</h1>
+          <img
+            src="https://cdn.countryflags.com/thumbs/germany/flag-square-250.png"
+          />
+          <div>
+            <select name="Alemanha" required [(ngModel)]="Alemanha">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="AlemanhaPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="AlemanhaPontos"
+            />
+          </div>
+        </div>
+        <div class="demo_wrap">
+          <h1>Japão</h1>
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" />
+          <div>
+            <select name="Japao" required [(ngModel)]="Japao">
+              <option value="1">1°</option>
+              <option value="2">2°</option>
+              <option value="3">3°</option>
+              <option value="4">4°</option>
+            </select>
+            <input
+              name="JapaoPts"
+              type="number"
+              min="0"
+              placeholder="Pts"
+              [(ngModel)]="JapaoPontos"
+            />
+          </div>
+        </div>
+        <div class="submitContainer">
+          <button *ngIf="HabilitaPalpite == true" type="submit" class="button">
+            Registrar
+          </button>
+          <a class="loginButton" routerLink="/painel">Menu</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
