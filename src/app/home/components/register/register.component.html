@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title text-center">Register</h3>
+          <form (ngSubmit)="onRegister()">
+            <div class="mb-3">
+              <label for="registerName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="registerName" [(ngModel)]="registerData.name" name="name" required />
+            </div>
+            <div class="mb-3">
+              <label for="registerEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="registerEmail" [(ngModel)]="registerData.email" name="email" required />
+            </div>
+            <div class="mb-3">
+              <label for="registerPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="registerPassword" [(ngModel)]="registerData.password" name="password" required />
+            </div>
+            <button type="submit" class="btn btn-success w-100">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

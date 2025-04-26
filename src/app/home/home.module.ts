@@ -3,22 +3,20 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MensagemComponent } from '../componentes/mensagem/mensagem.component';
 import { MensagemModule } from '../componentes/mensagem/mensagem.module';
-import { NovoUsuarioComponent } from './novo-usuario/novo-usuario.component';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from '../app-routing.module';
-
+import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
-    NovoUsuarioComponent
+    RecoverPasswordComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,

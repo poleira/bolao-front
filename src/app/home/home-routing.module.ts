@@ -1,23 +1,27 @@
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './home.component';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NovoUsuarioComponent } from './novo-usuario/novo-usuario.component';
+import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [{
-  //externo
   path: '',
   component: HomeComponent,
-  children: [{ //interno
-    path: '',
-    component:LoginComponent
-  },
-  {
-    path: 'novo-usuario',
-    component: NovoUsuarioComponent
-  }
-
-]
+  children: [
+    {
+      path: '',
+      component: LoginComponent
+    },
+    {
+      path: 'recover-password',
+      component: RecoverPasswordComponent
+    },
+    {
+      path: 'register',
+      component: RegisterComponent
+    }
+  ]
 }];
 
 @NgModule({
