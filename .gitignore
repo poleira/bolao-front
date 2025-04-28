@@ -44,3 +44,6 @@ Thumbs.db
 node_modules
 .angular
 .vscode
+
+# Firebase Config
+src/environments/firebase.config.ts
