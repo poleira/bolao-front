@@ -1,23 +1,31 @@
 <div class="container mt-5">
+  <div class="row jsustify-content-center mb-3">
+    <div class="d-flex justify-content-center mb-2">
+      <img class="text-center" width="55" height="55" src="./assets/img/copa-do-mundo.png" alt="">
+    </div>
+    <p class="text-center text-muted fs-6">Portal do Torcedor</p>
+  </div>
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card">
+    <div class="col-12 col-md-8 col-lg-5">
+      <div class="card rounded-0">
         <div class="card-body">
-          <h3 class="card-title text-center">Register</h3>
+          <h3 class="card-title text-center text-success fw-bold mb-3">Criar conta</h3>
+          <p class="text-center text-success">Cadastre-se para acessar o portal</p>
           <form (ngSubmit)="onRegister()">
             <div class="mb-3">
-              <label for="registerName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="registerName" [(ngModel)]="registerData.name" name="name" required />
+              <input type="text" class="form-control rounded-0" id="registerName" [(ngModel)]="registerData.name" name="name"
+                placeholder="Nome" required />
             </div>
             <div class="mb-3">
-              <label for="registerEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="registerEmail" [(ngModel)]="registerData.email" name="email" required />
+              <input type="email" class="form-control rounded-0" id="registerEmail" [(ngModel)]="registerData.email" name="email"
+                placeholder="Email" required />
             </div>
             <div class="mb-3">
-              <label for="registerPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="registerPassword" [(ngModel)]="registerData.password" name="password" required />
+              <input type="password" class="form-control rounded-0" id="registerPassword" [(ngModel)]="registerData.password"
+                name="password" placeholder="Senha" required />
             </div>
-            <button type="submit" class="btn btn-success w-100">Register</button>
+            <button type="submit" class="btn btn-success rounded-0 w-100">Cadastrar</button>
+            <button [routerLink]="''" type="button" class="btn btn-outline-success rounded-0 w-100 mt-2">Voltar</button>
           </form>
         </div>
       </div>

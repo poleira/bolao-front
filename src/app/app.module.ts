@@ -1,3 +1,5 @@
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -5,14 +7,17 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
-import { JogoBRComponent } from './palpites/jogo-br/jogo-br.component';
+import { environment } from '../environments/environment';
+import { firebaseConfig } from 'src/environments/firebase.config';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,6 +29,8 @@ export function tokenGetter() {
         disallowedRoutes: [],
       },
     }),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
