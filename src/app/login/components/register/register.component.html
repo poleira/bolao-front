@@ -11,18 +11,18 @@
         <div class="card-body">
           <h3 class="card-title text-center text-success fw-bold mb-3">Criar conta</h3>
           <p class="text-center text-success">Cadastre-se para acessar o portal</p>
-          <form (ngSubmit)="onRegister()">
+          <form [formGroup]="formCadastrar" (ngSubmit)="cadastrar()">
             <div class="mb-3">
-              <input type="text" class="form-control rounded-0" id="registerName" [(ngModel)]="registerData.name" name="name"
+              <input type="text" class="form-control rounded-0" id="registerName" formControlName="Nome" name="Nome"
                 placeholder="Nome" required />
             </div>
             <div class="mb-3">
-              <input type="email" class="form-control rounded-0" id="registerEmail" [(ngModel)]="registerData.email" name="email"
+              <input type="email" class="form-control rounded-0" id="registerEmail" formControlName="Email" name="Email"
                 placeholder="Email" required />
             </div>
             <div class="mb-3">
-              <input type="password" class="form-control rounded-0" id="registerPassword" [(ngModel)]="registerData.password"
-                name="password" placeholder="Senha" required />
+              <input type="password" class="form-control rounded-0" id="registerPassword" formControlName="Senha"
+                name="Senha" placeholder="Senha" required />
             </div>
             <button type="submit" class="btn btn-success rounded-0 w-100">Cadastrar</button>
             <button [routerLink]="''" type="button" class="btn btn-outline-success rounded-0 w-100 mt-2">Voltar</button>

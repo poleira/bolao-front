@@ -7,7 +7,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
-import { environment } from '../environments/environment';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { firebaseConfig } from 'src/environments/firebase.config';
 
 export function tokenGetter() {
@@ -22,6 +24,7 @@ export function tokenGetter() {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    CommonModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -31,8 +34,12 @@ export function tokenGetter() {
     }),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,19 +1,26 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { CanActivate, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate  {
-  constructor(private router:Router, private jwtHelper: JwtHelperService){}
-  
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const token = localStorage.getItem("jwt");
-    if (token && !this.jwtHelper.isTokenExpired(token)){
+export class AuthGuard implements CanActivate {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private toast: ToastrService
+  ) { }
+
+  canActivate() {
+    if (this.authService.isAuthenticated()) {
       return true;
     }
+
     this.router.navigate(["login"]);
+    this.toast.info('Você não tem permissão para acessar essa página.')
+
     return false;
   }
 }

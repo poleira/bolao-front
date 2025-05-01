@@ -11,27 +11,27 @@
         <div class="card-body">
           <h3 class="card-title text-center text-success fw-bold">Copa do Mundo</h3>
           <p class="text-center text-success">Entre com suas credenciais para acessar</p>
-          <form (ngSubmit)="onLogin()">
+          <form [formGroup]="loginForm" (ngSubmit)="autenticar()">
             <div class="mb-3">
               <div class="input-group rounded-0">
                 <span class="input-group-text rounded-0"><i class="fas fa-envelope"></i></span>
-                <input type="email" class="form-control rounded-0" id="loginEmail" [(ngModel)]="loginData.email" name="email" placeholder="Email" required />
+                <input type="email" class="form-control rounded-0" id="loginEmail" formControlName="email" placeholder="E-mail" required />
               </div>
             </div>
             <div class="mb-3">
               <div class="input-group rounded-0">
                 <span class="input-group-text rounded-0"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control rounded-0" id="loginPassword" [(ngModel)]="loginData.password" name="password" placeholder="Senha" required />
+                <input type="password" class="form-control rounded-0" id="loginPassword" formControlName="senha" placeholder="Senha" required />
               </div>
             </div>
             <button type="submit" class="btn btn-success rounded-0 w-100">Entrar</button>
           </form>
           <div class="mt-3 text-center d-flex align-items-center justify-content-center">
             <p class="m-0">Não tem uma conta?</p>
-            <a [routerLink]="'./register'" class="text-decoration-none text-success mx-1">Cadastre-se</a>
+            <a [routerLink]="'./inserir'" class="text-decoration-none text-success mx-1">Cadastre-se</a>
           </div>
           <div class="mt-1 text-center">
-            <a [routerLink]="'./recover-password'" class="text-decoration-none text-success">Esqueceu a senha?</a>
+            <a [routerLink]="'./recuperar-senha'" class="text-decoration-none text-success">Esqueceu a senha?</a>
           </div>
         </div>
       </div>

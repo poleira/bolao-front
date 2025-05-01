@@ -47,3 +47,6 @@ node_modules
 
 # Firebase Config
 src/environments/firebase.config.ts
+
+# Environment variables
+.env
