@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { AutenticacaoResponse } from 'src/app/login/models/responses/autenticacao.response';
 import { LoginRequest } from 'src/app/login/models/requests/login.request';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +16,14 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  isSubmitting = false;
 
   constructor(
     private auth: AngularFireAuth,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -42,50 +44,58 @@ export class LoginComponent implements OnInit {
     const token = await firebaseUser?.user?.getIdToken();
     loginRequest.token = token ?? '';
 
-    this.authService.login(loginRequest).subscribe({
-      next: (response: AutenticacaoResponse) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('usuario', JSON.stringify(response.usuario));
-        this.authService.authStatus.next(true);
-        this.toastr.success('Login realizado com sucesso!', 'Sucesso');
+    this.spinner.show('loadLogin');
 
-        this.loginForm.reset();
-        this.isSubmitting = false;
-        this.router.navigate(['/home']);
-      },
-      error: error => {
-        this.isSubmitting = false;
-        this.toastr.error('Erro ao buscar usuário no backend.', 'Erro');
-      }
-    });
+    this.authService.login(loginRequest)
+      .pipe(finalize(() => this.spinner.hide('loadLogin')))
+      .subscribe({
+        next: (response: AutenticacaoResponse) => {
+          this.atualizaLocalSotorage(response);
+          this.authService.authStatus.next(true);
+          this.toastr.success('Login realizado com sucesso!', 'Sucesso');
+
+          this.loginForm.reset();
+          this.router.navigate(['/home']);
+        },
+        error: error => {
+          this.toastr.error('Erro ao buscar usuário no backend.', 'Erro');
+        }
+      });
+  }
+
+  atualizaLocalSotorage(response: AutenticacaoResponse) {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('usuario', JSON.stringify(response.usuario));
   }
 
   async autenticarFirebase(loginRequest: LoginRequest) {
-    const firebaseUser = await this.auth.signInWithEmailAndPassword(
+    const firebaseUsuario = await this.auth.signInWithEmailAndPassword(
       loginRequest.email,
       loginRequest.senha
     ).catch((error) => {
-      this.handleFirebaseAuthError(error);
+      this.exibirErroDeAutenticacaoFirebase(error);
     });;
 
-    return firebaseUser;
+    return firebaseUsuario;
   }
 
-  private handleFirebaseAuthError(error: any) {
-    let errorMessage = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+  private exibirErroDeAutenticacaoFirebase(error: any) {
+    let mensagemDeErro = '';
 
-    // Use correct error checking for Firebase authentication errors
     if (error && error.code) {
       switch (error.code) {
         case 'auth/invalid-email':
-          errorMessage = 'Formato de email inválido.';
+          mensagemDeErro = 'Formato de email inválido.';
           break;
         case 'auth/invalid-login-credentials':
-          errorMessage = 'Email ou senha incorretos.';
+          mensagemDeErro = 'Email ou senha incorretos.';
+          break;
+        default:
+          mensagemDeErro = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
           break;
       }
     }
 
-    this.toastr.error(errorMessage, 'Erro de Autenticação');
+    this.toastr.error(mensagemDeErro, 'Erro de Autenticação');
   }
 }

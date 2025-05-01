@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { firebaseConfig } from 'src/environments/firebase.config';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -35,7 +36,8 @@ export function tokenGetter() {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxSpinnerModule
   ],
   providers: [
     AuthGuard

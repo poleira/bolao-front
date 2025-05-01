@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { LoginRoutingModule } from './login-routing.module';
 import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    LoginRoutingModule
+    LoginRoutingModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-spin' })
   ],
   providers:[],
   exports: [],
