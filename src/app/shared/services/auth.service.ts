@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from 'src/app/login/models/requests/login.request';
 import { AutenticacaoResponse } from 'src/app/login/models/responses/autenticacao.response';
@@ -25,7 +25,10 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.url}/logout`, {});
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('token');
+    this.authStatus.next(false);
+    return of(null);
   }
 
   private hasToken(): boolean {
