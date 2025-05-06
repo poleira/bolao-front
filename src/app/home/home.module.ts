@@ -6,6 +6,7 @@ import { HomeComponent } from 'src/app/home/pages/home.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CriacaoBolaoFormularioComponent } from 'src/app/home/componentes/criacao-bolao-formulario/criacao-bolao-formulario.component';
 import { HomeRoutingModule } from 'src/app/home/home-routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { HomeRoutingModule } from 'src/app/home/home-routing.module';
     SharedModule, 
     ReactiveFormsModule, 
     HttpClientModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-spin' })
   ],
   providers:[],
   exports: [HomeComponent],

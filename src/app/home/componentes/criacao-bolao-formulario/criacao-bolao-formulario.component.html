@@ -5,218 +5,378 @@
         <h4 class="">Criar Bolão</h4>
 
         <form [formGroup]="formularioBolao">
-
-            <label class="text-muted">Identificação</label>
-            <div class="my-3">
-                <div class="input-group rounded-0">
-                    <input type="text" class="form-control rounded-0" id="nomeBolao" formControlName="NomeBolao"
-                        placeholder="Insira o nome do bolão" required />
-                </div>
-            </div>
-
-            <label class="text-muted">Logo do Bolão</label>
-            <div class="my-3">
-                <div class="d-flex flex-wrap gap-3">
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="cup"
-                            value="cup">
-                        <label class="form-check-label icon-label" for="cup">
-                            <img src="assets/img/Cup.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="goal"
-                            value="goal">
-                        <label class="form-check-label icon-label" for="goal">
-                            <img src="assets/img/Goal.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
-                            id="goalKeeper" value="goalKeeper">
-                        <label class="form-check-label icon-label" for="goalKeeper">
-                            <img src="assets/img/GoalKeeper.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="kick"
-                            value="kick">
-                        <label class="form-check-label icon-label" for="kick">
-                            <img src="assets/img/Kick.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="redCard"
-                            value="redCard">
-                        <label class="form-check-label icon-label" for="redCard">
-                            <img src="assets/img/RedCard.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="referee"
-                            value="referee">
-                        <label class="form-check-label icon-label" for="referee">
-                            <img src="assets/img/Referee.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
-                            id="yellowCard" value="yellowCard">
-                        <label class="form-check-label icon-label" for="yellowCard">
-                            <img src="assets/img/YellowCard.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
-                            id="gameStart" value="gameStart">
-                        <label class="form-check-label icon-label" for="gameStart">
-                            <img src="assets/img/GameStart.png" alt="Logo" width="20" height="20"
-                                class="img-fluid icon-image">
-                        </label>
+            <!-- Section: Identificação -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header">Identificação</div>
+                <div class="card-body">
+                    <div class="my-3">
+                        <div class="input-group rounded-0">
+                            <input type="text" class="form-control rounded-0" id="nomeBolao" formControlName="NomeBolao"
+                                placeholder="Insira o nome do bolão" required />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <hr />
+            <!-- Mobile version of Identificação -->
+            <div class="d-md-none">
+                <label class="text-muted">Identificação</label>
+                <div class="my-3">
+                    <div class="input-group rounded-0">
+                        <input type="text" class="form-control rounded-0" id="nomeBolaoMobile" formControlName="NomeBolao"
+                            placeholder="Insira o nome do bolão" required />
+                    </div>
+                </div>
+            </div>
 
-            <label class="text-muted">Prêmios</label>
-            <div class="my-3" formArrayName="premios">
-                <div class="row mb-2" *ngFor="let premio of premios.controls; let i = index">
-                    <div class="col">
-                        <div class="input-group">
-                            <input type="text" class="form-control rounded-0" [formControlName]="i"
-                                placeholder="Descrição do prêmio" required>
-                            <button type="button" class="btn btn-outline-danger rounded-0" (click)="removerPremio(i)"
-                                *ngIf="premios.length > 1">
-                                <i class="fa-regular fa-trash-can"></i>
+            <!-- Section: Logo do Bolão -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header">Logo do Bolão</div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="cup"
+                                value="cup">
+                            <label class="form-check-label icon-label" for="cup">
+                                <img src="assets/img/Cup.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="goal"
+                                value="goal">
+                            <label class="form-check-label icon-label" for="goal">
+                                <img src="assets/img/Goal.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
+                                id="goalKeeper" value="goalKeeper">
+                            <label class="form-check-label icon-label" for="goalKeeper">
+                                <img src="assets/img/GoalKeeper.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="kick"
+                                value="kick">
+                            <label class="form-check-label icon-label" for="kick">
+                                <img src="assets/img/Kick.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="redCard"
+                                value="redCard">
+                            <label class="form-check-label icon-label" for="redCard">
+                                <img src="assets/img/RedCard.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="referee"
+                                value="referee">
+                            <label class="form-check-label icon-label" for="referee">
+                                <img src="assets/img/Referee.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
+                                id="yellowCard" value="yellowCard">
+                            <label class="form-check-label icon-label" for="yellowCard">
+                                <img src="assets/img/YellowCard.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
+                                id="gameStart" value="gameStart">
+                            <label class="form-check-label icon-label" for="gameStart">
+                                <img src="assets/img/GameStart.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile version of Logo do Bolão -->
+            <div class="d-md-none">
+                <label class="text-muted">Logo do Bolão</label>
+                <div class="my-3">
+                    <div class="d-flex flex-wrap gap-3">
+                        <!-- Same content as above -->
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="cupMobile"
+                                value="cup">
+                            <label class="form-check-label icon-label" for="cupMobile">
+                                <img src="assets/img/Cup.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="goalMobile"
+                                value="goal">
+                            <label class="form-check-label icon-label" for="goalMobile">
+                                <img src="assets/img/Goal.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo"
+                                id="goalKeeperMobile" value="goalKeeper">
+                            <label class="form-check-label icon-label" for="goalKeeperMobile">
+                                <img src="assets/img/GoalKeeper.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="kickMobile"
+                                value="kick">
+                            <label class="form-check-label icon-label" for="kickMobile">
+                                <img src="assets/img/Kick.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="redCardMobile"
+                                value="redCard">
+                            <label class="form-check-label icon-label" for="redCardMobile">
+                                <img src="assets/img/RedCard.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="refereeMobile"
+                                value="referee">
+                            <label class="form-check-label icon-label" for="refereeMobile">
+                                <img src="assets/img/Referee.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="yellowCardMobile"
+                                value="yellowCard">
+                            <label class="form-check-label icon-label" for="yellowCardMobile">
+                                <img src="assets/img/YellowCard.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input visually-hidden" type="radio" formControlName="Logo" id="gameStartMobile"
+                                value="gameStart">
+                            <label class="form-check-label icon-label" for="gameStartMobile">
+                                <img src="assets/img/GameStart.png" alt="Logo" width="20" height="20"
+                                    class="img-fluid icon-image">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="d-md-none" />
+
+            <!-- Section: Prêmios -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header">Prêmios</div>
+                <div class="card-body" formArrayName="Premios">
+                    <div class="row mb-2" *ngFor="let premio of premios.controls; let i = index" [formGroupName]="i">
+                        <div class="col my-1">
+                            <label for="colocacao">{{ premio.value.Colocacao }}° Colocado</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control rounded-0" formControlName="Descricao"
+                                    placeholder="Descrição do prêmio" required>
+                                <button type="button" class="btn btn-outline-danger rounded-0" (click)="removerPremio(i)"
+                                    *ngIf="premios.length > 1">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-success rounded-0" (click)="adicionarPremio()">
+                                <i class="fa-solid fa-plus"></i>
+                                <span class="mx-2">Adicionar</span>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-success rounded-0" (click)="adicionarPremio()">
-                            <i class="fa-solid fa-plus"></i>
-                            <span class="mx-2">Adicionar</span>
-                        </button>
+            </div>
+
+            <!-- Mobile version of Prêmios -->
+            <div class="d-md-none">
+                <label class="text-muted">Prêmios</label>
+                <div class="my-3" formArrayName="Premios">
+                    <div class="row mb-2" *ngFor="let premio of premios.controls; let i = index" [formGroupName]="i">
+                        <div class="col my-1">
+                            <label for="colocacao">{{ premio.value.Colocacao }}° Colocado</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control rounded-0" formControlName="Descricao"
+                                    placeholder="Descrição do prêmio" required>
+                                <button type="button" class="btn btn-outline-danger rounded-0" (click)="removerPremio(i)"
+                                    *ngIf="premios.length > 1">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-success rounded-0" (click)="adicionarPremio()">
+                                <i class="fa-solid fa-plus"></i>
+                                <span class="mx-2">Adicionar</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <hr />
+            <hr class="d-md-none" />
 
-            <label class="text-muted">Privacidade</label>
-            <div class="my-3 mx-5">
-                <div class="row">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" formControlName="Privacidade"
-                            name="privacidadeRadio" id="privacidadeRadio1">
-                        <label class="form-check-label" for="privacidadeRadio1">
-                            <span>Público</span>
-                            <p class="text-muted">
-                                Jogadores podem acessar o seu Bolão sem sua aprovação, apenas
-                                utilizando o senha de
-                                acesso (se tiver configurado uma senha)
-                            </p>
-                        </label>
+            <!-- Section: Privacidade -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header">Privacidade</div>
+                <div class="card-body">
+                    <div class="mx-5">
+                        <div class="row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="Privacidade" name="Privacidade"
+                                    id="privacidadeRadio1" value="publico">
+                                <label class="form-check-label" for="privacidadeRadio1">
+                                    <span>Público</span>
+                                    <p class="text-muted">
+                                        Jogadores podem acessar o seu Bolão sem sua aprovação, apenas
+                                        utilizando o senha de
+                                        acesso (se tiver configurado uma senha)
+                                    </p>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="Privacidade" name="Privacidade"
+                                    id="privacidadeRadio2" value="privado">
+                                <label class="form-check-label" for="privacidadeRadio2">
+                                    <span>Privado</span>
+                                    <p class="text-muted">
+                                        Jogador só pode entrar com link enviado por você ou pedindo solicitação de acesso
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" formControlName="Privacidade"
-                            name="privacidadeRadio" id="privacidadeRadio2">
-                        <label class="form-check-label" for="privacidadeRadio2">
-                            <span>Privado</span>
-                            <p class="text-muted">
-                                Jogador só pode entrar com link enviado por você ou pedindo solicitação de acesso
-                            </p>
-                        </label>
+                    <div class="my-3">
+                        <div class="input-group rounded-0">
+                            <input type="text" class="form-control rounded-0" id="senhaBolao" formControlName="Senha"
+                                placeholder="Senha (opcional)" required />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="my-3">
-                <div class="input-group rounded-0">
-                    <input type="text" class="form-control rounded-0" id="senhaBolao" formControlName="Senha"
-                        placeholder="Senha (opcional)" required />
+            <!-- Mobile version of Privacidade -->
+            <div class="d-md-none">
+                <label class="text-muted">Privacidade</label>
+                <div class="my-3 mx-5">
+                    <div class="row">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" formControlName="Privacidade" name="Privacidade"
+                                id="privacidadeRadio1Mobile" value="publico">
+                            <label class="form-check-label" for="privacidadeRadio1Mobile">
+                                <span>Público</span>
+                                <p class="text-muted">
+                                    Jogadores podem acessar o seu Bolão sem sua aprovação, apenas
+                                    utilizando o senha de
+                                    acesso (se tiver configurado uma senha)
+                                </p>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" formControlName="Privacidade" name="Privacidade"
+                                id="privacidadeRadio2Mobile" value="privado">
+                            <label class="form-check-label" for="privacidadeRadio2Mobile">
+                                <span>Privado</span>
+                                <p class="text-muted">
+                                    Jogador só pode entrar com link enviado por você ou pedindo solicitação de acesso
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-3">
+                    <div class="input-group rounded-0">
+                        <input type="text" class="form-control rounded-0" id="senhaBolaoMobile" formControlName="Senha"
+                            placeholder="Senha (opcional)" required />
+                    </div>
                 </div>
             </div>
 
-            <hr />
-            
-            <label class="text-muted">Regras</label>
-            <div class="my-3 mx-5" formGroupName="regras">
-                <div class="row">
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" formControlName="acertoExato" id="acertoExato">
-                        <label class="form-check-label" for="acertoExato">
-                            <span>Acerto exato</span>
-                            <p class="text-muted">
-                                Pontuação extra para quem acertar o placar exato
-                            </p>
-                        </label>
-                    </div>
+            <hr class="d-md-none" />
 
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" formControlName="vencedorPartida" id="vencedorPartida">
-                        <label class="form-check-label" for="vencedorPartida">
-                            <span>Vencedor da partida</span>
-                            <p class="text-muted">
-                                Pontuação para quem acertar apenas o time vencedor
-                            </p>
-                        </label>
+            <!-- Section: Regras -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header">Regras</div>
+                <div class="card-body" formGroupName="regras">
+                    <div class="row mx-4">
+                        <div class="form-check mb-2" *ngFor="let regra of regras">
+                            <input class="form-check-input" type="checkbox" [id]="regra.id"
+                                (change)="onRegraChange(regra.id, $event)">
+                            <label class="form-check-label" [for]="regra.id">
+                                <span>{{ regra.descricao }}</span>
+                                <p class="text-muted">
+                                    {{ regra.explicacao }}
+                                </p>
+                            </label>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" formControlName="empate" id="empate">
-                        <label class="form-check-label" for="empate">
-                            <span>Empate</span>
-                            <p class="text-muted">
-                                Pontuação para quem acertar que a partida terminará em empate
-                            </p>
-                        </label>
-                    </div>
-
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" formControlName="golsMarcados" id="golsMarcados">
-                        <label class="form-check-label" for="golsMarcados">
-                            <span>Gols marcados</span>
-                            <p class="text-muted">
-                                Pontuação para quem acertar o número de gols de um time específico
-                            </p>
-                        </label>
-                    </div>
-
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" formControlName="diferencaGols" id="diferencaGols">
-                        <label class="form-check-label" for="diferencaGols">
-                            <span>Diferença de gols</span>
-                            <p class="text-muted">
-                                Pontuação para quem acertar a diferença de gols entre os times
-                            </p>
-                        </label>
+            <!-- Mobile version of Regras -->
+            <div class="d-md-none">
+                <label class="text-muted">Regras</label>
+                <div class="my-3 mx-5" formGroupName="regras">
+                    <div class="row">
+                        <div class="form-check mb-2" *ngFor="let regra of regras">
+                            <input class="form-check-input" type="checkbox" [id]="regra.id + 'Mobile'"
+                                (change)="onRegraChange(regra.id, $event)">
+                            <label class="form-check-label" [for]="regra.id + 'Mobile'">
+                                <span>{{ regra.descricao }}</span>
+                                <p class="text-muted">
+                                    {{ regra.explicacao }}
+                                </p>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-center mt-4 mb-5">
-                <button class="btn btn-success criar-bolao-button">Criar Bolão</button>
+                <button class="btn btn-success criar-bolao-button" (click)="criarBolao()">Criar Bolão</button>
             </div>
         </form>
-
-
     </div>
 </div>
+
+<ngx-spinner name="loadCriacaoBolao" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>
