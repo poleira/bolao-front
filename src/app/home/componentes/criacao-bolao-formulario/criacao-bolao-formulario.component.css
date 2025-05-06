@@ -1,0 +1,46 @@
+.icon-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: auto;
+    height: auto;
+}
+
+.icon-image {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.form-check {
+    padding: 0;
+    margin: 0;
+}
+
+.form-check-input:checked+.icon-label {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.criar-bolao-button {
+    padding: 10px 30px;
+    z-index: 1000;
+}
+
+/* For mobile devices - fixed position without floating animation */
+@media (max-width: 767px) {
+    .criar-bolao-button {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}

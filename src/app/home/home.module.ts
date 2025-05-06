@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from 'src/app/home/pages/home.component';
-import { HomeRoutingModule } from 'src/app/home/pages/home-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CriacaoBolaoFormularioComponent } from 'src/app/home/componentes/criacao-bolao-formulario/criacao-bolao-formulario.component';
+import { HomeRoutingModule } from 'src/app/home/home-routing.module';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    CriacaoBolaoFormularioComponent
   ],
   imports: [
     CommonModule,

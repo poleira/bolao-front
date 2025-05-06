@@ -1,0 +1,44 @@
+.create-bolao-button {
+    cursor: pointer;
+}
+
+.create-bolao-text {
+    font-size: 12px;
+}
+
+.action-button {
+    min-width: 160px;
+    max-width: 200px;
+}
+
+.link-no-decoration {
+  text-decoration: none;
+}
+
+.small-text {
+  font-size: 12px;
+}
+
+.score-badge {
+  background-color: #999898;
+}
+
+.bronze-trophy {
+  color: #a35312;
+}
+
+.palpitar-button {
+  padding: 10px 30px;
+  z-index: 1000;
+}
+
+/* For mobile devices - fixed position without floating animation */
+@media (max-width: 767px) {
+  .palpitar-button {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
