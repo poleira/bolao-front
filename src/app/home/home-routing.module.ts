@@ -1,5 +1,3 @@
-
-
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from 'src/app/home/pages/home.component';
@@ -13,6 +11,10 @@ const routes: Routes = [
   {
     path: 'criar-bolao',
     component: CriacaoBolaoFormularioComponent
+  },
+  {
+    path: 'editar-bolao/:id',
+    component: CriacaoBolaoFormularioComponent,
   }
 ];
 

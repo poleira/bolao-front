@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { InserirPremioBolaoRequest } from 'src/app/home/models/requests/inserir-premio-bolao.request';
@@ -9,6 +9,9 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
 import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-regra-bolao.request';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
+import { BolaoUsuarioResponse } from 'src/app/home/models/responses/bolao-usuario.response';
 
 @Component({
   selector: 'app-criacao-bolao-formulario',
@@ -18,32 +21,44 @@ import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-r
 export class CriacaoBolaoFormularioComponent implements OnInit {
 
   formularioBolao!: FormGroup;
-
   regras: RegraResponse[] = [];
+  modoEdicao: boolean = false;
+  bolaoId?: number;
+
+  bolaoUsuario: BolaoUsuarioResponse = new BolaoUsuarioResponse({});
 
   constructor(
     private formBuilder: FormBuilder,
     private bolaoService: BolaoService,
+    private bolaoUsuarioService: BoloesUsuariosService,
     private toast: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.inicializarFormulario();
     this.recuperarRegras();
+
+    if (this.route.snapshot.paramMap.has('id')) {
+      this.bolaoId = Number(this.route.snapshot.paramMap.get('id'));
+      this.modoEdicao = true;
+      this.carregarDadosBolao(this.bolaoId);
+    }
   }
 
   inicializarFormulario(): void {
     this.formularioBolao = this.formBuilder.group({
       NomeBolao: ['', Validators.required],
-      Logo: ['', Validators.required],
+      Logo: ['Cup'],
       Premios: this.formBuilder.array([
         this.formBuilder.group({
           Descricao: ['', Validators.required],
           Colocacao: [1]
         })
       ]),
-      Privacidade: ['publico', Validators.required],
+      Privacidade: ['publico'],
       Senha: [''],
       regras: this.formBuilder.group({})
     });
@@ -111,15 +126,23 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     const request = this.buildBolaoRequest();
     this.spinner.show("loadCriacaoBolao");
 
-    this.bolaoService.criarBolao(request)
+    const observable = this.modoEdicao ?
+      this.bolaoService.atualizarBolao(this.bolaoId!, request) :
+      this.bolaoService.criarBolao(request);
+
+    observable
       .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
       .subscribe({
         next: (response) => {
-          this.toast.success('Bolão criado com sucesso');
-          this.resetFormulario();
+          this.toast.success(this.modoEdicao ? 'Bolão atualizado com sucesso' : 'Bolão criado com sucesso');
+          if (!this.modoEdicao) {
+            this.resetFormulario();
+          } else {
+            this.router.navigate(['/home']);
+          }
         },
         error: (error) => {
-          this.toast.error('Erro ao criar o bolão');
+          this.toast.error(this.modoEdicao ? 'Erro ao atualizar o bolão' : 'Erro ao criar o bolão');
         }
       });
   }
@@ -177,6 +200,68 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     if (control) {
       control.setValue(event.target.checked);
       control.markAsDirty();
+    }
+  }
+
+  carregarDadosBolao(id: number): void {
+    this.spinner.show("loadCriacaoBolao");
+    this.bolaoUsuarioService.recuperar(id)
+      .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
+      .subscribe({
+        next: (bolaoUsuario: BolaoUsuarioResponse) => {
+          this.bolaoUsuario = bolaoUsuario;
+          this.preencherFormulario(bolaoUsuario);
+        },
+        error: (error) => {
+          this.toast.error('Erro ao carregar dados do bolão');
+          this.router.navigate(['/home']);
+        }
+      });
+  }
+
+  preencherFormulario(bolaoUsuario: BolaoUsuarioResponse): void {
+    while (this.premios.length > 0) {
+      this.premios.removeAt(0);
+    }
+
+    const bolao = bolaoUsuario.bolao;
+
+    if (bolao?.premios && bolao?.premios.length > 0) {
+      bolao.premios.forEach(premio => {
+        this.premios.push(
+          this.formBuilder.group({
+            Descricao: [premio.descricao, Validators.required],
+            Colocacao: [premio.colocacao]
+          })
+        );
+      });
+    } else {
+      this.premios.push(
+        this.formBuilder.group({
+          Descricao: ['', Validators.required],
+          Colocacao: [1]
+        })
+      );
+    }
+
+    this.formularioBolao.patchValue({
+      NomeBolao: bolao?.nome,
+      Logo: bolao?.logo,
+      Privacidade: bolao?.privacidade ? 'privado' : 'publico',
+      Senha: bolao?.senha || ''
+    });
+
+    if (bolao?.regras && bolao?.regras.length > 0) {
+      const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
+      
+      bolao.regras.forEach(regra => {
+        console.log(`Tentando definir regra ${regra.id}`, regra);
+        const regraControlId = regra.id.toString();
+        
+        if (regrasGroup.contains(regraControlId)) {
+          regrasGroup.get(regraControlId)?.setValue(true);
+        }
+      });
     }
   }
 }

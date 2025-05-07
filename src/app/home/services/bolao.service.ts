@@ -11,7 +11,7 @@ import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 })
 export class BolaoService {
   private apiUrl = environment.api + "boloes";
-
+  
   constructor(private http: HttpClient) { }
 
   recuperarRegras(): Observable<RegraResponse[]> {
@@ -21,4 +21,13 @@ export class BolaoService {
   criarBolao(request: BolaoRequest): Observable<BolaoResponse> {
     return this.http.post<BolaoResponse>(this.apiUrl, request);
   }
+
+  recuperarBolaoPorId(id: number): Observable<BolaoResponse> {
+    return this.http.get<BolaoResponse>(`${this.apiUrl}/bolao/${id}`);
+  }
+
+  atualizarBolao(id: number, request: BolaoRequest): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/bolao/${id}`, request);
+  }
+
 }
