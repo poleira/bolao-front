@@ -8,6 +8,7 @@ import { LoginRequest } from 'src/app/login/models/requests/login.request';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   constructor(
-    private auth: AngularFireAuth,
+    private afAuth: AngularFireAuth, // Renamed for clarity
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
@@ -38,62 +39,89 @@ export class LoginComponent implements OnInit {
   }
 
   async autenticar() {
+    if (this.loginForm.invalid) {
+      this.toastr.error('Por favor, preencha todos os campos corretamente.', 'Formulário Inválido');
+      return;
+    }
+
     const loginRequest: LoginRequest = { ...this.loginForm.value };
-
-    const firebaseUser = await this.autenticarFirebase(loginRequest);
-    const token = await firebaseUser?.user?.getIdToken();
-    loginRequest.token = token ?? '';
-
     this.spinner.show('loadLogin');
 
-    this.authService.login(loginRequest)
-      .pipe(finalize(() => this.spinner.hide('loadLogin')))
+    try {
+      const firebaseUserCredential = await this.autenticarFirebase(loginRequest);
+      if (!firebaseUserCredential || !firebaseUserCredential.user) {
+        this.spinner.hide('loadLogin');
+        return;
+      }
+
+      const firebaseToken = await firebaseUserCredential.user.getIdToken();
+      const decodedToken = await firebaseUserCredential.user.getIdTokenResult();
+      
+      const expirationTimeEpoch = new Date(decodedToken.expirationTime).getTime();
+
+      loginRequest.token = firebaseToken ?? '';
+
+      this.authService.login(loginRequest)
+        .pipe(finalize(() => this.spinner.hide('loadLogin')))
       .subscribe({
         next: (response: AutenticacaoResponse) => {
-          this.atualizaLocalSotorage(response);
-          this.authService.authStatus.next(true);
+          this.authService.completeFirebaseSession(expirationTimeEpoch);
           this.toastr.success('Login realizado com sucesso!', 'Sucesso');
-
           this.loginForm.reset();
           this.router.navigate(['/home']);
         },
         error: error => {
-          this.toastr.error('Erro ao buscar usuário no backend.', 'Erro');
+            console.error('Backend login error:', error);
+            this.toastr.error(error?.error?.message || 'Erro ao autenticar com o backend.', 'Erro no Backend');
+            this.authService.logout(false); // Clear any partial session data without redirect
         }
       });
+
+    } catch (firebaseError) {
+      // This catch is for errors during Firebase auth that weren't caught inside autenticarFirebase
+      // or if autenticarFirebase re-throws.
+      this.spinner.hide('loadLogin');
+      console.error('General Firebase authentication error:', firebaseError);
+      // Error message should have been displayed by exibirErroDeAutenticacaoFirebase
+  }
   }
 
-  atualizaLocalSotorage(response: AutenticacaoResponse) {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('usuario', JSON.stringify(response.usuario));
-  }
-
-  async autenticarFirebase(loginRequest: LoginRequest) {
-    const firebaseUsuario = await this.auth.signInWithEmailAndPassword(
+  async autenticarFirebase(loginRequest: LoginRequest): Promise<firebase.auth.UserCredential | undefined> {
+    try {
+      const firebaseUserCredential = await this.afAuth.signInWithEmailAndPassword(
       loginRequest.email,
       loginRequest.senha
-    ).catch((error) => {
+      );
+      return firebaseUserCredential;
+    } catch (error: any) {
       this.exibirErroDeAutenticacaoFirebase(error);
-    });;
-
-    return firebaseUsuario;
+      // Do not hide spinner here, it's handled in the caller
+      return undefined; // Indicate failure
+    }
   }
 
   private exibirErroDeAutenticacaoFirebase(error: any) {
-    let mensagemDeErro = '';
-
+    let mensagemDeErro = 'Ocorreu um erro desconhecido durante a autenticação com o Firebase.';
     if (error && error.code) {
       switch (error.code) {
         case 'auth/invalid-email':
           mensagemDeErro = 'Formato de email inválido.';
           break;
-        case 'auth/invalid-login-credentials':
+        case 'auth/user-not-found':
+        case 'auth/wrong-password': // Older SDKs
+        case 'auth/invalid-credential': // Newer SDKs for wrong email/password
           mensagemDeErro = 'Email ou senha incorretos.';
           break;
+        case 'auth/too-many-requests':
+            mensagemDeErro = 'Muitas tentativas de login. Tente novamente mais tarde.';
+          break;
         default:
-          mensagemDeErro = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+          mensagemDeErro = 'Ocorreu um erro ao tentar fazer login com o Firebase. Tente novamente.';
+          console.error("Firebase Auth Error Code:", error.code, error.message);
           break;
       }
+    } else {
+      console.error("Unknown Firebase Auth Error:", error);
     }
 
     this.toastr.error(mensagemDeErro, 'Erro de Autenticação');

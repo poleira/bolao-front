@@ -1,6 +1,5 @@
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -12,6 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { firebaseConfig } from 'src/environments/firebase.config';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor'; // Adjust path if needed
+import { AuthService } from './shared/services/auth.service'; // Ensure AuthService is provided
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -40,7 +42,8 @@ export function tokenGetter() {
     NgxSpinnerModule
   ],
   providers: [
-    AuthGuard
+    AuthService, // Ensure AuthService is provided (usually as root)
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })
