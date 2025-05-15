@@ -17,11 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: 'painel',
-    loadChildren: () =>
-      import('./painel/painel.module').then((m) => m.PainelModule),
-  },
 ];
 
 @NgModule({

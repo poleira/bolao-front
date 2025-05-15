@@ -47,16 +47,6 @@ export class CabecalhoComponent implements OnInit {
     }
 
     logout() {
-        this.spinner.show('logout');
         this.authService.logout()
-            .pipe(finalize(() => this.spinner.hide('logout')))
-            .subscribe({
-                next: () => {
-                    this.router.navigate(['/login']);
-                },
-                error: error => {
-                    console.error('Erro ao fazer logout:', error);
-                }
-            });
     }
 }
