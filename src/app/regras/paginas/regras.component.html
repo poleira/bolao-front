@@ -1,0 +1,41 @@
+<app-cabecalho></app-cabecalho>
+<div class="container">
+  <div class="row mt-5">
+    <div class="d-flex col-md-12 justify-content-start">
+      <button class="btn btn-success mb-3" (click)="voltar()">
+        <i class="fa-solid fa-chevron-left"></i> Voltar
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <h4 class="">Regras do bolão</h4>
+    <p class="text-muted">Confira todas as regras e critérios de pontuação deste bolão</p>
+  </div>
+
+  <!-- Regras Cards -->
+  <div class="row mt-4">
+    <div class="col-md-6 mb-4" *ngFor="let regra of bolao?.regras">
+      <div class="card rounded-3 shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0">{{ regra.descricao }}</h5>
+            </div>
+            <div class="badge bg-success px-3 py-2 rounded-pill">+{{ regra.pontuacao }} pts</div>
+          </div>
+          <p class="card-text text-muted">
+            {{ regra.explicacao }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message for when there are no rules -->
+  <div class="row mt-4" *ngIf="!bolao?.regras || bolao?.regras?.length === 0">
+    <div class="col-12 text-center">
+      <p class="text-muted">Nenhuma regra definida para este bolão.</p>
+    </div>
+  </div>
+</div>

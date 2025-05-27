@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { RegraResponse } from 'src/app/home/models/responses/regra.response';
 import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
+import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,13 @@ export class BolaoService {
     return this.http.post<BolaoResponse>(this.apiUrl, request);
   }
 
-  recuperarBolaoPorId(id: number): Observable<BolaoResponse> {
-    return this.http.get<BolaoResponse>(`${this.apiUrl}/bolao/${id}`);
+  editarBolao(request: BolaoEditarRequest): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}`, request);
   }
 
-  atualizarBolao(id: number, request: BolaoRequest): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/bolao/${id}`, request);
+  recuperarPorToken(tokenAcesso: string) {
+    const encodedToken = encodeURIComponent(tokenAcesso);
+    return this.http.get<BolaoResponse>(`${this.apiUrl}/${encodedToken}`);
   }
 
 }

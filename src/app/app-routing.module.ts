@@ -17,6 +17,11 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'regras',
+    loadChildren: () => import('./regras/regras.module').then((m) => m.RegrasModule),
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

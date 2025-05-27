@@ -1,17 +1,15 @@
-import { RegrasComponent } from './regras.component';
+import { RegrasComponent } from './paginas/regras.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':tokenAcesso',
     component: RegrasComponent,
-    canActivate: [AuthGuard],
-  },
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class RegrasRoutingModule {}
+export class RegrasRoutingModule { }

@@ -1,17 +1,24 @@
 <app-cabecalho></app-cabecalho>
 
 <div class="container">
+    <!-- Bolão "tab" selector -->
     <div class="row">
         <div class="col-md-12 d-flex justify-content-start align-items-center py-3 overflow-auto">
-            <div class="d-flex flex-column align-items-center rounded-circle create-bolao-button me-4" [routerLink]="['criar-bolao']">
+            <div class="d-flex flex-column align-items-center rounded-circle create-bolao-button me-4"
+                [routerLink]="['criar-bolao']">
                 <i class="fa-solid fa-circle-plus text-success fs-3"></i>
                 <span class="text-muted my-1 create-bolao-text">Criar bolão</span>
             </div>
 
             <div class="d-flex flex-row" *ngIf="boloesUsuarios.length > 0">
-                <div *ngFor="let bolaoUsuario of boloesUsuarios; let i = index" class="d-flex flex-column align-items-center mx-3 bolaoUsuario">
-                    <div class="bolao-icon-container" [routerLink]="['editar-bolao/'+ bolaoUsuario.bolao?.id]">
-                        <img [src]="'assets/img/' + bolaoUsuario?.bolao?.logo + '.png'" width="27" height="27" alt="Bolão" class="rounded-circle bolao-icon">
+                <div *ngFor="let bolaoUsuario of boloesUsuarios; let i = index"
+                    class="d-flex flex-column align-items-center mx-3 bolaoUsuario" [ngClass]="{
+                        'bolao-tab-active': selectedBolaoUsuario.bolao?.tokenAcesso === bolaoUsuario.bolao?.tokenAcesso,
+                        'bolao-tab': true
+                    }" (click)="selecionaBolao(bolaoUsuario)" style="cursor:pointer;">
+                    <div class="bolao-icon-container">
+                        <img [src]="'assets/img/' + bolaoUsuario?.bolao?.logo + '.png'" width="40" height="40"
+                            alt="Bolão" class="rounded-circle bolao-icon">
                     </div>
                     <span class="text-muted my-1 small-text">{{ bolaoUsuario.bolao?.nome }}</span>
                 </div>
@@ -19,115 +26,123 @@
         </div>
     </div>
 
-    <div class="row my-2">
-        <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted m-0">Prêmios</h6>
-            <a class="text-success link-no-decoration">Ver prêmios</a>
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="d-flex flex-column align-items-center mx-3">
-                <i class="fa-solid fa-trophy fs-1 mx-1"></i>
-                <span class="text-muted my-1 small-text">1000 reais</span>
-            </div>
-
-            <div class="d-flex flex-column align-items-center mx-3">
-                <i class="fa-solid fa-trophy fs-1 mx-1"></i>
-                <span class="text-muted my-1 small-text">500 reais</span>
-            </div>
-
-            <div class="d-flex flex-column align-items-center mx-3">
-                <i class="fa-solid fa-trophy fs-1 mx-1"></i>
-                <span class="text-muted my-1 small-text">200 reais</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-6 col-sm-4 col-md-3 px-1">
-            <button class="btn btn-outline-success w-100">Ver regras</button>
-        </div>
-        <div class="col-6 col-sm-4 col-md-3 px-1">
-            <button class="btn btn-outline-success w-100">Convidar</button>
-        </div>
-    </div>
-
-    <div class="row my-2">
-        <div class="d-flex justify-content-between align-items-center my-3">
-            <h6 class="text-muted m-0">Ranking</h6>
-            <a class="text-success link-no-decoration">Ver Ranking</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-trophy text-warning fs-5"></i>
-                <div class="d-flex my-2 mx-3">
-                    <i class="fa-regular fa-face-smile fs-3"></i>
-                    <div class="dflex-column align-items-center mx-2">
-                        <span>Marcelo Faria</span>
+    <!-- Bolão info tab panel -->
+    <div *ngIf="selectedBolaoUsuario?.bolao != null" class="row mb-4">
+        <div class="col-12">
+            <div class="p-3 border rounded bg-white">
+                <div class="row my-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="text-muted m-0">Prêmios</h6>
+                        <button type="button" class="btn btn btn-sm btn-outline-success" (click)="navigateToEditBolao()">
+                            <i class="fa-solid fa-pen-to-square mx-1"></i>
+                            Editar bolão
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <div class="d-flex align-items-center">
-                <span class="rounded-pill fw-bold px-3 py-1 score-badge">220</span>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-trophy text-secondary fs-5"></i>
-                <div class="d-flex my-2 mx-3">
-                    <i class="fa-regular fa-face-smile fs-3"></i>
-                    <div class="dflex-column align-items-center mx-2">
-                        <span>Marco Pollo</span>
+                <div class="row my-5">
+                    <div class="container px-0">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
+                            <div class="col d-flex justify-content-center mb-3"
+                                *ngFor="let premio of selectedBolaoUsuario.bolao?.premios; let i = index">
+                                <div class="card shadow-sm premio-card border-0 position-relative w-100">
+                                    <div class="position-badge bg-success">{{ i + 1 }}º lugar</div>
+                                    <div class="card-body text-center">
+                                        <i class="fa-solid fa-trophy fs-1 mx-1 my-2"></i>
+                                        <p class="card-text text-muted my-1 small-text">{{ premio.descricao }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="d-flex align-items-center">
-                <span class="rounded-pill fw-bold px-3 py-1 score-badge">215</span>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-trophy bronze-trophy fs-5"></i>
-                <div class="d-flex my-2 mx-3">
-                    <i class="fa-regular fa-face-smile fs-3"></i>
-                    <div class="dflex-column align-items-center mx-2">
-                        <span>Tiquinho Soares</span>
+                <div class="row justify-content-center">
+                    <div class="col-6 col-sm-4 col-md-3 px-1">
+                        <button class="btn btn-outline-success w-100" (click)="verRegras()">Ver regras</button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 px-1">
+                        <button class="btn btn-success w-100">Convidar</button>
                     </div>
                 </div>
-            </div>
 
-            <div class="d-flex align-items-center">
-                <span class="rounded-pill fw-bold px-3 py-1 score-badge">180</span>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                <div class="d-flex my-2 mx-3">
-                    <i class="fa-regular fa-face-smile fs-3"></i>
-                    <div class="dflex-column align-items-center mx-2">
-                        <span>Calleri</span>
+                <div class="row my-2">
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <h6 class="text-muted m-0">Ranking</h6>
+                        <a class="text-success link-no-decoration">Ver Ranking</a>
                     </div>
                 </div>
-            </div>
 
-            <div class="d-flex align-items-center">
-                <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-trophy text-warning fs-5"></i>
+                            <div class="d-flex my-2 mx-3">
+                                <i class="fa-regular fa-face-smile fs-3"></i>
+                                <div class="dflex-column align-items-center mx-2">
+                                    <span>Marcelo Faria</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">220</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-trophy text-secondary fs-5"></i>
+                            <div class="d-flex my-2 mx-3">
+                                <i class="fa-regular fa-face-smile fs-3"></i>
+                                <div class="dflex-column align-items-center mx-2">
+                                    <span>Marco Pollo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">215</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-trophy bronze-trophy fs-5"></i>
+                            <div class="d-flex my-2 mx-3">
+                                <i class="fa-regular fa-face-smile fs-3"></i>
+                                <div class="dflex-column align-items-center mx-2">
+                                    <span>Tiquinho Soares</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">180</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
+                            <div class="d-flex my-2 mx-3">
+                                <i class="fa-regular fa-face-smile fs-3"></i>
+                                <div class="dflex-column align-items-center mx-2">
+                                    <span>Calleri</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4 mb-5">
+                    <button class="btn btn-success palpitar-button">Palpitar</button>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="d-flex justify-content-center mt-4 mb-5">
-        <button class="btn btn-success palpitar-button">Palpitar</button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { InserirPremioBolaoRequest } from 'src/app/home/models/requests/inserir-premio-bolao.request';
@@ -11,7 +11,8 @@ import { finalize } from 'rxjs';
 import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-regra-bolao.request';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
-import { BolaoUsuarioResponse } from 'src/app/home/models/responses/bolao-usuario.response';
+import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
+import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
 
 @Component({
   selector: 'app-criacao-bolao-formulario',
@@ -25,7 +26,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
   modoEdicao: boolean = false;
   bolaoId?: number;
 
-  bolaoUsuario: BolaoUsuarioResponse = new BolaoUsuarioResponse({});
+  bolao: BolaoResponse = new BolaoResponse({});
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,12 +41,6 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
   ngOnInit(): void {
     this.inicializarFormulario();
     this.recuperarRegras();
-
-    if (this.route.snapshot.paramMap.has('id')) {
-      this.bolaoId = Number(this.route.snapshot.paramMap.get('id'));
-      this.modoEdicao = true;
-      this.carregarDadosBolao(this.bolaoId);
-    }
   }
 
   inicializarFormulario(): void {
@@ -88,8 +83,11 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     }
   }
 
-  buildBolaoRequest(): BolaoRequest {
+  buildBolaoRequest(): BolaoRequest | BolaoEditarRequest {
     const formData = this.formularioBolao.value;
+
+    let bolaoEditarRequest = new BolaoEditarRequest({});
+    let bolaoInserirRequest = new BolaoRequest({});
 
     const premios: InserirPremioBolaoRequest[] = formData.Premios.map(
       (premio: any) => new InserirPremioBolaoRequest({
@@ -110,27 +108,37 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       }
     });
 
-    return new BolaoRequest({
-      Nome: formData.NomeBolao,
-      Logo: formData.Logo,
-      Aviso: '',
-      HashUsuario: this.recuperaUsuarioLogado()?.firebaseUid,
-      Senha: formData.Senha,
-      Privado: formData.Privacidade === 'privado',
-      InserirRegrasBoloes: regras,
-      InserirPremiosBoloes: premios
-    });
+    if (this.modoEdicao) {
+      bolaoEditarRequest = new BolaoEditarRequest({
+        Nome: formData.NomeBolao,
+        Logo: formData.Logo,
+        Aviso: '',
+        Senha: formData.Senha,
+        Privado: formData.Privacidade === 'privado',
+        InserirRegrasBoloes: regras,
+        InserirPremiosBoloes: premios
+      });
+    } else {
+      bolaoInserirRequest = new BolaoRequest({
+        Nome: formData.NomeBolao,
+        Logo: formData.Logo,
+        Aviso: '',
+        HashUsuario: this.recuperaUsuarioLogado()?.firebaseUid,
+        Senha: formData.Senha,
+        Privado: formData.Privacidade === 'privado',
+        InserirRegrasBoloes: regras,
+        InserirPremiosBoloes: premios
+      });
+    }
+
+    return this.modoEdicao ? bolaoEditarRequest : bolaoInserirRequest;
   }
 
   criarBolao(): void {
-    const request = this.buildBolaoRequest();
+    const request: BolaoRequest = this.buildBolaoRequest() as BolaoRequest;
     this.spinner.show("loadCriacaoBolao");
 
-    const observable = this.modoEdicao ?
-      this.bolaoService.atualizarBolao(this.bolaoId!, request) :
-      this.bolaoService.criarBolao(request);
-
-    observable
+    this.bolaoService.criarBolao(request)
       .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
       .subscribe({
         next: (response) => {
@@ -145,6 +153,29 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
           this.toast.error(this.modoEdicao ? 'Erro ao atualizar o bolão' : 'Erro ao criar o bolão');
         }
       });
+  }
+
+  editarBolao(): void {
+    const request = this.buildBolaoRequest() as BolaoEditarRequest;
+    request.HashBolao = this.bolao.tokenAcesso;
+
+    this.spinner.show("loadCriacaoBolao");
+
+    this.bolaoService.editarBolao(request)
+      .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
+      .subscribe({
+        next: () => {
+          this.toast.success('Bolão editado com sucesso');
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          this.toast.error('Erro ao editar o bolão');
+        }
+      });
+  }
+
+  enviar() {
+    this.modoEdicao ? this.editarBolao() : this.criarBolao();
   }
 
   resetFormulario(): void {
@@ -190,6 +221,23 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
         regras.forEach(regra => {
           regrasGroup.addControl(regra.id.toString(), this.formBuilder.control(false));
         });
+
+        if (this.route.snapshot.paramMap.has('tokenAcesso')) {
+          const tokenAcesso = this.route.snapshot.paramMap.get('tokenAcesso');
+          this.modoEdicao = true;
+
+          this.bolaoService.recuperarPorToken(tokenAcesso!)
+            .subscribe({
+              next: (reponse: BolaoResponse) => {
+                this.bolao = reponse;
+                this.preencherFormulario(this.bolao);
+              },
+              error: (error) => {
+                this.toast.error('Erro ao carregar dados do bolão');
+                this.router.navigate(['/home']);
+              }
+            });
+        }
       }
     });
   }
@@ -203,28 +251,10 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     }
   }
 
-  carregarDadosBolao(id: number): void {
-    this.spinner.show("loadCriacaoBolao");
-    this.bolaoUsuarioService.recuperar(id)
-      .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
-      .subscribe({
-        next: (bolaoUsuario: BolaoUsuarioResponse) => {
-          this.bolaoUsuario = bolaoUsuario;
-          this.preencherFormulario(bolaoUsuario);
-        },
-        error: (error) => {
-          this.toast.error('Erro ao carregar dados do bolão');
-          this.router.navigate(['/home']);
-        }
-      });
-  }
-
-  preencherFormulario(bolaoUsuario: BolaoUsuarioResponse): void {
+  preencherFormulario(bolao: BolaoResponse): void {
     while (this.premios.length > 0) {
       this.premios.removeAt(0);
     }
-
-    const bolao = bolaoUsuario.bolao;
 
     if (bolao?.premios && bolao?.premios.length > 0) {
       bolao.premios.forEach(premio => {
@@ -253,15 +283,19 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
     if (bolao?.regras && bolao?.regras.length > 0) {
       const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
-      
+
       bolao.regras.forEach(regra => {
         console.log(`Tentando definir regra ${regra.id}`, regra);
         const regraControlId = regra.id.toString();
-        
+
         if (regrasGroup.contains(regraControlId)) {
           regrasGroup.get(regraControlId)?.setValue(true);
         }
       });
     }
+  }
+
+  voltar(): void {
+    this.router.navigate(['/home']);
   }
 }

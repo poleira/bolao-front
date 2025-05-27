@@ -13,7 +13,7 @@ const routes: Routes = [
     component: CriacaoBolaoFormularioComponent
   },
   {
-    path: 'editar-bolao/:id',
+    path: 'editar-bolao/:tokenAcesso',
     component: CriacaoBolaoFormularioComponent,
   }
 ];

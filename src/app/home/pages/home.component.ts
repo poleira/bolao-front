@@ -13,6 +13,7 @@ import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.s
 export class HomeComponent implements OnInit {
 
   boloesUsuarios: BolaoUsuarioResponse[] = [];
+  selectedBolaoUsuario: BolaoUsuarioResponse = new BolaoUsuarioResponse({});
 
   constructor(
     private bolaoService: BolaoService,
@@ -22,12 +23,20 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.recuperarBoloesUsuario();
+
+    if (this.boloesUsuarios && this.boloesUsuarios.length > 0) {
+      this.selectedBolaoUsuario = this.boloesUsuarios[0];
+    }
   }
 
   recuperarBoloesUsuario() {
     this.bolaoUsuarioService.recuperarBoloesUsuario(this.recuperaUsuarioLogado()?.firebaseUid ?? '').subscribe({
       next: (response: BolaoUsuarioResponse[]) => {
         this.boloesUsuarios = response;
+
+        if (this.boloesUsuarios.length > 0) {
+          this.selecionaBolao(this.boloesUsuarios[0]);
+        }
       }
     });
   }
@@ -36,5 +45,27 @@ export class HomeComponent implements OnInit {
     const usuarioLogado = localStorage.getItem('usuario');
 
     return usuarioLogado ? JSON.parse(usuarioLogado) : null;
+  }
+
+  selecionaBolao(bolaoUsuario: BolaoUsuarioResponse): void {
+    this.selectedBolaoUsuario = bolaoUsuario;
+
+  }
+
+  navigateToEditBolao(): void {
+    if (this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
+
+      this.bolaoUsuarioService.receberBolaoUsuario(this.selectedBolaoUsuario);
+
+      this.router.navigateByUrl('/home/editar-bolao/' + encodedToken);
+    }
+  }
+
+  verRegras(): void {
+    if (this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
+      this.router.navigateByUrl('/regras/' + encodedToken);
+    }
   }
 }

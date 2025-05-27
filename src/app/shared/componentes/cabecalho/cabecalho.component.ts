@@ -35,12 +35,13 @@ export class CabecalhoComponent implements OnInit {
     }
 
     recuperarUsuarioLogado(): UsuarioResponse {
-        const usuarioLogado = localStorage.getItem('usuario');
+        const authUser = sessionStorage.getItem('auth-user');
 
         let usuario: UsuarioResponse = new UsuarioResponse({});
 
-        if (usuarioLogado) {
-            usuario = JSON.parse(usuarioLogado);
+        if (authUser) {
+            const objeto = JSON.parse(authUser);
+            usuario = objeto.usuario;
         }
 
         return usuario;

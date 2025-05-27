@@ -1,14 +1,14 @@
 .create-bolao-button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .create-bolao-text {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .action-button {
-    min-width: 160px;
-    max-width: 200px;
+  min-width: 160px;
+  max-width: 200px;
 }
 
 .link-no-decoration {
@@ -36,6 +36,19 @@
   cursor: pointer;
 }
 
+.bolao-tab {
+  border: 2px solid transparent;
+  background: #f8f9fa;
+  transition: border 0.2s, background 0.2s;
+  padding: 8px 12px;
+  border-radius: 16px;
+}
+
+.bolao-tab-active {
+  border: 2px solid #198754;
+  background: #e9fbe9;
+}
+
 /* For mobile devices - fixed position without floating animation */
 @media (max-width: 767px) {
   .palpitar-button {
@@ -45,4 +58,38 @@
     transform: translateX(-50%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
+}
+
+.premio-card {
+  max-width: 200px;
+  min-height: 120px;
+  background-color: #f8f9fa;
+  transition: transform 0.2s;
+}
+
+.premio-card:hover {
+  transform: translateY(-5px);
+}
+
+.position-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  z-index: 1;
+}
+
+@media (max-width: 576px) {
+  .premio-card {
+    max-width: 90%;
+  }
+}
+
+.bg-bronze {
+  background-color: #cd7f32;
 }
