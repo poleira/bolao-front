@@ -10,7 +10,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
 import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-regra-bolao.request';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
 
@@ -31,7 +30,6 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private bolaoService: BolaoService,
-    private bolaoUsuarioService: BoloesUsuariosService,
     private toast: ToastrService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
@@ -286,7 +284,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
       bolao.regras.forEach(regra => {
         console.log(`Tentando definir regra ${regra.id}`, regra);
-        const regraControlId = regra.id.toString();
+        const regraControlId = regra.regra.id.toString();
 
         if (regrasGroup.contains(regraControlId)) {
           regrasGroup.get(regraControlId)?.setValue(true);

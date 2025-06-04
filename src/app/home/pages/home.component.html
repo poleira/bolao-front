@@ -1,26 +1,30 @@
 <app-cabecalho></app-cabecalho>
 
 <div class="container">
-    <!-- Bolão "tab" selector -->
+    <!-- Bolão "tab" selector with horizontal scrolling -->
     <div class="row">
-        <div class="col-md-12 d-flex justify-content-start align-items-center py-3 overflow-auto">
-            <div class="d-flex flex-column align-items-center rounded-circle create-bolao-button me-4"
+        <div class="col-md-12 py-3 d-flex">
+            <!-- Fixed "Criar bolão" button - centered vertically -->
+            <div class="d-flex flex-column align-items-center justify-content-center rounded-circle create-bolao-button me-3 flex-shrink-0"
                 [routerLink]="['criar-bolao']">
                 <i class="fa-solid fa-circle-plus text-success fs-3"></i>
                 <span class="text-muted my-1 create-bolao-text">Criar bolão</span>
             </div>
 
-            <div class="d-flex flex-row" *ngIf="boloesUsuarios.length > 0">
-                <div *ngFor="let bolaoUsuario of boloesUsuarios; let i = index"
-                    class="d-flex flex-column align-items-center mx-3 bolaoUsuario" [ngClass]="{
-                        'bolao-tab-active': selectedBolaoUsuario.bolao?.tokenAcesso === bolaoUsuario.bolao?.tokenAcesso,
-                        'bolao-tab': true
-                    }" (click)="selecionaBolao(bolaoUsuario)" style="cursor:pointer;">
-                    <div class="bolao-icon-container">
-                        <img [src]="'assets/img/' + bolaoUsuario?.bolao?.logo + '.png'" width="40" height="40"
-                            alt="Bolão" class="rounded-circle bolao-icon">
+            <!-- Scrollable bolões container -->
+            <div class="bolao-scroll-container">
+                <div class="d-flex flex-nowrap" *ngIf="boloesUsuarios.length > 0">
+                    <div *ngFor="let bolaoUsuario of boloesUsuarios; let i = index"
+                        class="d-flex flex-column align-items-center mx-3 bolaoUsuario flex-shrink-0" [ngClass]="{
+                            'bolao-tab-active': selectedBolaoUsuario.bolao?.tokenAcesso === bolaoUsuario.bolao?.tokenAcesso,
+                            'bolao-tab': true
+                        }" (click)="selecionaBolao(bolaoUsuario)" style="cursor:pointer;">
+                        <div class="bolao-icon-container">
+                            <img [src]="'assets/img/' + bolaoUsuario?.bolao?.logo + '.png'" width="40" height="40"
+                                alt="Bolão" class="rounded-circle bolao-icon">
+                        </div>
+                        <span class="text-muted my-1 small-text">{{ bolaoUsuario.bolao?.nome }}</span>
                     </div>
-                    <span class="text-muted my-1 small-text">{{ bolaoUsuario.bolao?.nome }}</span>
                 </div>
             </div>
         </div>

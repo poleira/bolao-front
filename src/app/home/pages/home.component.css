@@ -1,5 +1,8 @@
 .create-bolao-button {
   cursor: pointer;
+  position: sticky;
+  left: 0;
+  z-index: 1;
 }
 
 .create-bolao-text {
@@ -92,4 +95,39 @@
 
 .bg-bronze {
   background-color: #cd7f32;
+}
+
+/* Horizontal scrolling for bolão selector - only the bolões scroll, not the create button */
+.bolao-scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+  scrollbar-width: thin; /* For Firefox */
+  flex-grow: 1;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.bolao-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+/* Handle on hover */
+.bolao-scroll-container::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 10px;
+}
+
+/* Hide scrollbar when not hovering */
+.bolao-scroll-container:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Make sure the flex items don't shrink */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Ensure the bolão items have a minimum width */
+.bolaoUsuario {
+  min-width: 60px;
 }
