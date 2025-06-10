@@ -9,6 +9,7 @@ export class BolaoResponse {
     aviso: string;
     senha: string;
     privacidade: boolean;
+    administrador: string;
     premios: PremioResponse[];
     regras: BolaoRegraResponse[];
 
@@ -20,6 +21,7 @@ export class BolaoResponse {
         this.aviso = params.aviso || '';
         this.senha = params.senha || '';
         this.privacidade = params.privacidade || false;
+        this.administrador = params.administrador || '';
         this.premios = params.premios || [];
         this.regras = params.regras || [];
     }

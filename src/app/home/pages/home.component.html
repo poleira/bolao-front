@@ -31,13 +31,14 @@
     </div>
 
     <!-- Bolão info tab panel -->
-    <div *ngIf="selectedBolaoUsuario?.bolao != null" class="row mb-4">
+    <div *ngIf="selectedBolaoUsuario?.bolao != null;else usuariosSemBoloes" class="row mb-4">
         <div class="col-12">
             <div class="p-3 border rounded bg-white">
                 <div class="row my-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="text-muted m-0">Prêmios</h6>
-                        <button type="button" class="btn btn btn-sm btn-outline-success" (click)="navigateToEditBolao()">
+                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn btn-sm btn-outline-success"
+                            (click)="navigateToEditBolao()">
                             <i class="fa-solid fa-pen-to-square mx-1"></i>
                             Editar bolão
                         </button>
@@ -65,8 +66,9 @@
                     <div class="col-6 col-sm-4 col-md-3 px-1">
                         <button class="btn btn-outline-success w-100" (click)="verRegras()">Ver regras</button>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3 px-1">
-                        <button class="btn btn-success w-100">Convidar</button>
+                    <div *ngIf="usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
+                        <button class="btn btn-success w-100"
+                            (click)="openModal(modalConvite, 'modal-md modal-dialog modal-dialog-centered')">Convidar</button>
                     </div>
                 </div>
 
@@ -149,4 +151,20 @@
             </div>
         </div>
     </div>
+
+    <ng-template #usuariosSemBoloes>
+        <div class="row" *ngIf="boloesUsuarios.length === 0">
+            <div class="col-12 text-center">
+                <img src="assets/img/Bola.png" width="100" height="100" alt="Ícone Bola" class="">
+                <p class="text-muted">Você ainda não participa de nenhum bolão.</p>
+                <p class="text-muted">Crie seu próprio bolão ou entre em um existente!</p>
+                <button class="btn btn-success" (click)="ingressarBolao()">Participar de um bolão</button>
+            </div>
+        </div>
+    </ng-template>
 </div>
+
+<ng-template #modalConvite>
+    <app-convidar-bolao-modal [bolao]="selectedBolaoUsuario.bolao!"
+        (fecharModal)="fecharModal()"></app-convidar-bolao-modal>
+</ng-template>

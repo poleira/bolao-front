@@ -22,6 +22,10 @@ const routes: Routes = [
     loadChildren: () => import('./regras/regras.module').then((m) => m.RegrasModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'convidados',
+    loadChildren: () => import('./convidados/convidados.module').then((m) => m.ConvidadosModule)
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,71 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <!-- <div class="d-flex justify-content-start mb-3">
+                <button class="btn btn-success mb-3" (click)="voltar()">
+                    <i class="fa-solid fa-chevron-left"></i> Voltar
+                </button>
+            </div> -->
+
+            <div class="text-center mb-4">
+                <div class="icon-circle bg-success">
+                    <i class="fa-solid fa-users text-white"></i>
+                </div>
+                <h2 class="mt-4 mb-2">Participar do Bolão</h2>
+                <p class="text-muted">Digite o token do bolão para participar</p>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <p class="text-center text-muted fw-bold">ACESSO AO BOLÃO</p>
+
+                    <form (ngSubmit)="associarUsuario()">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="token" placeholder="Digite o token do bolão"
+                                name="token" [(ngModel)]="token" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input [type]="mostrarSenha ? 'text' : 'password'" class="form-control" id="senha" 
+                                    placeholder="Digite a senha do bolão" name="senha" [(ngModel)]="senha"
+                                    [disabled]="!possuiSenha">
+                                <button type="button" class="btn btn-outline-secondary" (click)="toggleSenhaVisibilidade()"
+                                    [disabled]="!possuiSenha">
+                                    <i class="fa-solid" [ngClass]="mostrarSenha ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">A senha é necessária para bolões privados</small>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="bolaoComSenha" 
+                                [(ngModel)]="possuiSenha" name="bolaoComSenha" 
+                                (ngModelChange)="togglePossuiSenha()">
+                            <label class="form-check-label" for="bolaoComSenha">
+                                Bolão possui senha
+                            </label>
+                        </div>
+
+                        <button 
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center"
+                            type="submit"
+                            [disabled]="!token || token.length < 5"
+                        >
+                            Continuar
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <p class="text-center mt-4 text-muted">
+                Não tem um token ou senha? <br /> Entre em contato com o organizador do bolão.
+            </p>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner name="loadCriacaoBolao" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>

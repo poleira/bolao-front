@@ -1,0 +1,32 @@
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 1rem;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.text-break {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.small {
+  font-size: 0.875em;
+}

@@ -12,9 +12,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { firebaseConfig } from 'src/environments/firebase.config';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './shared/interceptors/auth.interceptor'; // Adjust path if needed
-import { AuthService } from './shared/services/auth.service'; // Ensure AuthService is provided
-
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { AuthService } from './shared/services/auth.service';
 export function tokenGetter() {
   return localStorage.getItem('jwt');
 }
