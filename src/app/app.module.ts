@@ -14,13 +14,16 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { AuthService } from './shared/services/auth.service';
+import { HubBoloesComponent } from './hub-boloes/hub-boloes.component';
+
 export function tokenGetter() {
   return localStorage.getItem('jwt');
 }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HubBoloesComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,7 @@ export function tokenGetter() {
     NgxSpinnerModule
   ],
   providers: [
-    AuthService, // Ensure AuthService is provided (usually as root)
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
