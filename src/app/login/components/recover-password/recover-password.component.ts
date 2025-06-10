@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -16,7 +17,8 @@ export class RecoverPasswordComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
   
   ngOnInit(): void {
@@ -25,9 +27,12 @@ export class RecoverPasswordComponent implements OnInit {
 
   enviar() {
     const email = this.recuperarSenhaForm.get('email')?.value;
+    this.spinner.show("loadRecuperarSenha");
+    
     this.afAuth.sendPasswordResetEmail(email)
       .then(() => {
         this.toastr.success('Um link de recuperação de senha foi enviado para seu email.');
+        this.spinner.hide("loadRecuperarSenha");
         this.router.navigate(['']);
       })
       .catch(error => {

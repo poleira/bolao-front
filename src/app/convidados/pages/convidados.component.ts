@@ -59,23 +59,23 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
     this.request.HashBolao = this.token;
     this.request.Senha = this.senha;
 
-    this.spinner.show();
+    this.spinner.show("carregando");
 
     const usuarioLogado: UsuarioResponse = this.recuperarUsuarioLogado();
-    if (usuarioLogado.firebaseUid.length > 0) {
-      this.request.HasUsuarioLogado = usuarioLogado.firebaseUid;
+  
+    if (usuarioLogado.email !== "") {
       this.bolaoService.associarUsuarioBolao(this.request)
         .pipe(
           takeUntil(this.destroyed$),
-          finalize(() => this.spinner.hide())
+          finalize(() => this.spinner.hide("carregando"))
         )
         .subscribe({
           next: () => {
             this.toastr.success('Usuário associado ao bolão com sucesso!');
             this.router.navigate(['/home']);
           },
-          error: () => {
-            this.toastr.error('Erro ao associar usuário ao bolão. Verifique o token e a senha.');
+          error: (e) => {
+            this.toastr.error(e.error.erro || 'Erro ao associar usuário ao bolão. Verifique o token e a senha.', 'Erro');
           }
         });
     } else {
@@ -83,7 +83,7 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
         queryParams: this.possuiSenha ? { senha: this.senha } : {} 
       });
 
-      this.spinner.hide();
+      this.spinner.hide("carregando");
       this.toastr.info('Por favor, faça login para associar-se ao bolão.');
     }
   }
