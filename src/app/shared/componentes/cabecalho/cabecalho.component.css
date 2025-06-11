@@ -1,37 +1,64 @@
+.navbar.bg-light {
+  background-color: #479F76 !important;
+}
+
+.navbar.bg-light .navbar-brand,
+.navbar.bg-light .navbar-brand span {
+  color: rgb(44, 44, 44) !important;
+  font-weight: 600;
+}
+
+.navbar.bg-light p {
+  color: rgb(44, 44, 44) !important;
+}
+
+.navbar.bg-light .navbar-toggler {
+  border-color: rgb(44, 44, 44);
+}
+
+.navbar .border {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
 .side-menu {
-    position: fixed;
-    top: 0;
-    right: -280px;
-    width: 280px;
-    height: 100%;
-    background-color: white;
-    z-index: 1050;
-    transition: right 0.3s ease;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 1050;
 }
 
 .side-menu.active {
-    right: 0;
+  right: 0;
 }
 
 .side-menu-header {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.side-menu-content {
+  padding: 0;
 }
 
 .menu-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1040;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .menu-overlay.active {
-    display: block;
+  opacity: 1;
+  visibility: visible;
 }

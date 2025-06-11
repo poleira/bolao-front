@@ -14,7 +14,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor'; // Adjust path if needed
 import { AuthService } from './shared/services/auth.service';
-import { HubBoloesComponent } from './hub-boloes/hub-boloes.component'; // Ensure AuthService is provided
+import { SharedModule } from "./shared/shared.module"; // Ensure AuthService is provided
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -23,7 +23,6 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    HubBoloesComponent
   ],
   imports: [
     BrowserModule,
@@ -31,18 +30,19 @@ export function tokenGetter() {
     HttpClientModule,
     CommonModule,
     JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ['localhost:7288'],
-        disallowedRoutes: [],
-      },
+        config: {
+            tokenGetter: tokenGetter,
+            allowedDomains: ['localhost:7288'],
+            disallowedRoutes: [],
+        },
     }),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxSpinnerModule
-  ],
+    NgxSpinnerModule,
+    SharedModule
+],
   providers: [
     AuthService, // Ensure AuthService is provided (usually as root)
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

@@ -1,0 +1,63 @@
+<app-cabecalho></app-cabecalho>
+
+<div class="container">
+  <div class="hub-content border rounded bg-white">
+    <div class="header-section">
+      <h2 class="hub-title">Hub de boloes</h2>
+      <p class="hub-description">
+        Aqui você pode buscar aquele bolão do brother (la ele), ou entrar em algum para se 
+        divertir com novas amizades!
+      </p>
+    </div>
+
+    <div class="search-section">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Nome bolao"
+          [(ngModel)]="termoBusca"
+          (input)="buscarBoloes()"
+        >
+        <button class="search-btn" (click)="buscarBoloes()">Buscar</button>
+      </div>
+    </div>
+
+    <div class="boloes-section">
+      <div class="boloes-grid">
+        <div 
+          class="bolao-card" 
+          *ngFor="let bolao of boloesFiltrados"
+          (click)="bolao.status === 'com-senha' ? entrarComSenha(bolao) : pedirEntrada(bolao)"
+        >
+          <div class="bolao-header">
+            <h3 class="bolao-nome">{{ bolao.nome }}</h3>
+            <div class="status-icon" *ngIf="bolao.status === 'disponivel'">
+              <span class="check-icon">✓</span>
+            </div>
+            <div *ngIf="bolao.status !== 'disponivel'">
+              <a style="color: #198754;">
+                {{ getStatusText(bolao.status) }}
+              </a>
+            </div>
+          </div>
+          
+          <div>
+            <p class="bolao-admin">
+              <strong>ADM:</strong> {{ bolao.administrador }}
+            </p>
+            <p class="bolao-premio">
+              <strong>Premio 1 colocado:</strong> {{ bolao.premio }}
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Mensagem quando não há bolões -->
+      <div class="no-results" *ngIf="boloesFiltrados.length === 0">
+        <p>Nenhum bolão encontrado com os critérios de busca.</p>
+      </div>
+    </div>
+  </div>
+</div>
