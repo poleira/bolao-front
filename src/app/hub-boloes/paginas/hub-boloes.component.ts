@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 
 interface Bolao {
   id: number;
@@ -49,7 +50,7 @@ export class HubBoloesComponent implements OnInit {
 
   boloesFiltrados: Bolao[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.boloesFiltrados = this.boloes;
@@ -96,5 +97,10 @@ export class HubBoloesComponent implements OnInit {
       case 'pedir-entrada': return '#2196F3';
       default: return '#198754';
     }
+  }
+
+  navegarNovoBolao(): void {
+    this.router.navigate(['home/criar-bolao']);
+    // Implementar navegação para criação de novo bolão
   }
 }

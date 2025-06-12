@@ -6,6 +6,7 @@
 .navbar.bg-light .navbar-brand span {
   color: rgb(44, 44, 44) !important;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .navbar.bg-light p {

@@ -11,11 +11,12 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isApiUrl = request.url.startsWith(environment.api);
@@ -23,6 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     if (isApiUrl && !isLoginOrRegister) { 
       if (this.authService.isTokenLogicallyExpired()) {
+        this.toastr.warning('Sessao expirada. Redirecionando para login.');
         console.warn('Sessao expirada. Redirecionando para login.');
         this.authService.logout();
         return EMPTY;
@@ -46,6 +48,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (isApiUrl && !isLoginOrRegister && error.status === 401) {
+          this.toastr.warning('Não autorizado. Redirecionando para login.');
           console.error('Erro 401: Não autorizado. Redirecionando para login.');
           this.authService.logout();
         }

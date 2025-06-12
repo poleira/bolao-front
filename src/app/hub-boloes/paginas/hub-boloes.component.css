@@ -75,6 +75,25 @@
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
+.novo-btn {
+  padding: 15px 30px;
+  background-color: white;
+  color: #198754;
+  border: 2px solid #198754;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.novo-btn:hover {
+  background-color: #a2d1a4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
 /* Boloes Section */
 .boloes-section {
   min-height: 300px;

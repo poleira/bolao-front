@@ -50,4 +50,10 @@ export class CabecalhoComponent implements OnInit {
     logout() {
         this.authService.logout()
     }
+
+    navegarHome() {
+        this.router.navigate(['home']);
+        this.isSideMenuOpen = false;
+        document.body.style.overflow = '';
+    }
 }
