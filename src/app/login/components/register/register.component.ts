@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuarioRequest } from 'src/app/login/models/requests/usuario.request';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,17 +15,21 @@ import { finalize } from 'rxjs';
 export class RegisterComponent implements OnInit {
 
   formCadastrar!: FormGroup;
+  bolaoToken: string | null = null;
 
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private auth: AngularFireAuth,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.verificarParametrosRota();
   }
 
   inicializarFormulario() {
@@ -58,5 +63,17 @@ export class RegisterComponent implements OnInit {
           this.toastr.error('Erro ao salvar usuário no backend.', 'Erro');
         }
       });
+  }
+
+  private verificarParametrosRota(): void {
+    this.route.params.subscribe(params => {
+      if (params['token']) {
+        this.bolaoToken = params['token'];
+      }
+    });
+  }
+
+  voltar() {
+    this.router.navigate(['/convidados', this.bolaoToken]);
   }
 }

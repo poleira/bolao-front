@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   bolaoSenha: string | null = null;
 
   constructor(
-    private afAuth: AngularFireAuth, // Renamed for clarity
+    private afAuth: AngularFireAuth,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
@@ -39,17 +39,9 @@ export class LoginComponent implements OnInit {
   }
 
   private verificarParametrosRota(): void {
-    // Check if we have a token parameter in the route
     this.route.params.subscribe(params => {
       if (params['token']) {
         this.bolaoToken = params['token'];
-      }
-    });
-
-    // Check if we have a senha parameter in the query params
-    this.route.queryParams.subscribe(params => {
-      if (params['senha']) {
-        this.bolaoSenha = params['senha'];
       }
     });
   }
@@ -92,7 +84,6 @@ export class LoginComponent implements OnInit {
             this.authService.completeFirebaseSession(expirationTimeEpoch);
             this.loginForm.reset();
 
-            // Check if we need to associate user with a bolão
             if (this.bolaoToken) {
               this.associarUsuarioBolao();
             } else {
