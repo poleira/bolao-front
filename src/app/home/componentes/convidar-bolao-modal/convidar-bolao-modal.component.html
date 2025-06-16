@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h5 class="modal-title">Compartilhar {{ bolao?.nome }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+</div>
+
+<div class="modal-body">
+  <p class="text-muted text-center">Compartilhe o token do bolão com outros participantes</p>
+  
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="text-center text-muted fw-bold">TOKEN</p>
+      <div class="input-group mb-3">
+        <input 
+          type="text"
+          class="form-control text-center" 
+          [value]="bolao?.tokenAcesso"
+          readonly
+        >
+        <button 
+          class="btn btn-outline-success" 
+          type="button" 
+          (click)="copiarToken()"
+          title="Copiar"
+        >
+          <i class="fa-regular fa-copy"></i>
+        </button>
+      </div>
+      
+      <p class="small text-muted text-center mb-0">
+        Os participantes devem usar este token em:
+        <br>
+        <span class="text-break">{{ conviteUrl }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="d-grid gap-2">
+    <button 
+      class="btn btn-success" 
+      type="button"
+      (click)="copiarMensagemConvite()"
+    >
+      Copiar Mensagem de Convite
+    </button>
+    <button 
+      class="btn btn-outline-success" 
+      type="button"
+      (click)="fechar()"
+    >
+      Fechar
+    </button>
+  </div>
+</div>

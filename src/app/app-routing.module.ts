@@ -27,7 +27,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: '/login'
-  }
+  },
+  {
+    path: 'convidados',
+    loadChildren: () => import('./convidados/convidados.module').then((m) => m.ConvidadosModule)
+  },
 ];
 
 @NgModule({

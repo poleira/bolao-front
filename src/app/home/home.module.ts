@@ -7,12 +7,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { CriacaoBolaoFormularioComponent } from 'src/app/home/componentes/criacao-bolao-formulario/criacao-bolao-formulario.component';
 import { HomeRoutingModule } from 'src/app/home/home-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { ConvidarBolaoModalComponent } from './componentes/convidar-bolao-modal/convidar-bolao-modal.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    CriacaoBolaoFormularioComponent
+    CriacaoBolaoFormularioComponent,
+    ConvidarBolaoModalComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     SharedModule, 
     ReactiveFormsModule, 
     HttpClientModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-spin' })
+    NgxSpinnerModule.forRoot({ type: 'ball-spin' }),
+    ModalModule.forRoot()
   ],
   providers:[],
   exports: [HomeComponent],

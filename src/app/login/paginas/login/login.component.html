@@ -28,19 +28,33 @@
             </div>
             <button type="submit" class="btn btn-success rounded-0 w-100">Entrar</button>
           </form>
-          <div class="mt-3 text-center d-flex align-items-center justify-content-center">
-            <p class="m-0">Não tem uma conta?</p>
-            <a [routerLink]="'./inserir'" class="text-decoration-none text-success mx-1">Cadastre-se</a>
+
+          <div *ngIf="!bolaoToken;else semTokenBolao">
+            <div class="mt-3 text-center d-flex align-items-center justify-content-center">
+              <p class="m-0">Não tem uma conta?</p>
+              <a [routerLink]="'./inserir'" class="text-decoration-none text-success mx-1">Cadastre-se</a>
+            </div>
+            <div class="mt-1 text-center">
+              <a [routerLink]="'./recuperar-senha'" class="text-decoration-none text-success">Esqueceu a senha?</a>
+            </div>
           </div>
-          <div class="mt-1 text-center">
-            <a [routerLink]="'./recuperar-senha'" class="text-decoration-none text-success">Esqueceu a senha?</a>
-          </div>
+
+          <ng-template #semTokenBolao>
+            <div class="mt-3 text-center d-flex align-items-center justify-content-center">
+              <p class="m-0">Não tem uma conta?</p>
+              <a [routerLink]="'./inserir'" class="text-decoration-none text-success mx-1">Cadastre-se</a>
+            </div>
+            <div class="mt-1 text-center">
+              <a [routerLink]="'./recuperar-senha'" class="text-decoration-none text-success">Esqueceu a senha?</a>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<ngx-spinner name="loadLogin" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin" [fullScreen]="true">
+<ngx-spinner name="loadLogin" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+  [fullScreen]="true">
   <p class="text-white p-0">Carregando</p>
 </ngx-spinner>

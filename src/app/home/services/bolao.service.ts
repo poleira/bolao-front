@@ -6,6 +6,7 @@ import { RegraResponse } from 'src/app/home/models/responses/regra.response';
 import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
+import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,4 +33,7 @@ export class BolaoService {
     return this.http.get<BolaoResponse>(`${this.apiUrl}/${encodedToken}`);
   }
 
+  associarUsuarioBolao(request: AssociarUsuarioRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/boloes-usuarios`, request);
+  }
 }

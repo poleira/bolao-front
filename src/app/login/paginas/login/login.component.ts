@@ -5,10 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AutenticacaoResponse } from 'src/app/login/models/responses/autenticacao.response';
 import { LoginRequest } from 'src/app/login/models/requests/login.request';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
 import firebase from 'firebase/compat/app';
+import { BolaoService } from 'src/app/home/services/bolao.service';
+import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 
 @Component({
   selector: 'app-login',
@@ -17,18 +19,31 @@ import firebase from 'firebase/compat/app';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  bolaoToken: string | null = null;
+  bolaoSenha: string | null = null;
 
   constructor(
-    private afAuth: AngularFireAuth, // Renamed for clarity
+    private afAuth: AngularFireAuth,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private bolaoService: BolaoService
   ) { }
 
   ngOnInit(): void {
     this.construirFormulario();
+    this.verificarParametrosRota();
+  }
+
+  private verificarParametrosRota(): void {
+    this.route.params.subscribe(params => {
+      if (params['token']) {
+        this.bolaoToken = params['token'];
+      }
+    });
   }
 
   private construirFormulario(): void {
@@ -49,6 +64,7 @@ export class LoginComponent implements OnInit {
 
     try {
       const firebaseUserCredential = await this.autenticarFirebase(loginRequest);
+
       if (!firebaseUserCredential || !firebaseUserCredential.user) {
         this.spinner.hide('loadLogin');
         return;
@@ -56,47 +72,45 @@ export class LoginComponent implements OnInit {
 
       const firebaseToken = await firebaseUserCredential.user.getIdToken();
       const decodedToken = await firebaseUserCredential.user.getIdTokenResult();
-      
+
       const expirationTimeEpoch = new Date(decodedToken.expirationTime).getTime();
 
       loginRequest.token = firebaseToken ?? '';
 
       this.authService.login(loginRequest)
         .pipe(finalize(() => this.spinner.hide('loadLogin')))
-      .subscribe({
-        next: (response: AutenticacaoResponse) => {
-          this.authService.completeFirebaseSession(expirationTimeEpoch);
-          this.toastr.success('Login realizado com sucesso!', 'Sucesso');
-          this.loginForm.reset();
-          this.router.navigate(['/home']);
-        },
-        error: error => {
-            console.error('Backend login error:', error);
+        .subscribe({
+          next: (response: AutenticacaoResponse) => {
+            this.authService.completeFirebaseSession(expirationTimeEpoch);
+            this.loginForm.reset();
+
+            if (this.bolaoToken) {
+              this.associarUsuarioBolao();
+            } else {
+              this.router.navigate(['/home']);
+            }
+          },
+          error: error => {
             this.toastr.error(error?.error?.message || 'Erro ao autenticar com o backend.', 'Erro no Backend');
-            this.authService.logout(false); // Clear any partial session data without redirect
-        }
-      });
+            this.authService.logout(false);
+          }
+        });
 
     } catch (firebaseError) {
-      // This catch is for errors during Firebase auth that weren't caught inside autenticarFirebase
-      // or if autenticarFirebase re-throws.
       this.spinner.hide('loadLogin');
-      console.error('General Firebase authentication error:', firebaseError);
-      // Error message should have been displayed by exibirErroDeAutenticacaoFirebase
-  }
+    }
   }
 
   async autenticarFirebase(loginRequest: LoginRequest): Promise<firebase.auth.UserCredential | undefined> {
     try {
       const firebaseUserCredential = await this.afAuth.signInWithEmailAndPassword(
-      loginRequest.email,
-      loginRequest.senha
+        loginRequest.email,
+        loginRequest.senha
       );
       return firebaseUserCredential;
     } catch (error: any) {
       this.exibirErroDeAutenticacaoFirebase(error);
-      // Do not hide spinner here, it's handled in the caller
-      return undefined; // Indicate failure
+      return undefined;
     }
   }
 
@@ -108,12 +122,12 @@ export class LoginComponent implements OnInit {
           mensagemDeErro = 'Formato de email inválido.';
           break;
         case 'auth/user-not-found':
-        case 'auth/wrong-password': // Older SDKs
-        case 'auth/invalid-credential': // Newer SDKs for wrong email/password
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
           mensagemDeErro = 'Email ou senha incorretos.';
           break;
         case 'auth/too-many-requests':
-            mensagemDeErro = 'Muitas tentativas de login. Tente novamente mais tarde.';
+          mensagemDeErro = 'Muitas tentativas de login. Tente novamente mais tarde.';
           break;
         default:
           mensagemDeErro = 'Ocorreu um erro ao tentar fazer login com o Firebase. Tente novamente.';
@@ -125,5 +139,28 @@ export class LoginComponent implements OnInit {
     }
 
     this.toastr.error(mensagemDeErro, 'Erro de Autenticação');
+  }
+
+  private associarUsuarioBolao(): void {
+    if (!this.bolaoToken) return;
+
+    this.spinner.show('loadAssociacao');
+
+    const request = new AssociarUsuarioRequest({
+      HashBolao: this.bolaoToken,
+      Senha: this.bolaoSenha || ''
+    });
+
+    this.bolaoService.associarUsuarioBolao(request)
+      .pipe(finalize(() => this.spinner.hide('loadAssociacao')))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/home']);
+        },
+        error: (e) => {
+          this.toastr.error(e.error.erro || 'Erro ao associar usuário ao bolão. Verifique o token e a senha.', 'Erro');
+          this.router.navigate(['/home']);
+        }
+      });
   }
 }

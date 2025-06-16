@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { BolaoUsuarioResponse } from 'src/app/home/models/responses/bolao-usuario.response';
 import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-home',
@@ -12,13 +13,20 @@ import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.s
 })
 export class HomeComponent implements OnInit {
 
+  @ViewChild("modalConvite", { static: true }) modalConvite!: TemplateRef<HTMLDivElement>;
+
   boloesUsuarios: BolaoUsuarioResponse[] = [];
   selectedBolaoUsuario: BolaoUsuarioResponse = new BolaoUsuarioResponse({});
+
+  modalRef!: BsModalRef;
+
+  usuarioEhAdmin: boolean = false;
 
   constructor(
     private bolaoService: BolaoService,
     private bolaoUsuarioService: BoloesUsuariosService,
     private router: Router,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -42,14 +50,14 @@ export class HomeComponent implements OnInit {
   }
 
   recuperaUsuarioLogado(): UsuarioResponse | null {
-    const usuarioLogado = localStorage.getItem('usuario');
+    const usuarioLogado = sessionStorage.getItem('auth-user');
 
-    return usuarioLogado ? JSON.parse(usuarioLogado) : null;
+    return usuarioLogado ? JSON.parse(usuarioLogado).usuario : null;
   }
 
   selecionaBolao(bolaoUsuario: BolaoUsuarioResponse): void {
     this.selectedBolaoUsuario = bolaoUsuario;
-
+    this.usuarioEhAdmin = this.selectedBolaoUsuario?.bolao?.administrador === this.recuperaUsuarioLogado()?.nome;
   }
 
   navigateToEditBolao(): void {
@@ -67,5 +75,22 @@ export class HomeComponent implements OnInit {
       const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
       this.router.navigateByUrl('/regras/' + encodedToken);
     }
+  }
+
+  openModal(modal: TemplateRef<HTMLDivElement>, modalClass: string) {
+    this.modalRef = this.modalService.show(modal, {
+      class: modalClass,
+      backdrop: true,
+      keyboard: false,
+      ignoreBackdropClick: true,
+    });
+  }
+
+  fecharModal() {
+    this.modalRef.hide();
+  }
+
+  ingressarBolao() {
+    this.router.navigateByUrl('/convidados');
   }
 }

@@ -25,10 +25,24 @@
                 name="Senha" placeholder="Senha" required />
             </div>
             <button type="submit" class="btn btn-success rounded-0 w-100">Cadastrar</button>
-            <button [routerLink]="''" type="button" class="btn btn-outline-success rounded-0 w-100 mt-2">Voltar</button>
+
+            <div *ngIf="!bolaoToken; else comTokenBolao">
+              <button [routerLink]="''" type="button"
+                class="btn btn-outline-success rounded-0 w-100 mt-2">Voltar</button>
+            </div>
+
+            <ng-template #comTokenBolao>
+              <button (click)="voltar()" type="button"
+                class="btn btn-outline-success rounded-0 w-100 mt-2">Voltar</button>
+            </ng-template>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ngx-spinner name="loadCadastroUsuario" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+  [fullScreen]="true">
+  <p class="text-white p-0">Carregando</p>
+</ngx-spinner>
