@@ -91,6 +91,6 @@ export class HomeComponent implements OnInit {
   }
 
   ingressarBolao() {
-    this.router.navigateByUrl('/convidados');
+    this.router.navigateByUrl('/hub-boloes');
   }
 }

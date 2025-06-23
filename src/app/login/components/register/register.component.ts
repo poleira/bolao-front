@@ -58,6 +58,7 @@ export class RegisterComponent implements OnInit {
         next: response => {
           this.toastr.success('Usuário criado com sucesso!', 'Sucesso');
           this.formCadastrar.reset();
+          this.router.navigate(['/login']);
         },
         error: error => {
           this.toastr.error('Erro ao salvar usuário no backend.', 'Erro');

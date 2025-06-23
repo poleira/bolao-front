@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-cabecalho',
@@ -19,7 +20,8 @@ export class CabecalhoComponent implements OnInit {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private spinner: NgxSpinnerService
+        private spinner: NgxSpinnerService,
+        private toastr: ToastrService
     ) { }
 
     ngOnInit(): void { }
@@ -49,6 +51,7 @@ export class CabecalhoComponent implements OnInit {
 
     logout() {
         this.authService.logout()
+        this.toastr.success('Logout realizado com sucesso!', 'Sucesso');
     }
 
     navegarHome() {

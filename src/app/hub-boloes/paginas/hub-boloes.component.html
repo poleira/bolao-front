@@ -15,9 +15,8 @@
         <input 
           type="text" 
           class="search-input" 
-          placeholder="Nome bolao"
+          placeholder="Nome bolão"
           [(ngModel)]="termoBusca"
-          (input)="buscarBoloes()"
         >
         <button class="search-btn" (click)="buscarBoloes()">Buscar</button>
         <button class="novo-btn" (click)="navegarNovoBolao()">Novo bolão</button>
@@ -29,16 +28,13 @@
         <div 
           class="bolao-card" 
           *ngFor="let bolao of boloesFiltrados"
-          (click)="bolao.status === 'com-senha' ? entrarComSenha(bolao) : pedirEntrada(bolao)"
+          (click)="entrarBolao(bolao)"
         >
           <div class="bolao-header">
             <h3 class="bolao-nome">{{ bolao.nome }}</h3>
-            <div class="status-icon" *ngIf="bolao.status === 'disponivel'">
-              <span class="check-icon">✓</span>
-            </div>
-            <div *ngIf="bolao.status !== 'disponivel'">
+            <div>
               <a style="color: #198754;">
-                {{ getStatusText(bolao.status) }}
+                {{ getStatusText(bolao.status || '') }}
               </a>
             </div>
           </div>
@@ -55,10 +51,22 @@
         </div>
       </div>
 
-      <!-- Mensagem quando não há bolões -->
       <div class="no-results" *ngIf="boloesFiltrados.length === 0">
         <p>Nenhum bolão encontrado com os critérios de busca.</p>
       </div>
     </div>
   </div>
 </div>
+
+<ngx-spinner name="carregando" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>
+
+<ng-template #modalSenha>
+  <app-senha-bolao-modal 
+    *ngIf="bolaoSelecionado"
+    [bolao]="bolaoSelecionado"
+    (fecharModal)="fecharModal()">
+  </app-senha-bolao-modal>
+</ng-template>

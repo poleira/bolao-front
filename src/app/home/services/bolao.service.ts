@@ -7,6 +7,9 @@ import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
+import { BolaoListarRequest } from '../models/requests/bolao-listar.request';
+import { BolaoListarResponse } from '../models/responses/bolao-listar.response';
+import { AssociarUsuarioViaHubRequest } from 'src/app/shared/models/requests/associar-usuario-hub.request';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +39,9 @@ export class BolaoService {
   associarUsuarioBolao(request: AssociarUsuarioRequest): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/boloes-usuarios`, request);
   }
+
+  listarBoloes(request: BolaoListarRequest): Observable<BolaoListarResponse[]> {
+    return this.http.get<BolaoListarResponse[]>(this.apiUrl, { params: request as any });
+  }
+  
 }

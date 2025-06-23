@@ -20,8 +20,8 @@
 
                 <div class="border mx-2" style="height: 30px;"></div>
 
-                <button class="btn btn-success btn-sm" (click)="logout()">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <button class="btn btn-success btn-sm" (click)="toggleSideMenu()">
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
 
@@ -36,6 +36,29 @@
                     <div class="d-flex align-items-center p-3">
                         <i class="fa-regular fa-circle-user mx-2"></i>
                         <p class="mb-1">{{ recuperarUsuarioLogado().nome }}</p>
+                    </div>
+                    <div>
+                        <hr class="p-0 m-0"> 
+                        <a class="nav-link p-2" (click)="navegarHome()">
+                            <i class="fa-solid fa-house me-2"></i>
+                            Home
+                        </a>
+                        <hr class="p-0 m-0">    
+                        <a class="nav-link p-2 ml-1" (click)="toggleSideMenu()">
+                            <i class="fa-solid fa-user me-2"></i>
+                            Alterar info usuário
+                        </a>
+                        <hr class="p-0 m-0">  
+                        <a class="nav-link p-2" (click)="toggleSideMenu()">
+                            <i class="fa-solid fa-envelope me-2"></i>
+                            Solicitações
+                        </a>
+                        <hr class="p-0 m-0">  
+                        <a class="nav-link p-2" (click)="toggleSideMenu()">
+                            <i class="fa-solid fa-trophy me-2"></i>
+                            Virar premium
+                        </a>
+                        <hr class="p-0 m-0">  
                     </div>
                     <div class="p-3">
                         <button class="btn btn-success btn-sm w-100" (click)="logout()">

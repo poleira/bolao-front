@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HubBoloesComponent } from './paginas/hub-boloes.component';
 import { SharedModule } from '../shared/shared.module';
 import { HubBoloesRoutingModule } from './hub-boloes-routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { HubBoloesRoutingModule } from './hub-boloes-routing.module';
     CommonModule,
     FormsModule,
     HubBoloesRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxSpinnerModule,
+    ModalModule.forRoot()
   ]
 })
 export class HubBoloesModule { }

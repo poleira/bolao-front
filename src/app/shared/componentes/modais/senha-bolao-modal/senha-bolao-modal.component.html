@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h5 class="modal-title">Entrar com senha</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+</div>
+  
+<div class="modal-body">
+    <div class="card mb-3">
+        <div class="card-body">
+        <p class="text-center text-muted fw-bold">Senha {{bolao.nome}}:</p>
+        <div class="input-group mb-3">
+            <input 
+            type="text"
+            class="form-control text-center" 
+            [(ngModel)]="senhaBolao"
+            >
+        </div>
+        
+        </div>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button 
+        class="btn btn-outline-success mb-2" 
+        type="button"
+        (click)="fechar()"
+        >
+        Fechar
+        </button>
+    </div>
+    <div class="d-grid gap-2">
+        <button 
+        class="btn btn-success" 
+        type="button"
+        (click)="entrarBolaoComSenha()"
+        >
+        Entrar
+        </button>
+    </div>
+</div>
+
+<ngx-spinner name="carregando" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>

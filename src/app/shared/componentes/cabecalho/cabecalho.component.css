@@ -63,3 +63,10 @@
   opacity: 1;
   visibility: visible;
 }
+
+.nav-link {
+  cursor: pointer;           /* mostra que é clicável */
+  pointer-events: auto;      /* garante que clique funcione */
+  user-select: none;         /* opcional: impede seleção de texto */
+  text-decoration: none;     /* remove sublinhado padrão */
+}
