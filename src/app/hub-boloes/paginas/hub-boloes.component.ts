@@ -88,7 +88,19 @@ export class HubBoloesComponent implements OnInit {
   }
 
   pedirEntrada(bolao: BolaoFiltrado): void {
-
+    this.spinner.show("carregando");
+    this.bolaoUsuarioService.associarUsuarioBolaoViaHub(new AssociarUsuarioViaHubRequest({ NomeBolao: bolao.nome, Senha: "" })).subscribe({
+      next: () => {
+        this.toastr.success(`Pedido de entrada enviado para o bolão ${bolao.nome}`, 'Sucesso');
+        this.spinner.hide("carregando");
+      }
+      , error: (error) => {
+        this.spinner.hide("carregando");
+        console.log(error)
+        this.toastr.error(error.error, 'Erro');
+        console.error('Erro ao pedir entrada no bolão:', error);
+      }
+    });
   }
 
   getStatusText(status: string): string {

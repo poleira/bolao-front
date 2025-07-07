@@ -49,8 +49,12 @@
                             Alterar info usuário
                         </a>
                         <hr class="p-0 m-0">  
-                        <a class="nav-link p-2" (click)="toggleSideMenu()">
-                            <i class="fa-solid fa-envelope me-2"></i>
+                        <a class="nav-link p-2 position-relative" (click)="abrirModalNotificacoes(this.modalNotificacoes, 'modal-lg')">
+                            <i class="fa-solid fa-envelope me-2">
+                                <span *ngIf="existeNotificacoes" class="position-absolute top-75 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">pendência</span>
+                                </span>
+                            </i>
                             Solicitações
                         </a>
                         <hr class="p-0 m-0">  
@@ -78,3 +82,9 @@
     [fullScreen]="true">
     <p class="text-white p-0">Carregando</p>
 </ngx-spinner>
+
+<ng-template #modalNotificacoes>
+  <app-notificacoes-modal 
+    (fecharModal)="fecharModal()">
+  </app-notificacoes-modal>
+</ng-template>

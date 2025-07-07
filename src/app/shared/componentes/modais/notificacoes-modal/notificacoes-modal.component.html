@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h5 class="modal-title">Solicitações</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+</div>
+  
+<div class="modal-body">
+    <div class="card mb-3">
+        <div class="card-body">
+        <p class="text-center text-muted fw-bold">Notificações:</p>
+        <div class="input-group mb-3">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let notificacao of notificacoes">
+                    {{ notificacao.mensagem }}
+                    <div *ngIf="notificacao.tipo === 2">
+                        <div class="btn-group float-end mt-1">
+                            <button
+                            class="btn btn-success btn-sm"
+                            (click)="aceitarConvite(notificacao)"
+                            >
+                            Aceitar
+                            </button>
+                            <button
+                            class="btn btn-danger btn-sm ms-1"
+                            (click)="recusarConvite(notificacao)"
+                            >
+                            Recusar
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="notificacao.tipo === 1">
+                        <div class="btn-group float-end">
+                            <button
+                            class="btn btn-success btn-sm mt-2"
+                            (click)="marcarNotificacaoComoLida(notificacao)"
+                            >
+                            Ok
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li *ngIf="notificacoes.length === 0" class="list-group-item text-center text-muted">
+                    Nenhuma notificação encontrada.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner name="carregando" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>

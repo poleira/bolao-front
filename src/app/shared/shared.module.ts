@@ -5,12 +5,14 @@ import { CabecalhoComponent } from "src/app/shared/componentes/cabecalho/cabecal
 import { MensagemComponent } from "src/app/shared/componentes/mensagem/mensagem.component";
 import { SenhaBolaoModalComponent } from './componentes/modais/senha-bolao-modal/senha-bolao-modal.component';
 import { FormsModule } from "@angular/forms";
+import { NotificacoesModalComponent } from './componentes/modais/notificacoes-modal/notificacoes-modal.component';
 
 @NgModule({
   declarations: [
     SenhaBolaoModalComponent,
     CabecalhoComponent,
-    MensagemComponent
+    MensagemComponent,
+    NotificacoesModalComponent
   ],
   imports: [
     CommonModule, 
