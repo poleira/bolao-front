@@ -2,7 +2,7 @@
 
 <div class="container">
     <!-- Bolão "tab" selector with horizontal scrolling -->
-    <div class="row px-2">
+    <div class="row px-2" *ngIf="boloesUsuarios.length != 0">
         <div class="col-md-12 py-3 d-flex">
             <!-- Fixed "Criar bolão" button - centered vertically -->
             <div class="d-flex flex-column align-items-center justify-content-center rounded-circle create-bolao-button me-3 flex-shrink-0"
@@ -220,7 +220,7 @@
 
     <ng-template #usuariosSemBoloes>
         <div class="row" *ngIf="boloesUsuarios.length === 0">
-          <div class="d-flex justify-content-center align-items-center w-100" style="min-height: 70vh;">
+          <div class="d-flex justify-content-center align-items-center w-100" style="min-height: 83vh;">
             <div class="text-center">
               <img src="assets/img/Bola.png" width="100" height="100" alt="Ícone Bola">
               <p class="text-muted">Você ainda não participa de nenhum bolão.</p>
