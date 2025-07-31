@@ -18,13 +18,12 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    // Use the synchronous method from AuthService
     if (this.authService.isUserAuthenticatedSync()) {
       return true;
     }
 
-    // If not authenticated, redirect to login and show a message
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } }); // Optionally pass returnUrl
+    console.warn('Acesso negado - Usuário não autenticado');
+    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
     this.toast.info('Você precisa estar logado para acessar esta página.', 'Acesso Negado'); // Added a title for clarity
     return false;
   }

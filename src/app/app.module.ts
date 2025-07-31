@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { AuthService } from './shared/services/auth.service';
 import { SharedModule } from "./shared/shared.module";
+import { PalpitesComponent } from './palpites/paginas/palpites/palpites.component';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');

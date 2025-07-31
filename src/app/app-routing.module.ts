@@ -9,6 +9,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'palpites',
+    loadChildren: () => import('./palpites/palpites.module').then((m) => m.PalpitesModule),
+  },
+  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
@@ -25,7 +29,7 @@ const routes: Routes = [
     loadChildren: () => import('./regras/regras.module').then(m => m.RegrasModule)
   },
   {
-    path: '**',
+    path: '*',
     redirectTo: '/login'
   },
   {

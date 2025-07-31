@@ -49,6 +49,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  navegarPalpitar(){
+    this.router.navigateByUrl('/palpites');
+  }
+
   recuperaUsuarioLogado(): UsuarioResponse | null {
     const usuarioLogado = sessionStorage.getItem('auth-user');
 
