@@ -12,6 +12,7 @@ import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-r
 import { ActivatedRoute, Router } from '@angular/router';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 import { BolaoEditarRequest } from 'src/app/home/models/requests/bolao-editar.request';
+import { RegrasService } from 'src/app/shared/services/regras.service';
 
 @Component({
   selector: 'app-criacao-bolao-formulario',
@@ -30,6 +31,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private bolaoService: BolaoService,
+    private regrasService: RegrasService,
     private toast: ToastrService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
@@ -211,7 +213,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
   }
 
   recuperarRegras(): void {
-    this.bolaoService.recuperarRegras().subscribe({
+    this.regrasService.listar().subscribe({
       next: (regras: RegraResponse[]) => {
         this.regras = regras;
 
@@ -283,8 +285,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
 
       bolao.regras.forEach(regra => {
-        console.log(`Tentando definir regra ${regra.id}`, regra);
-        const regraControlId = regra.regra.id.toString();
+        const regraControlId = regra.id.toString();
 
         if (regrasGroup.contains(regraControlId)) {
           regrasGroup.get(regraControlId)?.setValue(true);
