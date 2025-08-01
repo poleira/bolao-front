@@ -8,10 +8,12 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SharedModule } from '../shared/shared.module';
+import { FaseDeGrupoAccordionComponent } from './modais/fase-de-grupo-modal/fase-de-grupo-accordion.component';
 
 @NgModule({
   declarations: [
-    PalpitesComponent
+    PalpitesComponent,
+    FaseDeGrupoAccordionComponent
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,7 @@ import { PalpitesComponent } from './paginas/palpites/palpites.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':token',
     component: PalpitesComponent,
     canActivate: [AuthGuard]
   }

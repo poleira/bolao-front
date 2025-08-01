@@ -50,7 +50,10 @@ export class HomeComponent implements OnInit {
   }
 
   navegarPalpitar(){
-    this.router.navigateByUrl('/palpites');
+    if (this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
+      this.router.navigateByUrl('/palpites/' + encodedToken);
+    }
   }
 
   recuperaUsuarioLogado(): UsuarioResponse | null {
