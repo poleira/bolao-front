@@ -11,7 +11,7 @@ import { BolaoService } from 'src/app/home/services/bolao.service';
 })
 export class PalpitesComponent implements OnInit {
 
-  regras!: BolaoRegraResponse[];
+  regras: BolaoRegraResponse[] = [];
   bolaoToken!: string;
   @Input() esconderPontuacao: boolean = false;
 
@@ -44,7 +44,6 @@ export class PalpitesComponent implements OnInit {
     });
   }
 
-  //testar isso dps
   condicionalRegraRepetida() {
     if(this.regras.some(r => r.descricao === 'Acertou a pontuação do país na fase de grupos') && this.regras.some(r => r.descricao === 'Acertou a posição do país na fase de grupos')) {
       this.regras = this.regras.filter(r => r.descricao !== 'Acertou a pontuação do país na fase de grupos' && r.descricao !== 'Acertou a posição do país na fase de grupos');
