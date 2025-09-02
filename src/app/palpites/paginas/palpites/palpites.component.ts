@@ -21,16 +21,6 @@ export class PalpitesComponent implements OnInit {
 
   ngOnInit(): void {
     this.verificarParametrosRota();
-    //Mock de dados para teste
-    const mockRegras: BolaoRegraResponse[] = [
-      { id: 1, descricao: 'Fase de Grupos', explicacao: "25", pontuacao: 25 },
-      { id: 2, descricao: 'Regra #2', explicacao: "18", pontuacao: 25 },
-      { id: 3, descricao: 'Regra #3', explicacao: '10', pontuacao: 25 },
-      { id: 4, descricao: 'Regra #4', explicacao: "1", pontuacao: 25 },
-    ];
-
-    this.regras = mockRegras;
-
     this.listarRegrasBolao();
   }
 
@@ -54,6 +44,7 @@ export class PalpitesComponent implements OnInit {
     });
   }
 
+  //testar isso dps
   condicionalRegraRepetida() {
     if(this.regras.some(r => r.descricao === 'Acertou a pontuação do país na fase de grupos') && this.regras.some(r => r.descricao === 'Acertou a posição do país na fase de grupos')) {
       this.regras = this.regras.filter(r => r.descricao !== 'Acertou a pontuação do país na fase de grupos' && r.descricao !== 'Acertou a posição do país na fase de grupos');

@@ -22,48 +22,6 @@ export const gruposMock: GrupoResponse[] = [
   new GrupoResponse({ id: 12, nome: "Grupo L" }),
 ];
 
-// export const selecoesMock: SelecaoResponse[] = [
-//   new SelecaoResponse({ id: 1, nome: "Estados Unidos", logo: "usa.png", abreviacao: "USA", grupo: gruposMock[0] }),
-//   new SelecaoResponse({ id: 2, nome: "Brasil", logo: "brasil.png", abreviacao: "BRA", grupo: gruposMock[0] }),
-//   new SelecaoResponse({ id: 3, nome: "Holanda", logo: "holanda.png", abreviacao: "NED", grupo: gruposMock[0] }),
-//   new SelecaoResponse({ id: 4, nome: "Marrocos", logo: "marrocos.png", abreviacao: "MAR", grupo: gruposMock[0] }),
-
-//   new SelecaoResponse({ id: 5, nome: "Argentina", logo: "argentina.png", abreviacao: "ARG", grupo: gruposMock[1] }),
-//   new SelecaoResponse({ id: 6, nome: "México", logo: "mexico.png", abreviacao: "MEX", grupo: gruposMock[1] }),
-//   new SelecaoResponse({ id: 7, nome: "Polônia", logo: "polonia.png", abreviacao: "POL", grupo: gruposMock[1] }),
-//   new SelecaoResponse({ id: 8, nome: "Japão", logo: "japao.png", abreviacao: "JPN", grupo: gruposMock[1] }),
-
-//   new SelecaoResponse({ id: 9, nome: "França", logo: "franca.png", abreviacao: "FRA", grupo: gruposMock[2] }),
-//   new SelecaoResponse({ id: 10, nome: "Senegal", logo: "senegal.png", abreviacao: "SEN", grupo: gruposMock[2] }),
-//   new SelecaoResponse({ id: 11, nome: "Austrália", logo: "australia.png", abreviacao: "AUS", grupo: gruposMock[2] }),
-//   new SelecaoResponse({ id: 12, nome: "Uruguai", logo: "uruguai.png", abreviacao: "URU", grupo: gruposMock[2] }),
-
-//   new SelecaoResponse({ id: 13, nome: "Alemanha", logo: "alemanha.png", abreviacao: "GER", grupo: gruposMock[3] }),
-//   new SelecaoResponse({ id: 14, nome: "Inglaterra", logo: "inglaterra.png", abreviacao: "ENG", grupo: gruposMock[3] }),
-//   new SelecaoResponse({ id: 15, nome: "Croácia", logo: "croacia.png", abreviacao: "CRO", grupo: gruposMock[3] }),
-//   new SelecaoResponse({ id: 16, nome: "Coreia do Sul", logo: "coreia.png", abreviacao: "KOR", grupo: gruposMock[3] }),
-
-//   new SelecaoResponse({ id: 17, nome: "Portugal", logo: "portugal.png", abreviacao: "POR", grupo: gruposMock[4] }),
-//   new SelecaoResponse({ id: 18, nome: "Suíça", logo: "suica.png", abreviacao: "SUI", grupo: gruposMock[4] }),
-//   new SelecaoResponse({ id: 19, nome: "Camarões", logo: "camaroes.png", abreviacao: "CMR", grupo: gruposMock[4] }),
-//   new SelecaoResponse({ id: 20, nome: "Canadá", logo: "canada.png", abreviacao: "CAN", grupo: gruposMock[4] }),
-
-//   new SelecaoResponse({ id: 21, nome: "Espanha", logo: "espanha.png", abreviacao: "ESP", grupo: gruposMock[5] }),
-//   new SelecaoResponse({ id: 22, nome: "Itália", logo: "italia.png", abreviacao: "ITA", grupo: gruposMock[5] }),
-//   new SelecaoResponse({ id: 23, nome: "Equador", logo: "equador.png", abreviacao: "ECU", grupo: gruposMock[5] }),
-//   new SelecaoResponse({ id: 24, nome: "Nigéria", logo: "nigeria.png", abreviacao: "NGA", grupo: gruposMock[5] }),
-
-//   new SelecaoResponse({ id: 25, nome: "Bélgica", logo: "belgica.png", abreviacao: "BEL", grupo: gruposMock[6] }),
-//   new SelecaoResponse({ id: 26, nome: "Colômbia", logo: "colombia.png", abreviacao: "COL", grupo: gruposMock[6] }),
-//   new SelecaoResponse({ id: 27, nome: "Arábia Saudita", logo: "arabia.png", abreviacao: "KSA", grupo: gruposMock[6] }),
-//   new SelecaoResponse({ id: 28, nome: "Sérvia", logo: "servia.png", abreviacao: "SRB", grupo: gruposMock[6] }),
-
-//   new SelecaoResponse({ id: 29, nome: "Turquia", logo: "turquia.png", abreviacao: "TUR", grupo: gruposMock[7] }),
-//   new SelecaoResponse({ id: 30, nome: "Suécia", logo: "suecia.png", abreviacao: "SWE", grupo: gruposMock[7] }),
-//   new SelecaoResponse({ id: 31, nome: "Chile", logo: "chile.png", abreviacao: "CHI", grupo: gruposMock[7] }),
-//   new SelecaoResponse({ id: 32, nome: "Irã", logo: "ira.png", abreviacao: "IRN", grupo: gruposMock[7] }),
-// ];
-
 @Component({
   selector: 'app-fase-de-grupo-accordion',
   templateUrl: './fase-de-grupo-accordion.component.html',
@@ -93,7 +51,6 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
     this.palpiteService.listarSelecoes().subscribe({
       next: (selecoes: SelecaoResponse[]) => {
         this.selecoes = selecoes;
-        console.log(this.selecoes);
         this.spinner.hide("palpite");
       },
       error: (error) => {
