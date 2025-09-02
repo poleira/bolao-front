@@ -284,10 +284,12 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
       bolao.regras.forEach(regra => {
         console.log(`Tentando definir regra ${regra.id}`, regra);
-        const regraControlId = regra.regra.id.toString();
+        if (regra.regra && regra.regra.id !== undefined && regra.regra.id !== null) {
+          const regraControlId = regra.regra.id.toString();
 
-        if (regrasGroup.contains(regraControlId)) {
-          regrasGroup.get(regraControlId)?.setValue(true);
+          if (regrasGroup.contains(regraControlId)) {
+            regrasGroup.get(regraControlId)?.setValue(true);
+          }
         }
       });
     }

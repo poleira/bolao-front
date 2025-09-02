@@ -10,6 +10,8 @@ import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-
 import { BolaoListarRequest } from '../models/requests/bolao-listar.request';
 import { BolaoListarResponse } from '../models/responses/bolao-listar.response';
 import { AssociarUsuarioViaHubRequest } from 'src/app/shared/models/requests/associar-usuario-hub.request';
+import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
+import { BolaoRegraResponse } from '../models/responses/bolao-regra.response';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +44,10 @@ export class BolaoService {
 
   listarBoloes(request: BolaoListarRequest): Observable<BolaoListarResponse[]> {
     return this.http.get<BolaoListarResponse[]>(this.apiUrl, { params: request as any });
+  }
+
+  listarRegrasBolao(request: HashBolaoRequest): Observable<BolaoRegraResponse[]> {
+    return this.http.get<BolaoRegraResponse[]>(`${this.apiUrl}/regras-boloes`, { params: request as any });
   }
   
 }

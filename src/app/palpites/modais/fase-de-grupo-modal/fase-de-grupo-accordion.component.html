@@ -1,1 +1,25 @@
-<p>fase-de-grupo-modal works!</p>
+<div class="container my-2">
+    <div class="row">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="text-muted m-0">Arraste para mudar a posição.</p>
+            <a class="text-decoration-none cursor-pointer" (click)="salvar()" href="javascript:void(0)">Salvar</a>
+        </div>
+        <div class="col-md-6" *ngFor="let grupo of grupos">
+            <app-tabela-grupo 
+            [esconderPontuacao]="esconderPontuacao"
+            [grupo]="grupo" 
+            [selecoes]="getSelecoesPorGrupo(grupo.id)">
+            </app-tabela-grupo>
+        </div>
+        <div class="d-flex justify-content-center mt-1">
+            <button class="btn btn-success w-100 botao-salvar" (click)="salvar()">
+                Salvar
+            </button>
+        </div>  
+    </div>
+</div>
+
+<ngx-spinner name="palpite" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>

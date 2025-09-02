@@ -9,19 +9,21 @@
   </div>
 
   <div class="accordion" id="accordionExample">
-    <div class="accordion-item" *ngFor="let item of regras; let i = index">
-      <h2 class="accordion-header" [id]="'heading' + i">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-          [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
-          [attr.aria-controls]="'collapse' + i">
-          {{ item.descricao }}
-        </button>
-      </h2>
-      <div [id]="'collapse' + i" class="accordion-collapse collapse"
-        [attr.aria-labelledby]="'heading' + i" data-bs-parent="#accordionExample">
-        <div class="accordion-body" [ngSwitch]="item.descricao">
-          <app-fase-de-grupo-accordion *ngSwitchCase="'Fase de Grupos'"></app-fase-de-grupo-accordion>
-          <p *ngSwitchDefault>Tipo de regra não suportado.</p>
+    <div>
+      <div class="accordion-item" *ngFor="let item of regras; let i = index">
+        <h2 class="accordion-header" [id]="'heading' + i">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+            [attr.aria-controls]="'collapse' + i">
+            {{ item.descricao }}
+          </button>
+        </h2>
+        <div [id]="'collapse' + i" class="accordion-collapse collapse"
+          [attr.aria-labelledby]="'heading' + i" data-bs-parent="#accordionExample">
+          <div class="accordion-body" [ngSwitch]="item.descricao">
+            <app-fase-de-grupo-accordion [hashBolao]="bolaoToken" *ngSwitchCase="'Acertou a pontuação do país na fase de grupos'"></app-fase-de-grupo-accordion>
+            <p *ngSwitchDefault>Tipo de regra não suportado.</p>
+          </div>
         </div>
       </div>
     </div>
