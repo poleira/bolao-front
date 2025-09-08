@@ -10,12 +10,15 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { SharedModule } from '../shared/shared.module';
 import { FaseDeGrupoAccordionComponent } from './modais/fase-de-grupo-modal/fase-de-grupo-accordion.component';
 import { TabelaGrupoComponent } from './components/tabela-grupo/tabela-grupo.component';
+import { ArtilheiroModalComponent } from './modais/artilheiro-modal/artilheiro-modal.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
     PalpitesComponent,
     FaseDeGrupoAccordionComponent,
-    TabelaGrupoComponent
+    TabelaGrupoComponent,
+    ArtilheiroModalComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +28,7 @@ import { TabelaGrupoComponent } from './components/tabela-grupo/tabela-grupo.com
     SharedModule,
     NgxSpinnerModule,
     DragDropModule,
+    NgSelectModule,
     ModalModule.forRoot()
   ]
 })

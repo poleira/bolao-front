@@ -22,6 +22,7 @@
           [attr.aria-labelledby]="'heading' + i" data-bs-parent="#accordionExample">
           <div class="accordion-body" [ngSwitch]="item.descricao">
             <app-fase-de-grupo-accordion [hashBolao]="bolaoToken" *ngSwitchCase="'Acertou a pontuação do país na fase de grupos'"></app-fase-de-grupo-accordion>
+            <app-artilheiro-modal [hashBolao]="bolaoToken" *ngSwitchCase="'Acertou artilheiro'"></app-artilheiro-modal>
             <p *ngSwitchDefault>Tipo de regra não suportado.</p>
           </div>
         </div>
