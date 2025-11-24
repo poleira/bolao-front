@@ -1,21 +1,13 @@
 <app-cabecalho></app-cabecalho>
 
 <div class="container">
-    <div class="row mt-5">
-        <div class="d-flex col-md-12 justify-content-start">
-            <button class="btn btn-success mb-3" (click)="voltar()">
-                <i class="fa-solid fa-chevron-left"></i> Voltar
-            </button>
-        </div>
-    </div>
-
-    <div class="row">
-        <h4 class="">{{ modoEdicao ? 'Editar Bolão' : 'Criar Bolão' }}</h4>
+    <div class="row mt-3">
+        <h4 class="mb-3">{{ modoEdicao ? 'Editar Bolão' : 'Criar Bolão' }}</h4>
 
         <form [formGroup]="formularioBolao">
             <!-- Section: Identificação -->
             <div class="d-none d-md-block card mb-3">
-                <div class="card-header">Identificação</div>
+                <div class="card-header fw-bold">Identificação</div>
                 <div class="card-body">
                     <div class="my-3">
                         <div class="input-group rounded-0">
@@ -27,8 +19,8 @@
             </div>
 
             <!-- Mobile version of Identificação -->
-            <div class="d-md-none">
-                <label class="text-muted">Identificação</label>
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Identificação</label>
                 <div class="my-3">
                     <div class="input-group rounded-0">
                         <input type="text" class="form-control rounded-0" id="nomeBolaoMobile"
@@ -37,9 +29,11 @@
                 </div>
             </div>
 
+            <hr class="d-md-none mx-2 " />
+
             <!-- Section: Logo do Bolão -->
             <div class="d-none d-md-block card mb-3">
-                <div class="card-header">Logo do Bolão</div>
+                <div class="card-header fw-bold">Logo do Bolão</div>
                 <div class="card-body">
                     <div class="d-flex flex-wrap gap-3">
                         <div class="form-check">
@@ -118,8 +112,8 @@
             </div>
 
             <!-- Mobile version of Logo do Bolão -->
-            <div class="d-md-none">
-                <label class="text-muted">Logo do Bolão</label>
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Logo do Bolão</label>
                 <div class="my-3">
                     <div class="d-flex flex-wrap gap-3">
                         <!-- Same content as above -->
@@ -198,11 +192,11 @@
                 </div>
             </div>
 
-            <hr class="d-md-none" />
+            <hr class="d-md-none mx-2 " />
 
             <!-- Section: Prêmios -->
             <div class="d-none d-md-block card mb-3">
-                <div class="card-header">Prêmios</div>
+                <div class="card-header fw-bold">Prêmios</div>
                 <div class="card-body" formArrayName="Premios">
                     <div class="row mb-2" *ngFor="let premio of premios.controls; let i = index" [formGroupName]="i">
                         <div class="col my-1">
@@ -229,8 +223,8 @@
             </div>
 
             <!-- Mobile version of Prêmios -->
-            <div class="d-md-none">
-                <label class="text-muted">Prêmios</label>
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Prêmios</label>
                 <div class="my-3" formArrayName="Premios">
                     <div class="row mb-2" *ngFor="let premio of premios.controls; let i = index" [formGroupName]="i">
                         <div class="col my-1">
@@ -256,11 +250,78 @@
                 </div>
             </div>
 
-            <hr class="d-md-none" />
+            <hr class="d-md-none mx-2 " />
+
+            <!-- Section: Modo de Jogo -->
+            <div class="d-none d-md-block card mb-3">
+                <div class="card-header fw-bold">Modo de Jogo</div>
+                <div class="card-body">
+                    <div class="mx-5">
+                        <div class="row">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" formControlName="ModoJogo" id="modoJogoRapido" [value]="1">
+                                <label class="form-check-label" for="modoJogoRapido">
+                                    <span>Modo de jogo Rápido</span>
+                                    <p class="text-muted">
+                                        Jogadores vão fazer previsões apenas para as colocações das seleções no torneio, não sendo necessário prever resultados de partidas individuais.
+                                    </p>
+                                </label>
+                            </div>
+                            <!-- <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ModoJogo" formControlName="ModoJogo" id="modoJogoAvancado" [value]="2" [disabled]="true">
+                                <label class="form-check-label" for="modoJogoAvancado">
+                                    <span>Modo de jogo Avançado</span>
+                                    <p class="text-muted">
+                                        Jogadores vão fazer previsões completas, incluindo resultados de partidas individuais nas fases de grupos, além das colocações finais.
+                                    </p>
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ModoJogo" formControlName="ModoJogo" id="modoJogoPro" [value]="3" [disabled]="true">
+                                <label class="form-check-label" for="modoJogoPro">
+                                    <span>Modo de jogo PRO</span>
+                                    <p class="text-muted">
+                                        Jogadores vão fazer previsões completas, incluindo resultados de partidas individuais, além das colocações finais. Nesse modo a fase mata-mata só poderá ser preenchido após o termino da fase de grupos.
+                                    </p>
+                                </label>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile version of Modo de Jogo -->
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Modo de Jogo</label>
+                <div class="my-3 mx-5">
+                    <div class="row">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" formControlName="ModoJogo" id="modoJogoRapidoMobile" [value]="1">
+                            <label class="form-check-label" for="modoJogoRapidoMobile">
+                                <span>Modo de jogo Rápido</span>
+                            </label>
+                        </div>
+                        <!-- <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="ModoJogo" formControlName="ModoJogo" id="modoJogoAvancadoMobile" [value]="2" [disabled]="true">
+                            <label class="form-check-label" for="modoJogoAvancadoMobile">
+                                <span>Modo de jogo Avançado</span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="ModoJogo" formControlName="ModoJogo" id="modoJogoProMobile" [value]="3" [disabled]="true">
+                            <label class="form-check-label" for="modoJogoProMobile">
+                                <span>Modo de jogo PRO</span>
+                            </label>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <hr class="d-md-none mx-2 " />
 
             <!-- Section: Privacidade -->
             <div class="d-none d-md-block card mb-3">
-                <div class="card-header">Privacidade</div>
+                <div class="card-header fw-bold">Privacidade</div>
                 <div class="card-body">
                     <div class="mx-5">
                         <div class="row">
@@ -300,8 +361,8 @@
             </div>
 
             <!-- Mobile version of Privacidade -->
-            <div class="d-md-none">
-                <label class="text-muted">Privacidade</label>
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Privacidade</label>
                 <div class="my-3 mx-5">
                     <div class="row">
                         <div class="form-check">
@@ -338,41 +399,43 @@
                 </div>
             </div>
 
-            <hr class="d-md-none" />
+            <hr class="d-md-none mx-2 " />
 
             <!-- Section: Regras -->
             <div class="d-none d-md-block card mb-3">
-                <div class="card-header">Regras</div>
+                <div class="card-header fw-bold">Pontuações das Regras</div>
                 <div class="card-body" formGroupName="regras">
                     <div class="row mx-4">
-                        <div class="form-check mb-2" *ngFor="let regra of regras">
-                            <input class="form-check-input" type="checkbox" [id]="regra.id"
-                                [formControlName]="regra.id.toString()" (change)="onRegraChange(regra.id, $event)">
-                            <label class="form-check-label" [for]="regra.id">
-                                <span>{{ regra.descricao }}</span>
-                                <p class="text-muted">
-                                    {{ regra.explicacao }}
-                                </p>
-                            </label>
+                        <div class="col-12 mb-2" *ngFor="let regra of regras">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="me-3">
+                                    <div>{{ regra.descricao }}</div>
+                                    <div class="text-muted small">{{ regra.explicacao }}</div>
+                                </div>
+                                <div class="flex-shrink-0" style="width:40px;">
+                                    <input type="number" class="form-control form-control-sm text-end" [id]="regra.id" [formControlName]="regra.id.toString()" min="0" placeholder="0">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile version of Regras -->
-            <div class="d-md-none">
-                <label class="text-muted">Regras</label>
-                <div class="my-3 mx-5" formGroupName="regras">
+            <div class="d-md-none mx-2 ">
+                <label class="text-muted fw-bold">Pontuações das Regras</label>
+                <div class="my-3 mx-3" formGroupName="regras">
                     <div class="row">
-                        <div class="form-check mb-2" *ngFor="let regra of regras">
-                            <input class="form-check-input" type="checkbox" [id]="regra.id + 'Mobile'"
-                                [formControlName]="regra.id.toString()" (change)="onRegraChange(regra.id, $event)">
-                            <label class="form-check-label" [for]="regra.id + 'Mobile'">
-                                <span>{{ regra.descricao }}</span>
-                                <p class="text-muted">
-                                    {{ regra.explicacao }}
-                                </p>
-                            </label>
+                        <div class="col-12 mb-2" *ngFor="let regra of regras">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="me-3">
+                                    <div>{{ regra.descricao }}</div>
+                                    <div class="text-muted small">{{ regra.explicacao }}</div>
+                                </div>
+                                <div class="flex-shrink-0" style="width:50px;">
+                                    <input type="number" class="form-control form-control-sm text-end" [id]="regra.id + 'Mobile'" [formControlName]="regra.id.toString()" min="0" placeholder="0">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -44,3 +44,17 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 }
+
+/* Remove number input spinners (up/down arrows) */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}

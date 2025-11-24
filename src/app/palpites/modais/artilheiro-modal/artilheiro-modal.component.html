@@ -1,24 +1,39 @@
-<div class="container my-2">
-    <div class="row">
-        <ng-select
-            [items]="jogadores$ | async"
-            bindLabel="nome"
-            bindValue="id"
-            [typeahead]="inputBusca$"
-            placeholder="Digite para buscar..."
-            [(ngModel)]="jogadorSelecionado">
-        </ng-select>
-
-        
-        <div class="d-flex justify-content-center mt-3">
-            <button class="btn btn-success w-100 botao-salvar" (click)="salvarPalpite()">
-                Salvar
+<div class="accordion" [attr.id]="'accordion-artilheiro-'+hashBolao">
+    <div class="accordion-item">
+        <h2 class="accordion-header" [id]="'heading-artilheiro-'+hashBolao">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse-artilheiro-'+hashBolao" aria-expanded="false"
+                [attr.aria-controls]="'collapse-artilheiro-'+hashBolao">
+                Artilheiro
             </button>
-        </div>  
+        </h2>
+        <div [id]="'collapse-artilheiro-'+hashBolao" class="accordion-collapse collapse"
+            [attr.aria-labelledby]="'heading-artilheiro-'+hashBolao" [attr.data-bs-parent]="'#accordion-artilheiro-'+hashBolao">
+            <div class="accordion-body">
+                <div class="container my-2">
+                        <div class="row">
+                                <ng-select
+                                        [items]="jogadores$ | async"
+                                        bindLabel="nome"
+                                        bindValue="id"
+                                        [typeahead]="inputBusca$"
+                                        placeholder="Digite para buscar..."
+                                        [(ngModel)]="jogadorSelecionado">
+                                </ng-select>
+
+                                <div class="d-flex justify-content-center mt-3">
+                                        <button class="btn btn-success w-100 botao-salvar" (click)="salvarPalpite()">
+                                                Salvar
+                                        </button>
+                                </div>  
+                        </div>
+                </div>
+
+                <ngx-spinner name="palpite" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+                        [fullScreen]="true">
+                        <p class="text-white p-0">Carregando</p>
+                </ngx-spinner>
+            </div>
+        </div>
     </div>
 </div>
-
-<ngx-spinner name="palpite" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
-    [fullScreen]="true">
-    <p class="text-white p-0">Carregando</p>
-</ngx-spinner>

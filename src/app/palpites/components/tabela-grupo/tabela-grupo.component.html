@@ -8,7 +8,7 @@
         <tr>
           <th style="width: 50px;">Pos.</th>
           <th>Seleção</th>
-          <th style="width: 120px;">Pontos</th>
+          <th *ngIf="!esconderPontuacao" style="width: 120px;">Pontos</th>
         </tr>
       </thead>
       <tbody
@@ -22,9 +22,8 @@
                  style="height: 20px; width: 30px; margin-right: 8px;">
             {{ selecao.nome }} ({{ selecao.abreviacao }})
           </td>
-          <td>
-            <input *ngIf="!esconderPontuacao"
-                    type="number"
+          <td *ngIf="!esconderPontuacao">
+            <input type="number"
                    class="form-control text-center"
                    [(ngModel)]="selecao.pontuacaoSelecao"
                    min="0" max="9">

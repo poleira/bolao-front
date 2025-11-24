@@ -8,6 +8,8 @@ import { PalpiteGrupoSelecaoResponse } from '../shared/models/responses/paplpite
 import { PalpiteArtilheiroRequest } from '../shared/models/requests/palpite-artilheiro.request';
 import { PalpiteArtilheiroResponse } from '../shared/models/responses/palpite-artilheiro.response';
 import { JogadorResponse } from '../shared/models/responses/jogador.response';
+import { PalpiteTerceiroLugarRequest } from '../shared/models/requests/palpite-terceiro-lugar-request';
+import { PalpiteTerceiroLugarResponse } from '../shared/models/responses/palpite-terceiro-lugar.response';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,18 @@ export class PalpiteService {
   
   listarJogadores(nome: string): Observable<JogadorResponse[]> {
     return this.http.get<JogadorResponse[]>(this.apiUrl + "jogadores", { params: { Nome: nome } });
+  }
+
+  recuperarTerceirosLugares(hashBolao: string): Observable<SelecaoResponse[]> {
+    return this.http.get<SelecaoResponse[]>(`${this.apiUrlPalpites}/terceiros-lugares`, { params: { HashBolao: hashBolao } });
+  }
+
+  recuperarPalpitesTerceirosLugares(hashBolao: string): Observable<PalpiteTerceiroLugarResponse[]> {
+    return this.http.get<PalpiteTerceiroLugarResponse[]>(`${this.apiUrlPalpites}/terceiros-lugares/palpites`, { params: { HashBolao: hashBolao } });
+  }
+
+  palpitarTerceiroLugar(request: PalpiteTerceiroLugarRequest[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlPalpites}/terceiros-lugares`, request);
   }
 
 }

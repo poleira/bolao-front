@@ -1,25 +1,41 @@
-<div class="container my-2">
-    <div class="row">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <p class="text-muted m-0">Arraste para mudar a posição.</p>
-            <a class="text-decoration-none cursor-pointer" (click)="salvar()" href="javascript:void(0)">Salvar</a>
+<div class="accordion" [attr.id]="'accordion-fase-grupo-'+hashBolao">
+  <div class="accordion-item">
+    <h2 class="accordion-header" [id]="'heading-fase-grupo-'+hashBolao">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#collapse-fase-grupo-'+hashBolao" aria-expanded="false"
+        [attr.aria-controls]="'collapse-fase-grupo-'+hashBolao">
+        Fase de Grupos
+      </button>
+    </h2>
+    <div [id]="'collapse-fase-grupo-'+hashBolao" class="accordion-collapse collapse"
+      [attr.aria-labelledby]="'heading-fase-grupo-'+hashBolao" [attr.data-bs-parent]="'#accordion-fase-grupo-'+hashBolao">
+      <div class="accordion-body">
+        <div class="container my-2">
+            <div class="row">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="text-muted m-0">Arraste para mudar a posição.</p>
+                    <a class="text-decoration-none cursor-pointer" (click)="salvar()" href="javascript:void(0)">Salvar</a>
+                </div>
+                <div class="col-md-6" *ngFor="let grupo of grupos">
+                    <app-tabela-grupo 
+                    [esconderPontuacao]="esconderPontuacao"
+                    [grupo]="grupo" 
+                    [selecoes]="getSelecoesPorGrupo(grupo.id)">
+                    </app-tabela-grupo>
+                </div>
+                <div class="d-flex justify-content-center mt-1">
+                    <button class="btn btn-success w-100 botao-salvar" (click)="salvar()">
+                        Salvar
+                    </button>
+                </div>  
+            </div>
         </div>
-        <div class="col-md-6" *ngFor="let grupo of grupos">
-            <app-tabela-grupo 
-            [esconderPontuacao]="esconderPontuacao"
-            [grupo]="grupo" 
-            [selecoes]="getSelecoesPorGrupo(grupo.id)">
-            </app-tabela-grupo>
-        </div>
-        <div class="d-flex justify-content-center mt-1">
-            <button class="btn btn-success w-100 botao-salvar" (click)="salvar()">
-                Salvar
-            </button>
-        </div>  
-    </div>
-</div>
 
-<ngx-spinner name="palpite" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
-    [fullScreen]="true">
-    <p class="text-white p-0">Carregando</p>
-</ngx-spinner>
+        <ngx-spinner name="palpite" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+            [fullScreen]="true">
+            <p class="text-white p-0">Carregando</p>
+        </ngx-spinner>
+      </div>
+    </div>
+  </div>
+</div>

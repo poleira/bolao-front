@@ -1,0 +1,259 @@
+:host {
+  display: block;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* GRID PRINCIPAL */
+.eliminatorias-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  padding: 1rem;
+  width: max-content;
+  min-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #6c757d #f8f9fa; /* Firefox */
+}
+
+/* Estilização da scrollbar para Chrome/Safari */
+.eliminatorias-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.eliminatorias-grid::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border: 2px solid #ffc107;
+  border-radius: 4px;
+}
+
+.eliminatorias-grid::-webkit-scrollbar-thumb {
+  background-color: #6c757d;
+  border-radius: 4px;
+}
+
+/* Container para o scroll horizontal */
+.accordion-content {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65px; /* Espaço para o footer */
+}
+
+.eliminatorias-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px; /* Espaço para a scrollbar */
+}
+
+/* Estilo para o footer fixo */
+.botao-salvar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 200px;
+  z-index: 1;
+}
+
+/* CADA COLUNA */
+.fase-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 280px;
+  justify-content: space-around;
+}
+
+/* Título da fase */
+.fase-coluna h3 {
+  color: #198754;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+/* CARD */
+.jogo-card {
+  border: none;
+  background: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.jogo-card .card-body {
+  border: 2px solid #198754;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* TIME + INPUT */
+.time-palpite {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+}
+
+.time-palpite:hover {
+  background-color: #e9ecef;
+}
+
+.time-nome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.bandeira {
+  width: 24px;
+  height: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.palpite-input {
+  width: 50px !important;
+  text-align: center;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+.palpite-input:focus {
+  border-color: #198754;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.palpite-input:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.palpite-input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+  box-shadow: none;
+}
+
+.versus {
+  text-align: center;
+  font-style: italic;
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin: 0.25rem 0;
+}
+
+.final-coluna {
+  justify-content: center;
+  margin-top: 95vh;
+}
+
+.final-card {
+  border: 2px solid #198754;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.final-card .card-body {
+  background-color: rgba(25, 135, 84, 0.05);
+}
+
+.final-card .time-palpite {
+  background-color: #fff;
+}
+
+.final-card .time-palpite:hover {
+  background-color: #f8f9fa;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+}
+
+/* -------------------
+   RESPONSIVIDADE
+------------------- */
+
+/* Telas até 768px (mobile e tablets pequenos) */
+@media (max-width: 768px) {
+  .eliminatorias-grid {
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .fase-coluna {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .jogo-card {
+    background-color: #fff8e1;
+    width: 100%;
+  }
+
+  .accordion-content {
+    overflow-x: hidden;
+  }
+
+  .final-coluna {
+    justify-content: center;
+    margin-top: 0;
+  }
+
+  .palpite-input {
+    width: 70px !important; /* maior pro touch */
+    font-size: 1.1rem;
+    padding: 0.6rem;
+  }
+
+  .time-nome {
+    font-size: 1rem;
+  }
+
+  .versus {
+    font-size: 0.9rem;
+  }
+}
+
+/* Telas bem pequenas (até 480px) */
+@media (max-width: 480px) {
+  .modal-container {
+    min-width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .palpite-input {
+    width: 80px !important;
+    font-size: 1.2rem;
+  }
+
+  .time-nome {
+    font-size: 1.1rem;
+  }
+}

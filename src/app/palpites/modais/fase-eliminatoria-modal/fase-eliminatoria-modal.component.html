@@ -1,0 +1,563 @@
+<div class="accordion" id="accordion-fase-eliminatoria" [class.disabled]="!habilitado" [style.opacity]="habilitado ? 1 : 0.5" [style.pointer-events]="habilitado ? 'auto' : 'none'">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-fase-eliminatoria">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapse-fase-eliminatoria"
+        aria-expanded="false"
+        aria-controls="collapse-fase-eliminatoria"
+        [disabled]="!habilitado"
+      >
+        Fase Eliminatória
+      </button>
+    </h2>
+    <div
+      id="collapse-fase-eliminatoria"
+      class="accordion-collapse collapse"
+      aria-labelledby="heading-fase-eliminatoria"
+      data-bs-parent="#accordion-fase-eliminatoria"
+    >
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="text-muted m-0">Clique para escolher o vencedor.</p>
+            <a
+              class="text-decoration-none cursor-pointer"
+              (click)="salvarPalpites()"
+              href="javascript:void(0)"
+              >Salvar</a
+            >
+          </div>
+          <div class="eliminatorias-wrapper">
+            <form [formGroup]="eliminatoriasForm" class="eliminatorias-grid">
+              <!-- Coluna 1/16 avos de Final -->
+              <div class="fase-coluna" formArrayName="dezesseisAvos">
+                <h3 class="text-center h6">1/16 avos de Final</h3>
+                <div
+                  *ngFor="let control of dezesseisAvosControls; let i = index"
+                  [formGroupName]="i"
+                  class="jogo-card card"
+                >
+                  <div class="card-body">
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && dezesseisAvos[i].timeA
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          dezesseisAvos[i],
+                          dezesseisAvos[i].timeA!,
+                          'dezesseisAvos'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="dezesseisAvos[i].timeA?.logo"
+                          class="bandeira"
+                          *ngIf="dezesseisAvos[i]?.timeA"
+                        />
+                        {{ dezesseisAvos[i].timeA?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          dezesseisAvos[i].vencedor === dezesseisAvos[i].timeA
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeA"
+                      />
+                    </div>
+                    <div class="versus">vs</div>
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && dezesseisAvos[i].timeB
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          dezesseisAvos[i],
+                          dezesseisAvos[i].timeB!,
+                          'dezesseisAvos'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="dezesseisAvos[i].timeB?.logo"
+                          class="bandeira"
+                          *ngIf="dezesseisAvos[i]?.timeB"
+                        />
+                        {{ dezesseisAvos[i].timeB?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          dezesseisAvos[i].vencedor === dezesseisAvos[i].timeB
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeB"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coluna Oitavas de Final -->
+              <div class="fase-coluna" formArrayName="oitavas">
+                <h3 class="text-center h6">Oitavas de Final</h3>
+                <div
+                  *ngFor="let control of oitavasControls; let i = index"
+                  [formGroupName]="i"
+                  class="jogo-card card"
+                >
+                  <div class="card-body">
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && oitavas[i].timeA
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          oitavas[i],
+                          oitavas[i].timeA!,
+                          'oitavas'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="oitavas[i].timeA?.logo"
+                          class="bandeira"
+                          *ngIf="oitavas[i]?.timeA"
+                        />
+                        {{ oitavas[i].timeA?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          oitavas[i].vencedor === oitavas[i].timeA &&
+                          oitavas[i].timeA?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeA"
+                      />
+                    </div>
+                    <div class="versus">vs</div>
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && oitavas[i].timeB
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          oitavas[i],
+                          oitavas[i].timeB!,
+                          'oitavas'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="oitavas[i].timeB?.logo"
+                          class="bandeira"
+                          *ngIf="oitavas[i]?.timeB"
+                        />
+                        {{ oitavas[i].timeB?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          oitavas[i].vencedor === oitavas[i].timeB &&
+                          oitavas[i].timeB?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeB"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coluna Quartas de Final -->
+              <div class="fase-coluna" formArrayName="quartas">
+                <h3 class="text-center h6">Quartas de Final</h3>
+                <div
+                  *ngFor="let control of quartasControls; let i = index"
+                  [formGroupName]="i"
+                  class="jogo-card card"
+                >
+                  <div class="card-body">
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && quartas[i].timeA
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          quartas[i],
+                          quartas[i].timeA!,
+                          'quartas'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="quartas[i].timeA?.logo"
+                          class="bandeira"
+                          *ngIf="quartas[i]?.timeA"
+                        />
+                        {{ quartas[i].timeA?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          quartas[i].vencedor === quartas[i].timeA &&
+                          quartas[i].timeA?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeA"
+                        [disabled]="!quartas[i].timeA || !quartas[i].timeB"
+                      />
+                    </div>
+                    <div class="versus">vs</div>
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && quartas[i].timeB
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          quartas[i],
+                          quartas[i].timeB!,
+                          'quartas'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="quartas[i].timeB?.logo"
+                          class="bandeira"
+                          *ngIf="quartas[i]?.timeB"
+                        />
+                        {{ quartas[i].timeB?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          quartas[i].vencedor === quartas[i].timeB &&
+                          quartas[i].timeB?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeB"
+                        [disabled]="!quartas[i].timeA || !quartas[i].timeB"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coluna Semifinais -->
+              <div class="fase-coluna" formArrayName="semifinais">
+                <h3 class="text-center h6">Semifinais</h3>
+                <div
+                  *ngFor="let control of semifinaisControls; let i = index"
+                  [formGroupName]="i"
+                  class="jogo-card card"
+                >
+                  <div class="card-body">
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && semifinais[i].timeA
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          semifinais[i],
+                          semifinais[i].timeA!,
+                          'semifinais'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="semifinais[i].timeA?.logo"
+                          class="bandeira"
+                          *ngIf="semifinais[i]?.timeA"
+                        />
+                        {{ semifinais[i].timeA?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          semifinais[i].vencedor === semifinais[i].timeA &&
+                          semifinais[i].timeA?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeA"
+                        [disabled]="
+                          !semifinais[i].timeA || !semifinais[i].timeB
+                        "
+                      />
+                    </div>
+                    <div class="versus">vs</div>
+                    <div
+                      class="time-palpite"
+                      [class.clickable]="
+                        modoClicarParaAvancarDeFase && semifinais[i].timeB
+                      "
+                      (click)="
+                        selecionarVencedor(
+                          semifinais[i],
+                          semifinais[i].timeB!,
+                          'semifinais'
+                        )
+                      "
+                    >
+                      <span class="time-nome">
+                        <img
+                          [src]="semifinais[i].timeB?.logo"
+                          class="bandeira"
+                          *ngIf="semifinais[i]?.timeB"
+                        />
+                        {{ semifinais[i].timeB?.nome ?? "A definir" }}
+                      </span>
+                      <i
+                        *ngIf="
+                          modoClicarParaAvancarDeFase &&
+                          semifinais[i].vencedor === semifinais[i].timeB &&
+                          semifinais[i].timeB?.nome
+                        "
+                        class="bi bi-check-circle-fill text-success ms-2"
+                      ></i>
+                      <input
+                        *ngIf="!modoClicarParaAvancarDeFase"
+                        type="number"
+                        min="0"
+                        class="form-control palpite-input"
+                        formControlName="palpiteTimeB"
+                        [disabled]="
+                          !semifinais[i].timeA || !semifinais[i].timeB
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coluna Finais -->
+              <div class="fase-coluna final-coluna">
+                <div [formGroup]="terceiroLugarFormGroup">
+                  <h3 class="text-center h6">Disputa 3º Lugar</h3>
+                  <div class="jogo-card card">
+                    <div class="card-body">
+                      <div
+                        class="time-palpite"
+                        [class.clickable]="
+                          modoClicarParaAvancarDeFase && terceiroLugar.timeA
+                        "
+                        (click)="
+                          selecionarVencedor(
+                            terceiroLugar,
+                            terceiroLugar.timeA!,
+                            'terceiroLugar'
+                          )
+                        "
+                      >
+                        <span class="time-nome">
+                          <img
+                            [src]="terceiroLugar.timeA.logo"
+                            class="bandeira"
+                            *ngIf="terceiroLugar.timeA"
+                          />
+                          {{ terceiroLugar.timeA?.nome ?? "A definir" }}
+                        </span>
+                        <i
+                          *ngIf="
+                            modoClicarParaAvancarDeFase &&
+                            terceiroLugar.vencedor === terceiroLugar.timeA &&
+                            terceiroLugar.timeA?.nome
+                          "
+                          class="bi bi-check-circle-fill text-success ms-2"
+                        ></i>
+                        <input
+                          *ngIf="!modoClicarParaAvancarDeFase"
+                          type="number"
+                          class="form-control palpite-input"
+                          formControlName="palpiteTimeA"
+                          [disabled]="
+                            !terceiroLugar.timeA || !terceiroLugar.timeB
+                          "
+                        />
+                      </div>
+                      <div class="versus">vs</div>
+                      <div
+                        class="time-palpite"
+                        [class.clickable]="
+                          modoClicarParaAvancarDeFase && terceiroLugar.timeB
+                        "
+                        (click)="
+                          selecionarVencedor(
+                            terceiroLugar,
+                            terceiroLugar.timeB!,
+                            'terceiroLugar'
+                          )
+                        "
+                      >
+                        <span class="time-nome">
+                          <img
+                            [src]="terceiroLugar.timeB.logo"
+                            class="bandeira"
+                            *ngIf="terceiroLugar.timeB"
+                          />
+                          {{ terceiroLugar.timeB?.nome ?? "A definir" }}
+                        </span>
+                        <i
+                          *ngIf="
+                            modoClicarParaAvancarDeFase &&
+                            terceiroLugar.vencedor === terceiroLugar.timeB &&
+                            terceiroLugar.timeB?.nome
+                          "
+                          class="bi bi-check-circle-fill text-success ms-2"
+                        ></i>
+                        <input
+                          *ngIf="!modoClicarParaAvancarDeFase"
+                          type="number"
+                          class="form-control palpite-input"
+                          formControlName="palpiteTimeB"
+                          [disabled]="
+                            !terceiroLugar.timeA || !terceiroLugar.timeB
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div [formGroup]="finalFormGroup">
+                  <h3 class="text-center h6">Final</h3>
+                  <div class="jogo-card final-card card">
+                    <div class="card-body">
+                      <div
+                        class="time-palpite"
+                        [class.clickable]="
+                          modoClicarParaAvancarDeFase && final.timeA
+                        "
+                        (click)="
+                          selecionarVencedor(final, final.timeA!, 'final')
+                        "
+                      >
+                        <span class="time-nome">
+                          <img
+                            [src]="final.timeA.logo"
+                            class="bandeira"
+                            *ngIf="final.timeA"
+                          />
+                          {{ final.timeA?.nome ?? "A definir" }}
+                        </span>
+                        <i
+                          *ngIf="
+                            modoClicarParaAvancarDeFase &&
+                            final.vencedor === final.timeA &&
+                            final.timeA?.nome
+                          "
+                          class="bi bi-check-circle-fill text-success ms-2"
+                        ></i>
+                        <input
+                          *ngIf="!modoClicarParaAvancarDeFase"
+                          type="number"
+                          class="form-control palpite-input"
+                          formControlName="palpiteTimeA"
+                          [disabled]="!final.timeA || !final.timeB"
+                        />
+                      </div>
+                      <div class="versus">vs</div>
+                      <div
+                        class="time-palpite"
+                        [class.clickable]="
+                          modoClicarParaAvancarDeFase && final.timeB
+                        "
+                        (click)="
+                          selecionarVencedor(final, final.timeB!, 'final')
+                        "
+                      >
+                        <span class="time-nome">
+                          <img
+                            [src]="final.timeB.logo"
+                            class="bandeira"
+                            *ngIf="final.timeB"
+                          />
+                          {{ final.timeB?.nome ?? "A definir" }}
+                        </span>
+                        <i
+                          *ngIf="
+                            modoClicarParaAvancarDeFase &&
+                            final.vencedor === final.timeB &&
+                            final.timeB?.nome
+                          "
+                          class="bi bi-check-circle-fill text-success ms-2"
+                        ></i>
+                        <input
+                          *ngIf="!modoClicarParaAvancarDeFase"
+                          type="number"
+                          class="form-control palpite-input"
+                          formControlName="palpiteTimeB"
+                          [disabled]="!final.timeA || !final.timeB"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <button
+            class="btn btn-success botao-salvar w-100 mb-3"
+            (click)="salvarPalpites()"
+            [disabled]="!modoClicarParaAvancarDeFase && eliminatoriasForm.invalid"
+          >
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

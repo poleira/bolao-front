@@ -10,6 +10,7 @@ export class BolaoEditarRequest {
     Privado: boolean;
     InserirRegrasBoloes: InserirRegraBolaoRequest[]; 
     InserirPremiosBoloes: InserirPremioBolaoRequest[];
+    IdModoJogo: number;
 
     constructor(params: Partial<BolaoEditarRequest>) {
         this.HashBolao = params.HashBolao || "";
@@ -20,5 +21,6 @@ export class BolaoEditarRequest {
         this.Privado = params.Privado ?? false;
         this.InserirRegrasBoloes = params.InserirRegrasBoloes || [];
         this.InserirPremiosBoloes = params.InserirPremiosBoloes || [];
+        this.IdModoJogo = params.IdModoJogo || 1;
     }
 }

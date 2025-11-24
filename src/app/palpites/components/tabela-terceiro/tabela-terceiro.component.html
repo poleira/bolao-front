@@ -1,0 +1,28 @@
+<div class="card mb-2 shadow-sm">
+	<div class="card-header bg-success text-white fw-bold d-flex justify-content-between align-items-center">
+		Melhores terceiros colocados
+	</div>
+	<div class="card-body p-0">
+		<table class="table table-striped table-hover mb-0">
+			<thead class="table-dark">
+				<tr>
+					<th style="width: 50px;">Pos.</th>
+					<th>Seleção</th>
+				</tr>
+			</thead>
+			<tbody
+				cdkDropList
+				(cdkDropListDropped)="drop($event)"
+			>
+				<tr *ngFor="let selecao of selecoesExibidas; let i = index" cdkDrag>
+					<td>{{ i + 1 }}</td>
+					<td>
+						<img [src]="selecao.logo" 
+								 style="height: 20px; width: 30px; margin-right: 8px;">
+						{{ selecao.nome }} ({{ selecao.abreviacao }})
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

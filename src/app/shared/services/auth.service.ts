@@ -68,8 +68,6 @@ export class AuthService {
       return true;
     }
     const expirationTimeEpoch = parseInt(expirationTimeEpochStr, 10);
-    console.log('Expiration Time:', new Date(expirationTimeEpoch).toLocaleString());
-    console.log('Current Time:', new Date(Date.now()).toLocaleString());
     const bufferSeconds = 60;
     return (Date.now() + (bufferSeconds * 1000)) >= expirationTimeEpoch;
   }

@@ -44,3 +44,13 @@ p, span, div, button, input, textarea, select {
 .font-bold {
   font-weight: 700;
 }
+
+/* Forçar toast do ngx-toastr a usar position: fixed para ser sempre visível */
+.toast-container {
+  position: fixed !important;
+  z-index: 9999 !important;
+}
+
+.toast {
+  position: relative;
+}

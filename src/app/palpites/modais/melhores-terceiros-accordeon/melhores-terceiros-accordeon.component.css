@@ -1,0 +1,5 @@
+/* Torna o elemento host um bloco para que classes de margem (ex: mt-2) funcionem quando aplicadas no componente (<app-melhores-terceiros-accordeon class="mt-2">). */
+:host {
+  display: block;
+}
+

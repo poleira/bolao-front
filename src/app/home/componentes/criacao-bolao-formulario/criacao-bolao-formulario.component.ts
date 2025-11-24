@@ -45,6 +45,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     this.formularioBolao = this.formBuilder.group({
       NomeBolao: ['', Validators.required],
       Logo: ['Cup'],
+      ModoJogo: [1],
       Premios: this.formBuilder.array([
         this.formBuilder.group({
           Descricao: ['', Validators.required],
@@ -98,10 +99,11 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     const regrasControls = this.formularioBolao.get('regras')?.value;
 
     Object.keys(regrasControls).forEach(key => {
-      if (regrasControls[key]) {
+      const valor = Number(regrasControls[key]);
+      if (!isNaN(valor) && valor > 0) {
         const regraEncontrada = this.regras.find(r => r.id.toString() === key);
         if (regraEncontrada) {
-          regras.push(new InserirRegraBolaoRequest({ IdRegra: regraEncontrada.id }));
+          regras.push(new InserirRegraBolaoRequest({ IdRegra: regraEncontrada.id, Pontuacao: valor }));
         }
       }
     });
@@ -110,6 +112,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       bolaoEditarRequest = new BolaoEditarRequest({
         Nome: formData.NomeBolao,
         Logo: formData.Logo,
+        IdModoJogo: formData.ModoJogo,
         Aviso: '',
         Senha: formData.Senha,
         Privado: formData.Privacidade === 'privado',
@@ -120,6 +123,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       bolaoInserirRequest = new BolaoRequest({
         Nome: formData.NomeBolao,
         Logo: formData.Logo,
+        IdModoJogo: formData.ModoJogo,
         Aviso: '',
         HashUsuario: this.recuperaUsuarioLogado()?.firebaseUid,
         Senha: formData.Senha,
@@ -143,6 +147,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
           this.toast.success(this.modoEdicao ? 'Bolão atualizado com sucesso' : 'Bolão criado com sucesso');
           if (!this.modoEdicao) {
             this.resetFormulario();
+            this.router.navigate(['/home']);
           } else {
             this.router.navigate(['/home']);
           }
@@ -180,6 +185,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     this.formularioBolao.reset({
       NomeBolao: '',
       Logo: '',
+      ModoJogo: 1,
       Privacidade: 'publico',
       Senha: ''
     });
@@ -196,7 +202,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
     const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
     Object.keys(regrasGroup.controls).forEach(key => {
-      regrasGroup.get(key)?.setValue(false);
+      regrasGroup.get(key)?.setValue(0);
       regrasGroup.get(key)?.markAsPristine();
     });
 
@@ -217,7 +223,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
         const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
         regras.forEach(regra => {
-          regrasGroup.addControl(regra.id.toString(), this.formBuilder.control(false));
+          regrasGroup.addControl(regra.id.toString(), this.formBuilder.control(0));
         });
 
         if (this.route.snapshot.paramMap.has('tokenAcesso')) {
@@ -244,7 +250,8 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
     const control = regrasGroup.get(regraId.toString());
     if (control) {
-      control.setValue(event.target.checked);
+      // kept for backward compatibility if needed; numeric inputs update directly
+      control.setValue(event.target.checked ? 1 : 0);
       control.markAsDirty();
     }
   }
@@ -272,9 +279,20 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       );
     }
 
+    // map possible backend values (string or numeric) to numeric mode values 1/2/3
+    const modoFromApi: any = bolao?.IdModoJogo;
+    let modoValue = 1;
+    if (modoFromApi !== undefined && modoFromApi !== null) {
+      const modoStr = String(modoFromApi).toLowerCase();
+      if (modoStr === 'rapido' || modoStr === '1') modoValue = 1;
+      else if (modoStr === 'avancado' || modoStr === '2') modoValue = 2;
+      else if (modoStr === 'pro' || modoStr === '3') modoValue = 3;
+    }
+
     this.formularioBolao.patchValue({
       NomeBolao: bolao?.nome,
       Logo: bolao?.logo,
+      ModoJogo: modoValue,
       Privacidade: bolao?.privacidade ? 'privado' : 'publico',
       Senha: bolao?.senha || ''
     });
@@ -284,12 +302,11 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
       bolao.regras.forEach(regra => {
         console.log(`Tentando definir regra ${regra.id}`, regra);
-        if (regra.regra && regra.regra.id !== undefined && regra.regra.id !== null) {
-          const regraControlId = regra.regra.id.toString();
+        const regraId = regra.regra?.id ?? regra.id;
+        const regraControlId = regraId.toString();
 
-          if (regrasGroup.contains(regraControlId)) {
-            regrasGroup.get(regraControlId)?.setValue(true);
-          }
+        if (regrasGroup.contains(regraControlId)) {
+          regrasGroup.get(regraControlId)?.setValue(regra.pontuacao || 0);
         }
       });
     }

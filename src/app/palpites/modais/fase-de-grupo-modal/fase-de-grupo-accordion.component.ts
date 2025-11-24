@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GrupoResponse } from 'src/app/shared/models/responses/grupo.response';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { PalpiteService } from '../../palpite.service';
@@ -6,6 +6,7 @@ import { PalpiteGrupoSelecaoRequest } from 'src/app/shared/models/requests/palpi
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PalpiteGrupoSelecaoResponse } from 'src/app/shared/models/responses/paplpite-grupo-selecao.response';
+import Swal from 'sweetalert2';
 
 export const gruposMock: GrupoResponse[] = [
   new GrupoResponse({ id: 1, nome: "Grupo A" }),
@@ -29,11 +30,14 @@ export const gruposMock: GrupoResponse[] = [
 })
 export class FaseDeGrupoAccordionComponent implements OnInit {
 
-  @Input() titulo: string = "Fase de Grupos"
   selecoes: SelecaoResponse[] = []
   grupos: GrupoResponse[] = gruposMock
   @Input() esconderPontuacao: boolean = false;
   @Input() hashBolao: string = "string";
+  @Output() emitirAtualizar = new EventEmitter<boolean>();
+  @Output() emitirPalpiteGrupoCompleto = new EventEmitter<boolean>();
+  atualizar: boolean = false;
+  palpitePreenchido: boolean = false;
 
   constructor(private palpiteService: PalpiteService, private toastr: ToastrService, private spinner: NgxSpinnerService,) { }
 
@@ -65,6 +69,9 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
     this.spinner.show("palpite");
     this.palpiteService.recuperarPalpiteGrupoSelecao(this.hashBolao).subscribe({
       next: (palpites: PalpiteGrupoSelecaoResponse[]) => {
+        if(palpites.length > 0) {
+          this.palpitePreenchido = true
+        }
         this.selecoes.forEach((selecao:SelecaoResponse) => {
           const palpite = palpites.find(p => p.selecao.id === selecao.id);
           if (palpite) {
@@ -74,6 +81,11 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
             selecao.posicaoSelecaoFaseDeGrupos = palpite.posicaoSelecao;
           }
         });
+        
+        // Verifica se o palpite está completo (48 seleções com posição preenchida)
+        const palpitesCompletos = this.selecoes.filter(s => s.posicaoSelecaoFaseDeGrupos > 0).length;
+        this.emitirPalpiteGrupoCompleto.emit(palpitesCompletos === 48);
+        
         this.spinner.hide("palpite");
       },
       error: (error) => {
@@ -97,11 +109,39 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
       }));
     }
 
+    if(this.palpitePreenchido) {
+      // Mostrar modal de confirmação
+      Swal.fire({
+        title: 'Atenção!',
+        text: 'Ao alterar os palpites da fase de grupos, todos os palpites da fase eliminatória e dos terceiros colocados serão apagados (caso preenchidos). Deseja continuar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, continuar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.executarSalvar(palpiteGrupoSelecao);
+        }
+      });
+    } else {
+      this.executarSalvar(palpiteGrupoSelecao);
+    }
+  }
+
+  private executarSalvar(palpiteGrupoSelecao: PalpiteGrupoSelecaoRequest[]): void {
     this.spinner.show("palpite");
     this.palpiteService.palpitarGrupoSelecao(palpiteGrupoSelecao).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite fase de grupos salvo com sucesso.');
         this.spinner.hide("palpite");
+        
+        // Verifica se o palpite está completo (48 seleções com posição preenchida)
+        const palpitesCompletos = palpiteGrupoSelecao.filter(p => p.PosicaoSelecao > 0).length;
+        this.emitirPalpiteGrupoCompleto.emit(palpitesCompletos === 48);
+        
+        this.emitirAtualizar.emit(!this.atualizar); 
       },
       error: (error) => {
         console.error("Erro ao salvar palpites:", error);

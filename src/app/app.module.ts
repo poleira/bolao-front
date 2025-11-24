@@ -40,7 +40,11 @@ export function tokenGetter() {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true,
+    }),
     NgxSpinnerModule,
     SharedModule
 ],

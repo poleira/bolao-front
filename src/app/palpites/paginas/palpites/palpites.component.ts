@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModoJogoResponse } from 'src/app/home/models/responses/bolao-modo-jogo.response';
 import { BolaoRegraResponse } from 'src/app/home/models/responses/bolao-regra.response';
-import { RegraResponse } from 'src/app/home/models/responses/regra.response';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 
 @Component({
@@ -13,6 +13,10 @@ export class PalpitesComponent implements OnInit {
 
   regras: BolaoRegraResponse[] = [];
   bolaoToken!: string;
+  modoJogo!: ModoJogoResponse;
+  faseGrupoAtualizada: boolean = false;
+  palpiteGrupoCompleto: boolean = false;
+  palpiteTerceiroCompleto: boolean = false;
   @Input() esconderPontuacao: boolean = false;
 
   constructor(
@@ -22,6 +26,7 @@ export class PalpitesComponent implements OnInit {
   ngOnInit(): void {
     this.verificarParametrosRota();
     this.listarRegrasBolao();
+    this.recuperarModoJogo();
   }
 
   private verificarParametrosRota(): void {
@@ -32,11 +37,22 @@ export class PalpitesComponent implements OnInit {
     });
   }
 
+  recuperarModoJogo(): void {
+    this.bolaoService.recuperarModoJogo(this.bolaoToken).subscribe({
+      next: (modoJogo: ModoJogoResponse) => {
+        this.modoJogo = modoJogo;
+      },
+      error: (error) => {
+        console.error('Erro ao recuperar modo de jogo:', error);
+      }
+    });
+  }
+
   listarRegrasBolao(): void {
     this.bolaoService.listarRegrasBolao({ HashBolao: this.bolaoToken }).subscribe({
       next: (regras: BolaoRegraResponse[]) => {
-        this.condicionalRegraRepetida()
         this.regras = regras;
+        this.condicionalRegraRepetida()
       },
       error: (error) => {
         console.error('Erro ao listar regras do bolão:', error);
@@ -45,15 +61,16 @@ export class PalpitesComponent implements OnInit {
   }
 
   condicionalRegraRepetida() {
-    if(this.regras.some(r => r.descricao === 'Acertou a pontuação do país na fase de grupos') && this.regras.some(r => r.descricao === 'Acertou a posição do país na fase de grupos')) {
-      this.regras = this.regras.filter(r => r.descricao !== 'Acertou a pontuação do país na fase de grupos' && r.descricao !== 'Acertou a posição do país na fase de grupos');
-      const novaRegra: BolaoRegraResponse = { id: 0, descricao: 'Fase de grupos', explicacao: 'Fase de grupos conforme as regras selecionadas', pontuacao: 0 };
-      this.regras.push(novaRegra);
+    if(this.regras.some(r => r.descricao === 'Acertou a pontuação do país na fase de grupos')) {
       this.esconderPontuacao = false;
     }
-    else if (!this.regras.some(r => r.descricao === 'Acertou a pontuação do país na fase de grupos') && this.regras.some(r => r.descricao === 'Acertou a posição do país na fase de grupos')) {
+    else {
       this.esconderPontuacao = true;
     }
+  }
+
+  contemRegra(descricao: string): boolean {
+    return this.regras.some(r => r.descricao === descricao);
   }
 
 

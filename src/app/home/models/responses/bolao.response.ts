@@ -12,6 +12,7 @@ export class BolaoResponse {
     administrador: string;
     premios: PremioResponse[];
     regras: BolaoRegraResponse[];
+    IdModoJogo: number;
 
     constructor(params: Partial<BolaoResponse>) {
         this.id = params.id || 0;
@@ -24,5 +25,6 @@ export class BolaoResponse {
         this.administrador = params.administrador || '';
         this.premios = params.premios || [];
         this.regras = params.regras || [];
+        this.IdModoJogo = params.IdModoJogo || 1;
     }
 }
