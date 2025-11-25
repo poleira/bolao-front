@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { debounceTime } from 'rxjs/operators';
 import { MOCK_SELECOES_ELIMINATORIA } from './mock';
+import { PalpiteService } from '../../palpite.service';
+import { EliminatoriasResponse } from 'src/app/shared/models/responses/eliminatorias.response';
 
 export interface SelecoesEliminatoriaResponse {
   IdGrupo: string;
@@ -26,9 +28,10 @@ export interface Jogo {
 })
 export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
 
-  @Input() selecoesClassificadas: SelecoesEliminatoriaResponse[] = MOCK_SELECOES_ELIMINATORIA;
+  selecoesClassificadas: SelecoesEliminatoriaResponse[] = MOCK_SELECOES_ELIMINATORIA;
   @Input() modoClicarParaAvancarDeFase: boolean = false;
   @Input() habilitado: boolean = true;
+  @Input() hashBolao: string = '';
   @Output() salvar = new EventEmitter<any>();
 
   eliminatoriasForm: FormGroup;
@@ -41,7 +44,7 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
 
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private palpiteService: PalpiteService) {
     this.eliminatoriasForm = this.criarFormularioVazio();
   }
 
@@ -96,6 +99,11 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
       this.montarDezesseisAvosDeFinal();
       this.montarOitavasDeFinal();
       this.inicializarFormulariosParaFases();
+      
+      if (this.hashBolao) {
+        this.recuperarEliminatorias();
+      }
+      
       if (!this.modoClicarParaAvancarDeFase) {
         this.escutarMudancasNosPalpites();
       }
@@ -111,6 +119,62 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
         this.escutarMudancasNosPalpites();
       }
     }
+  }
+
+  recuperarEliminatorias(): void {
+    this.palpiteService.recuperarEliminatorias(this.hashBolao).subscribe((response: EliminatoriasResponse) => {
+      // Preencher Rodada de 16 (16 avos)
+      if (response.rodadaDe16 && response.rodadaDe16.length > 0) {
+        const dezesseisAvosArray = this.eliminatoriasForm.get('dezesseisAvos') as FormArray;
+        response.rodadaDe16.forEach((jogo, index) => {
+          if (index < this.dezesseisAvos.length) {
+            this.dezesseisAvos[index].timeA = jogo.selecao1 || null;
+            this.dezesseisAvos[index].timeB = jogo.selecao2 || null;
+            // Se houver palpites salvos, preencher o formulário
+            // Assumindo que você terá campos de placar no JogoEliminatoriaResponse
+          }
+        });
+      }
+
+      // Preencher Oitavas de Final
+      if (response.oitavas && response.oitavas.length > 0) {
+        const oitavasArray = this.eliminatoriasForm.get('oitavas') as FormArray;
+        response.oitavas.forEach((jogo, index) => {
+          if (index < this.oitavas.length) {
+            this.oitavas[index].timeA = jogo.selecao1 || null;
+            this.oitavas[index].timeB = jogo.selecao2 || null;
+          }
+        });
+      }
+
+      // Preencher Quartas de Final
+      if (response.quartas && response.quartas.length > 0) {
+        const quartasArray = this.eliminatoriasForm.get('quartas') as FormArray;
+        response.quartas.forEach((jogo, index) => {
+          if (index < this.quartas.length) {
+            this.quartas[index].timeA = jogo.selecao1 || null;
+            this.quartas[index].timeB = jogo.selecao2 || null;
+          }
+        });
+      }
+
+      // Preencher Semifinais
+      if (response.semis && response.semis.length > 0) {
+        const semifinaisArray = this.eliminatoriasForm.get('semifinais') as FormArray;
+        response.semis.forEach((jogo, index) => {
+          if (index < this.semifinais.length) {
+            this.semifinais[index].timeA = jogo.selecao1 || null;
+            this.semifinais[index].timeB = jogo.selecao2 || null;
+          }
+        });
+      }
+
+      // Preencher Final
+      if (response.finais) {
+        this.final.timeA = response.finais.selecao1 || null;
+        this.final.timeB = response.finais.selecao2 || null;
+      }
+    });
   }
   
   private reiniciarEstrutura(): void {

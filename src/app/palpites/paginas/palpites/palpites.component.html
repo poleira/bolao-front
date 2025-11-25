@@ -13,7 +13,7 @@
       <!-- Cada componente agora contém sua própria estrutura de accordion -->
       <app-fase-de-grupo-accordion [hashBolao]="bolaoToken" [esconderPontuacao]="esconderPontuacao" (emitirAtualizar)="faseGrupoAtualizada = $event" (emitirPalpiteGrupoCompleto)="palpiteGrupoCompleto = $event"></app-fase-de-grupo-accordion>
       <app-melhores-terceiros-accordeon [hashBolao]="bolaoToken" [atualizarDeFaseDeGrupo]="faseGrupoAtualizada" (emitirPalpiteTerceiroCompleto)="palpiteTerceiroCompleto = $event" class="mt-2"></app-melhores-terceiros-accordeon>
-      <app-fase-eliminatoria [modoClicarParaAvancarDeFase]="true" [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto" class="mt-2"></app-fase-eliminatoria>
+      <app-fase-eliminatoria [hashBolao]="bolaoToken" [modoClicarParaAvancarDeFase]="true" [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto" class="mt-2"></app-fase-eliminatoria>
       <app-artilheiro-modal [hashBolao]="bolaoToken" class="mt-2" *ngIf="contemRegra('Acertou artilheiro')"></app-artilheiro-modal> 
     </div>
     <div *ngSwitchDefault>
