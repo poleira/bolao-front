@@ -6,6 +6,7 @@ import { RegrasComponent } from './paginas/regras.component';
 import { FormsModule } from '@angular/forms';
 import { CabecalhoComponent } from '../shared/componentes/cabecalho/cabecalho.component';
 import { SharedModule } from '../shared/shared.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule, 
     RegrasRoutingModule, 
     FormsModule,
-    SharedModule
+    SharedModule,
+    ModalModule.forRoot()
   ],
 })
 export class RegrasModule {}

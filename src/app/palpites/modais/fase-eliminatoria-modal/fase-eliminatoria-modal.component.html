@@ -549,13 +549,22 @@
               </div>
             </form>
           </div>
-          <button
-            class="btn btn-success botao-salvar w-100 mb-3"
-            (click)="salvarPalpites()"
-            [disabled]="!modoClicarParaAvancarDeFase && eliminatoriasForm.invalid"
-          >
-            Salvar
-          </button>
+          <div class="acoes-eliminatorias d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-outline-secondary flex-fill"
+              (click)="limparApartirDasOitavas()"
+            >
+              Limpar
+            </button>
+            <button
+              type="button"
+              class="btn btn-success flex-fill"
+              (click)="salvarPalpites()"
+            >
+              Salvar
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,20 +1,13 @@
-<app-cabecalho></app-cabecalho>
+<app-cabecalho [mostrarBotaoVoltar]="true"></app-cabecalho>
 <div class="container">
-  <div class="row mt-5">
-    <div class="d-flex col-md-12 justify-content-start">
-      <button class="btn btn-success mb-3" (click)="voltar()">
-        <i class="fa-solid fa-chevron-left"></i> Voltar
-      </button>
-    </div>
-  </div>
-  
-  <div class="row">
+
+  <div class="row mt-4">
     <h4 class="">Regras do bolão</h4>
     <p class="text-muted">Confira todas as regras e critérios de pontuação deste bolão</p>
   </div>
 
   <!-- Regras Cards -->
-  <div class="row mt-4">
+  <div class="row mt-2">
     <div class="col-md-6 mb-4" *ngFor="let regra of bolao?.regras">
       <div class="card rounded-3 shadow-sm">
         <div class="card-body p-4">

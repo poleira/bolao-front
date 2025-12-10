@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModoJogoResponse } from 'src/app/home/models/responses/bolao-modo-jogo.response';
 import { BolaoRegraResponse } from 'src/app/home/models/responses/bolao-regra.response';
 import { BolaoService } from 'src/app/home/services/bolao.service';
@@ -13,14 +13,16 @@ export class PalpitesComponent implements OnInit {
 
   regras: BolaoRegraResponse[] = [];
   bolaoToken!: string;
-  modoJogo!: ModoJogoResponse;
+  modoJogo: ModoJogoResponse | null = null;
   faseGrupoAtualizada: boolean = false;
   palpiteGrupoCompleto: boolean = false;
   palpiteTerceiroCompleto: boolean = false;
   @Input() esconderPontuacao: boolean = false;
 
   constructor(
-    private route: ActivatedRoute, private bolaoService: BolaoService
+    private route: ActivatedRoute,
+    private bolaoService: BolaoService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -73,5 +75,12 @@ export class PalpitesComponent implements OnInit {
     return this.regras.some(r => r.descricao === descricao);
   }
 
+  verRegras(): void {
+    if (!this.bolaoToken) {
+      return;
+    }
+
+    this.router.navigate(['/regras', this.bolaoToken]);
+  }
 
 }

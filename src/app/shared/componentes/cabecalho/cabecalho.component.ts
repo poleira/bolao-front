@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -20,6 +21,9 @@ export class CabecalhoComponent implements OnInit {
     @Input()
     cabecalho = '';
 
+    @Input()
+    mostrarBotaoVoltar = false;
+
     isSideMenuOpen = false;
 
     existeNotificacoes: boolean = false;
@@ -30,7 +34,8 @@ export class CabecalhoComponent implements OnInit {
         private spinner: NgxSpinnerService,
         private toastr: ToastrService,
         private modalService: BsModalService, 
-        private notificacoesService: NotificacoesService
+        private notificacoesService: NotificacoesService,
+        private location: Location
     ) { }
 
     ngOnInit(): void { 
@@ -78,6 +83,12 @@ export class CabecalhoComponent implements OnInit {
 
     navegarHome() {
         this.router.navigate(['home']);
+        this.isSideMenuOpen = false;
+        document.body.style.overflow = '';
+    }
+
+    voltarPagina(): void {
+        this.location.back();
         this.isSideMenuOpen = false;
         document.body.style.overflow = '';
     }

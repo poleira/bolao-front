@@ -48,12 +48,12 @@
 }
 
 /* Estilo para o footer fixo */
-.botao-salvar {
+.acoes-eliminatorias {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 200px;
+  left: 0;
+  right: 0;
+  padding: 0 24px 16px;
   z-index: 1;
 }
 

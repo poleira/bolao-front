@@ -5,7 +5,9 @@
       <h5 class="m-0">Sua aposta:</h5>
       <p class="text-muted m-0">Nao esqueça de salvar!</p>
     </div>
-    <a href="#" class="text-decoration-none">Ver Regras</a>
+    <button type="button" class="btn btn-link text-decoration-none p-0" (click)="verRegras()">
+      Ver Regras
+    </button>
   </div>
 
   <div [ngSwitch]="modoJogo?.id">

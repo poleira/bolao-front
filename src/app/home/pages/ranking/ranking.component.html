@@ -1,0 +1,53 @@
+<app-cabecalho [mostrarBotaoVoltar]="true"></app-cabecalho>
+
+<div class="container mt-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="mb-1">Ranking do bolão</h4>
+      <p class="text-muted">Acompanhe a pontuação dos participantes.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" class="text-center">Posição</th>
+              <th scope="col">Jogador</th>
+              <th scope="col" class="text-center">Pontuação</th>
+              <th scope="col" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let jogador of paginaAtual">
+              <td class="text-center fw-semibold">{{ jogador.posicao }}</td>
+              <td>{{ jogador.nome }}</td>
+              <td class="text-center">
+                <span class="badge bg-success bg-opacity-75 text-dark px-3 py-2">{{ jogador.pontuacao }}</span>
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-outline-success btn-sm" (click)="navegarPalpites(jogador.nome)">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col d-flex justify-content-between align-items-center mx-1">
+      <button type="button" class="btn btn-link text-success text-decoration-none px-0" [disabled]="currentPage === 1" (click)="alterarPagina(-1)">
+        <span>Anterior</span>
+      </button>
+      <span class="text-muted">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button type="button" class="btn btn-link text-success text-decoration-none px-0" [disabled]="currentPage === totalPages" (click)="alterarPagina(1)">
+        <span>Próxima</span>
+      </button>
+    </div>
+  </div>
+</div>

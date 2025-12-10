@@ -84,6 +84,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  verRanking(): void {
+    if (this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
+      this.router.navigate(['/home', 'ranking', encodedToken]);
+    }
+  }
+
   openModal(modal: TemplateRef<HTMLDivElement>, modalClass: string) {
     this.modalRef = this.modalService.show(modal, {
       class: modalClass,

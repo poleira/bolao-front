@@ -11,6 +11,7 @@ import { JogadorResponse } from '../shared/models/responses/jogador.response';
 import { PalpiteTerceiroLugarRequest } from '../shared/models/requests/palpite-terceiro-lugar-request';
 import { PalpiteTerceiroLugarResponse } from '../shared/models/responses/palpite-terceiro-lugar.response';
 import { EliminatoriasResponse } from '../shared/models/responses/eliminatorias.response';
+import { CriarPalpiteFaseSelecaoRequest } from '../shared/models/requests/criar-palpite-fase-selecao.request';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,10 @@ export class PalpiteService {
 
   recuperarEliminatorias(hashBolao: string): Observable<EliminatoriasResponse> {
     return this.http.get<EliminatoriasResponse>(`${this.apiUrlPalpites}/eliminatorias`, { params: { HashBolao: hashBolao } });
+  }
+
+  palpitarEliminatorias(request: CriarPalpiteFaseSelecaoRequest[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlPalpites}/fases-selecoes`, request);
   }
 
 }
