@@ -12,6 +12,7 @@ import { PalpiteTerceiroLugarRequest } from '../shared/models/requests/palpite-t
 import { PalpiteTerceiroLugarResponse } from '../shared/models/responses/palpite-terceiro-lugar.response';
 import { EliminatoriasResponse } from '../shared/models/responses/eliminatorias.response';
 import { CriarPalpiteFaseSelecaoRequest } from '../shared/models/requests/criar-palpite-fase-selecao.request';
+import { PalpitesPorEscritoResponse } from '../shared/models/responses/palpites-por-escrito.response';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,12 @@ export class PalpiteService {
 
   palpitarEliminatorias(request: CriarPalpiteFaseSelecaoRequest[]): Observable<void> {
     return this.http.post<void>(`${this.apiUrlPalpites}/fases-selecoes`, request);
+  }
+
+  obterPalpitesPorEscrito(nomeUsuario: string, hashBolao: string): Observable<PalpitesPorEscritoResponse> {
+    return this.http.get<PalpitesPorEscritoResponse>(`${this.apiUrlPalpites}/por-escrito`, { 
+      params: { nomeUsuario, hashBolao } 
+    });
   }
 
 }

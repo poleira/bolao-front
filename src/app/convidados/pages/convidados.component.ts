@@ -6,6 +6,7 @@ import { Subject, finalize, takeUntil } from 'rxjs';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
+import { UsuarioService } from 'src/app/shared/services/usuario.service';
 
 @Component({
   selector: 'app-convidados',
@@ -21,6 +22,7 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
   mostrarSenha: boolean = false;
 
   request: AssociarUsuarioRequest = new AssociarUsuarioRequest({});
+  usuarioLogado: UsuarioResponse = new UsuarioResponse({});
 
   private destroyed$ = new Subject<void>();
 
@@ -28,11 +30,26 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private bolaoService: BolaoService
+    private bolaoService: BolaoService,
+    private usuarioService: UsuarioService
   ) {
   }
 
   ngOnInit(): void {
+    this.carregarUsuarioLogado();
+  }
+
+  carregarUsuarioLogado(): void {
+    this.usuarioService.obterUsuarioLogado()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (usuario: UsuarioResponse) => {
+          this.usuarioLogado = usuario;
+        },
+        error: () => {
+          this.usuarioLogado = new UsuarioResponse({});
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -89,15 +106,6 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
   }
 
   recuperarUsuarioLogado(): UsuarioResponse {
-    const authUser = sessionStorage.getItem('auth-user');
-
-    let usuario: UsuarioResponse = new UsuarioResponse({});
-
-    if (authUser) {
-      const objeto = JSON.parse(authUser);
-      usuario = objeto.usuario;
-    }
-
-    return usuario;
+    return this.usuarioLogado;
   }
 }

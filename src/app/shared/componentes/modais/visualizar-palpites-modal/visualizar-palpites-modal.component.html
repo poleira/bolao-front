@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h5 class="modal-title">Palpites de {{ nomeUsuario }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+</div>
+  
+<div class="modal-body">
+    <div *ngIf="palpites">
+        <!-- Fase de Grupos -->
+        <div class="card mb-3" *ngIf="palpites.palpiteFaseGrupos">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Fase de Grupos</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text" [innerHTML]="palpites.palpiteFaseGrupos"></p>
+            </div>
+        </div>
+
+        <!-- Melhores Terceiros -->
+        <div class="card mb-3" *ngIf="palpites.palpiteMelhoresTerceiros">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Melhores Terceiros</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text" [innerHTML]="palpites.palpiteMelhoresTerceiros"></p>
+            </div>
+        </div>
+
+        <!-- Eliminatórias -->
+        <div class="card mb-3" *ngIf="palpites.palpiteEliminatorias">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Eliminatórias</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text" [innerHTML]="palpites.palpiteEliminatorias"></p>
+            </div>
+        </div>
+
+        <!-- Artilheiro -->
+        <div class="card mb-3" *ngIf="palpites.palpiteArtilheiro">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Artilheiro</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ palpites.palpiteArtilheiro }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button 
+            class="btn btn-outline-secondary" 
+            type="button"
+            (click)="fechar()"
+        >
+            Fechar
+        </button>
+    </div>
+</div>
+
+<ngx-spinner name="carregando-palpites" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando palpites...</p>
+</ngx-spinner>

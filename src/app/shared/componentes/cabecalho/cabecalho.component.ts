@@ -92,6 +92,12 @@ export class CabecalhoComponent implements OnInit {
         this.isSideMenuOpen = false;
         document.body.style.overflow = '';
     }
+
+    navegarConfiguracoes(): void {
+        this.router.navigate(['configuracoes']);
+        this.isSideMenuOpen = false;
+        document.body.style.overflow = '';
+    }
     
     abrirModalNotificacoes(modal: TemplateRef<HTMLDivElement>, modalClass: string) {
         this.modalRef = this.modalService.show(modal, {

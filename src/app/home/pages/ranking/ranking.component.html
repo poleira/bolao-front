@@ -21,14 +21,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let jogador of paginaAtual">
-              <td class="text-center fw-semibold">{{ jogador.posicao }}</td>
-              <td>{{ jogador.nome }}</td>
+            <tr *ngFor="let jogador of paginaAtual; let idx = index">
+              <td class="text-center fw-semibold">{{ (currentPage - 1) * pageSize + idx + 1 }}</td>
+              <td>{{ jogador.usuario }}</td>
               <td class="text-center">
                 <span class="badge bg-success bg-opacity-75 text-dark px-3 py-2">{{ jogador.pontuacao }}</span>
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-outline-success btn-sm" (click)="navegarPalpites(jogador.nome)">
+                <button type="button" class="btn btn-outline-success btn-sm" (click)="navegarPalpites(jogador.usuario)">
                   <i class="fa-solid fa-eye"></i>
                 </button>
               </td>
@@ -51,3 +51,23 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner name="carregando" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>
+
+<!-- Modal Visualizar Palpites -->
+<div class="modal fade" [class.show]="modalAberto" [style.display]="modalAberto ? 'block' : 'none'" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <app-visualizar-palpites-modal
+        *ngIf="modalAberto"
+        [nomeUsuario]="usuarioSelecionado"
+        [hashBolao]="bolaoToken"
+        (fecharModal)="fecharModal()"
+      ></app-visualizar-palpites-modal>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="modalAberto" *ngIf="modalAberto"></div>

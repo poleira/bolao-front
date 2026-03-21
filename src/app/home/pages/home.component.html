@@ -1,8 +1,8 @@
 <app-cabecalho></app-cabecalho>
 
 <div class="container">
-    <!-- Bolão "tab" selector with horizontal scrolling -->
-    <div class="row px-2" *ngIf="boloesUsuarios.length != 0">
+    <!-- Bolão "tab" selector with horizontal scrolling - Mobile/Tablet only -->
+    <div class="row px-2 d-lg-none" *ngIf="boloesUsuarios.length != 0">
         <div class="col-md-12 py-3 d-flex">
             <!-- Fixed "Criar bolão" button - centered vertically -->
             <div class="d-flex flex-column align-items-center justify-content-center rounded-circle create-bolao-button me-3 flex-shrink-0"
@@ -30,14 +30,23 @@
         </div>
     </div>
 
+    <!-- Welcome Message - Desktop only -->
+    <div class="row px-2 d-none d-lg-block" *ngIf="boloesUsuarios.length != 0">
+        <div class="col-12 py-4 text-center">
+            <h4 class="text-success fw-bold mb-2">Bem-vindo ao portal do torcedor</h4>
+            <p class="text-muted mb-0">Faça seu bolão com sabedoria e rumo ao hexa!</p>
+        </div>
+    </div>
+
     <!-- Bolão info tab panel -->
-    <div *ngIf="selectedBolaoUsuario?.bolao != null;else usuariosSemBoloes" class="row mb-4">
-        <div class="col-12">
+    <div *ngIf="selectedBolaoUsuario?.bolao != null" class="row mb-4 desktop-layout-row">
+        <!-- Mobile/Tablet Layout (hidden on desktop) -->
+        <div class="col-12 d-lg-none">
             <div class="p-4 border rounded bg-white">
-                <div class="row my-2">
+                <div class="row ">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="text-muted m-0">Prêmios</h6>
-                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn btn-sm btn-outline-success"
+                        <h6 class="text-muted fw-bold m-0">Prêmios</h6>
+                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn btn-sm btn-outline-primary"
                             (click)="navigateToEditBolao()">
                             <i class="fa-solid fa-pen-to-square mx-1"></i>
                             Editar bolão
@@ -45,16 +54,62 @@
                     </div>
                 </div>
 
-                <div class="row my-5">
+                <div class="row mb-1">
                     <div class="container px-0">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
-                            <div class="col d-flex justify-content-center mb-3"
-                                *ngFor="let premio of selectedBolaoUsuario.bolao?.premios; let i = index">
-                                <div class="card shadow-sm premio-card border-0 position-relative w-100">
-                                    <div class="position-badge bg-success">{{ i + 1 }}º lugar</div>
-                                    <div class="card-body text-center">
-                                        <i class="fa-solid fa-trophy fs-1 mx-1 my-2"></i>
-                                        <p class="card-text text-muted my-1 small-text">{{ premio.descricao }}</p>
+                        <div class="d-flex justify-content-center align-items-end gap-3 flex-wrap">
+                            <!-- 3º Lugar -->
+                            <div class="d-flex justify-content-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 3">
+                                <div class="card premio-card border-0 text-center">
+                                    <div class="card-body d-flex flex-column align-items-center px-2">
+                                        <div class="trophy-icon-wrapper trophy-small mb-2">
+                                            <img [src]="'assets/img/trofeu-3.png'" 
+                                                 alt="Troféu 3º lugar" 
+                                                 class="trophy-icon"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                            <i class="fa-solid fa-trophy trophy-fallback" 
+                                               [ngClass]="getTrophyColorClass(2)"
+                                               style="display: none;"></i>
+                                        </div>
+                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
+                                        <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1º Lugar (maior) -->
+                            <div class="d-flex justify-content-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 1">
+                                <div class="card premio-card border-0 text-center">
+                                    <div class="card-body d-flex flex-column align-items-center px-2">
+                                        <div class="trophy-icon-wrapper trophy-large mb-2">
+                                            <img [src]="'assets/img/trofeu-1.png'" 
+                                                 alt="Troféu 1º lugar" 
+                                                 class="trophy-icon"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                            <i class="fa-solid fa-trophy trophy-fallback" 
+                                               [ngClass]="getTrophyColorClass(0)"
+                                               style="display: none;"></i>
+                                        </div>
+                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
+                                        <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2º Lugar -->
+                            <div class="d-flex justify-content-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 2">
+                                <div class="card premio-card border-0 text-center">
+                                    <div class="card-body d-flex flex-column align-items-center px-2">
+                                        <div class="trophy-icon-wrapper trophy-small mb-2">
+                                            <img [src]="'assets/img/trofeu-2.png'" 
+                                                 alt="Troféu 2º lugar" 
+                                                 class="trophy-icon"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                            <i class="fa-solid fa-trophy trophy-fallback" 
+                                               [ngClass]="getTrophyColorClass(1)"
+                                               style="display: none;"></i>
+                                        </div>
+                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
+                                        <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -62,159 +117,211 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mx-3">
                     <div class="col-6 col-sm-4 col-md-3 px-1">
                         <button class="btn btn-outline-success w-100" (click)="verRegras()">Ver regras</button>
                     </div>
                     <div *ngIf="usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
-                        <button class="btn btn-success w-100"
+                        <button class="btn btn-outline-success w-100"
                             (click)="openModal(modalConvite, 'modal-md modal-dialog modal-dialog-centered')">Convidar</button>
+                    </div>
+                    <div *ngIf="!usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
+                        <button class="btn btn-outline-success w-100" (click)="verPremios()">Ver prêmios</button>
                     </div>
                 </div>
 
-                <div class="row my-2">
-                    <div class="d-flex justify-content-between align-items-center my-3">
-                        <h6 class="text-muted m-0">Ranking</h6>
-                        <button type="button" class="btn btn-link text-success link-no-decoration p-0" (click)="verRanking()">
+                <div class="row">
+                    <div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+                        <h6 class="text-muted fw-bold m-0">Ranking</h6>
+                        <button type="button" class="btn btn-link text-primary link-no-decoration p-0" (click)="verRanking()">
                             Ver Ranking
                         </button>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy text-warning fs-5"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Marcelo Faria</span>
+                    <ng-container *ngIf="rankingPreview.length > 0; else rankingVazio">
+                        <div class="d-flex justify-content-between" *ngFor="let item of rankingPreview; let idx = index; trackBy: trackRanking">
+                            <div class="d-flex align-items-center mx-1">
+                                <div class="d-flex my-2">
+                                    <div class="dflex-column align-items-center mx-1">
+                                        <span>{{ item.usuario }}</span>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <i [ngClass]="getTrophyClasses(idx)"></i>
+                                <span class="premio-value px-2 py-1 me-1">{{ item.pontuacao }} Pts</span>
+                            </div>
                         </div>
+                    </ng-container>
+                </div>
 
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">220</span>
-                        </div>
+                <ng-template #rankingVazio>
+                    <div class="col-12">
+                        <p class="text-muted text-center my-3">Ranking indisponível no momento.</p>
+                    </div>
+                </ng-template>
+
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-success palpitar-button mt-3" (click)="navegarPalpitar()">
+                        Palpitar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Layout (hidden on mobile/tablet) -->
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="desktop-column-left">
+                <!-- Ranking Card -->
+                <div class="p-4 border rounded bg-white desktop-card ranking-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-muted fw-bold m-0">Ranking</h6>
+                        <button type="button" class="btn btn-link text-success link-no-decoration p-0" (click)="verRanking()">
+                            <i class="fa-solid fa-eye me-1"></i>
+                            Ver Ranking
+                        </button>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy text-secondary fs-5"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Marco Pollo</span>
+                    <div class="ranking-list">
+                        <ng-container *ngIf="rankingPreview.length > 0; else rankingVazio">
+                            <div class="ranking-item d-flex justify-content-between align-items-center py-2 px-3 mb-2 rounded" 
+                                 *ngFor="let item of rankingPreview; let idx = index; trackBy: trackRanking">
+                                <div class="d-flex align-items-center">
+                                    <i [ngClass]="getTrophyClasses(idx)" class="me-3"></i>
+                                    <span class="fw-medium">{{ item.usuario }}</span>
                                 </div>
+                                <span class="badge bg-success px-3 py-2">{{ item.pontuacao }} Pts</span>
                             </div>
-                        </div>
+                        </ng-container>
+                    </div>
+                </div>
 
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">215</span>
+                <!-- Botões de ação -->
+                <div class="desktop-actions-container">
+                    <div class="row" [ngClass]="{'justify-content-end': !usuarioEhAdmin}">
+                        <div class="col-4" *ngIf="usuarioEhAdmin">
+                            <button class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="verRegras()">
+                                <i class="fa-solid fa-book me-2"></i>
+                                <span>Ver regras</span>
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button *ngIf="usuarioEhAdmin" class="btn btn-outline-success w-100 desktop-action-btn bg-white"
+                                (click)="openModal(modalConvite, 'modal-md modal-dialog modal-dialog-centered')">
+                                <i class="fa-solid fa-user-plus me-2"></i>
+                                <span>Convidar amigo</span>
+                            </button>
+                            <button *ngIf="!usuarioEhAdmin" class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="verPremios()">
+                                <i class="fa-solid fa-trophy me-2"></i>
+                                <span>Ver prêmios</span>
+                            </button>
+                        </div>
+                        <div class="col-4" *ngIf="!usuarioEhAdmin">
+                            <button class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="verRegras()">
+                                <i class="fa-solid fa-book me-2"></i>
+                                <span>Ver regras</span>
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-success w-100 desktop-action-btn" (click)="navegarPalpitar()">
+                                <i class="fa-solid fa-pencil me-2"></i>
+                                <span>Palpitar</span>
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Tiquinho Soares</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">180</span>
-                        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="desktop-column-right">
+                <!-- Bolão Selector Card -->
+                <div class="p-4 border rounded bg-white desktop-card seus-boloes-card mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-muted fw-bold m-0">Seus Bolões</h6>
+                        <button type="button" class="btn btn-link text-success link-no-decoration p-0" [routerLink]="['/hub-boloes']">
+                            <i class="fa-solid fa-circle-plus me-1"></i>
+                            Novo bolão
+                        </button>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Calleri</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Calleri</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Calleri</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Calleri</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-trophy bronze-trophy fs-5 invisible"></i>
-                            <div class="d-flex my-2 mx-3">
-                                <i class="fa-regular fa-face-smile fs-3"></i>
-                                <div class="dflex-column align-items-center mx-2">
-                                    <span>Calleri</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="rounded-pill fw-bold px-3 py-1 score-badge">150</span>
+                    <div class="boloes-desktop-list">
+                        <div class="bolao-desktop-item d-flex align-items-center py-2 px-3 mb-2 rounded" 
+                            *ngFor="let bolaoUsuario of boloesUsuarios"
+                            [ngClass]="{'bolao-desktop-active': selectedBolaoUsuario.bolao?.tokenAcesso === bolaoUsuario.bolao?.tokenAcesso}"
+                            (click)="selecionaBolao(bolaoUsuario)">
+                            <img [src]="'assets/img/' + bolaoUsuario?.bolao?.logo + '.png'" 
+                                width="40" 
+                                height="40"
+                                alt="Bolão" 
+                                class="rounded-circle me-3">
+                            <span class="fw-medium">{{ bolaoUsuario.bolao?.nome }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-success palpitar-button" (click)="navegarPalpitar()">
-                        Palpitar
-                    </button>
+                <!-- Prêmios Card -->
+                <div class="p-4 border rounded bg-white desktop-card premios-card mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-muted fw-bold m-0">Prêmios</h6>
+                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn-link text-success link-no-decoration p-0"
+                            (click)="navigateToEditBolao()">
+                            <i class="fa-solid fa-pen-to-square me-1"></i>
+                            Editar bolão
+                        </button>
+                    </div>
+
+                    <div class="premios-desktop-display">
+                        <div class="d-flex justify-content-center align-items-end gap-4">
+                            <!-- 3º Lugar -->
+                            <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 3">
+                                <div class="trophy-icon-wrapper trophy-small mb-2">
+                                    <img [src]="'assets/img/trofeu-3.png'" 
+                                         alt="Troféu 3º lugar" 
+                                         class="trophy-icon"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                    <i class="fa-solid fa-trophy trophy-fallback" 
+                                       [ngClass]="getTrophyColorClass(2)"
+                                       style="display: none;"></i>
+                                </div>
+                                <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
+                                <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
+                            </div>
+
+                            <!-- 1º Lugar (maior) -->
+                            <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 1">
+                                <div class="trophy-icon-wrapper trophy-large mb-2">
+                                    <img [src]="'assets/img/trofeu-1.png'" 
+                                         alt="Troféu 1º lugar" 
+                                         class="trophy-icon"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                    <i class="fa-solid fa-trophy trophy-fallback" 
+                                       [ngClass]="getTrophyColorClass(0)"
+                                       style="display: none;"></i>
+                                </div>
+                                <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
+                                <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
+                            </div>
+
+                            <!-- 2º Lugar -->
+                            <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 2">
+                                <div class="trophy-icon-wrapper trophy-small mb-2">
+                                    <img [src]="'assets/img/trofeu-2.png'" 
+                                         alt="Troféu 2º lugar" 
+                                         class="trophy-icon"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                    <i class="fa-solid fa-trophy trophy-fallback" 
+                                       [ngClass]="getTrophyColorClass(1)"
+                                       style="display: none;"></i>
+                                </div>
+                                <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
+                                <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -234,7 +341,14 @@
     </ng-template>      
 </div>
 
+<app-rodape></app-rodape>
+
 <ng-template #modalConvite>
     <app-convidar-bolao-modal [bolao]="selectedBolaoUsuario.bolao!"
         (fecharModal)="fecharModal()"></app-convidar-bolao-modal>
 </ng-template>
+
+<ngx-spinner name="carregando" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+    [fullScreen]="true">
+    <p class="text-white p-0">Carregando</p>
+</ngx-spinner>

@@ -9,6 +9,7 @@ import { HomeRoutingModule } from 'src/app/home/home-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConvidarBolaoModalComponent } from './componentes/convidar-bolao-modal/convidar-bolao-modal.component';
 import { RankingComponent } from './pages/ranking/ranking.component';
+import { PremiosComponent } from './pages/premios/premios.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     HomeComponent,
     CriacaoBolaoFormularioComponent,
     ConvidarBolaoModalComponent,
-    RankingComponent
+    RankingComponent,
+    PremiosComponent
   ],
   imports: [
     CommonModule,

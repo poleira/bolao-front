@@ -6,13 +6,17 @@ import { MensagemComponent } from "src/app/shared/componentes/mensagem/mensagem.
 import { SenhaBolaoModalComponent } from './componentes/modais/senha-bolao-modal/senha-bolao-modal.component';
 import { FormsModule } from "@angular/forms";
 import { NotificacoesModalComponent } from './componentes/modais/notificacoes-modal/notificacoes-modal.component';
+import { VisualizarPalpitesModalComponent } from './componentes/modais/visualizar-palpites-modal/visualizar-palpites-modal.component';
+import { RodapeComponent } from './componentes/rodape/rodape.component';
 
 @NgModule({
   declarations: [
     SenhaBolaoModalComponent,
     CabecalhoComponent,
     MensagemComponent,
-    NotificacoesModalComponent
+    NotificacoesModalComponent,
+    VisualizarPalpitesModalComponent,
+    RodapeComponent
   ],
   imports: [
     CommonModule, 
@@ -22,7 +26,9 @@ import { NotificacoesModalComponent } from './componentes/modais/notificacoes-mo
   exports: [
     SenhaBolaoModalComponent,
     CabecalhoComponent,
-    MensagemComponent
+    MensagemComponent,
+    VisualizarPalpitesModalComponent,
+    RodapeComponent
   ]
 })
 export class SharedModule { }

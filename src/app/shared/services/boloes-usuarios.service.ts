@@ -15,8 +15,8 @@ export class BoloesUsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  recuperarBoloesUsuario(hashUsuario: string): Observable<BolaoUsuarioResponse[]> {
-    return this.http.get<BolaoUsuarioResponse[]>(this.apiUrl, { params: { hashUsuario } });
+  recuperarBoloesUsuario(): Observable<BolaoUsuarioResponse[]> {
+    return this.http.get<BolaoUsuarioResponse[]>(this.apiUrl);
   }
 
   recuperar(id: number): Observable<BolaoUsuarioResponse> {

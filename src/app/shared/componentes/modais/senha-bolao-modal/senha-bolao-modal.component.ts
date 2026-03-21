@@ -41,7 +41,7 @@ export class SenhaBolaoModalComponent implements OnInit {
         this.fechar();
       },
       error: (error) => {
-        this.toastr.error(error.error.message || 'Erro ao entrar no bolão.', 'Erro');
+        this.toastr.error(error.error?.erro || 'Erro ao entrar no bolão.', 'Erro');
       },
       complete: () => {
         this.spinner.hide('carregando');

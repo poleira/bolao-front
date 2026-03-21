@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () => import('./regras/regras.module').then(m => m.RegrasModule)
   },
   {
+    path: 'configuracoes',
+    loadChildren: () => import('./configuracoes/configuracoes.module').then(m => m.ConfiguracoesModule)
+  },
+  {
     path: '*',
     redirectTo: '/login'
   },

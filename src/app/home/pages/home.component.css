@@ -30,6 +30,11 @@
   color: #a35312;
 }
 
+.text-muted-bold {
+  color: #6c757d;
+  font-weight: 600;
+}
+
 .palpitar-button {
   padding: 8px 60px;
   z-index: 1000;
@@ -53,7 +58,7 @@
 }
 
 /* For mobile devices - fixed position without floating animation */
-@media (max-width: 767px) {
+@media (max-width: 767px) and (max-height: 812px) {
   .palpitar-button {
     position: fixed;
     bottom: 25px;
@@ -64,14 +69,59 @@
 }
 
 .premio-card {
-  max-width: 200px;
-  min-height: 120px;
-  background-color: #f8f9fa;
+  max-width: 150px;
+  background-color: transparent;
   transition: transform 0.2s;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .premio-card:hover {
   transform: translateY(-5px);
+}
+
+.trophy-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trophy-large {
+  width: clamp(4rem, 18vw, 6.5rem);
+  height: clamp(4rem, 18vw, 6.5rem);
+}
+
+.trophy-small {
+  width: clamp(3rem, 14vw, 4.5rem);
+  height: clamp(3rem, 14vw, 4.5rem);
+}
+
+.trophy-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trophy-fallback {
+  font-size: 6rem;
+}
+
+.trophy-large .trophy-fallback {
+  font-size: 8rem;
+}
+
+.trophy-small .trophy-fallback {
+  font-size: 5rem;
+}
+
+.premio-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.premio-label {
+  font-size: 0.875rem;
 }
 
 .position-badge {
@@ -130,4 +180,169 @@
 /* Ensure the bolão items have a minimum width */
 .bolaoUsuario {
   min-width: 60px;
+}
+
+/* Desktop Layout Styles */
+@media (min-width: 992px) {
+  .desktop-layout-row {
+    align-items: stretch;
+    flex-wrap: nowrap;
+    height: 80vh;
+    min-height: 65vh;
+  }
+
+
+  .desktop-column-left,
+  .desktop-column-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    gap: 1rem;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .desktop-card,
+  .desktop-actions-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .desktop-column-left .desktop-card.ranking-card {
+    flex: 4;
+    overflow: hidden;
+  }
+
+  .desktop-column-left .desktop-actions-container {
+    flex: 0 0 auto;
+    margin-top: auto;
+    justify-content: flex-end;
+  }
+
+  .desktop-column-right .desktop-card.seus-boloes-card {
+    flex: 2.5;
+  }
+
+  .desktop-column-right .desktop-card.premios-card {
+    flex: 2.5;
+  }
+
+  .desktop-column-left .desktop-card,
+  .desktop-column-right .desktop-card,
+  .desktop-column-left .desktop-actions-container {
+    margin-bottom: 0 !important;
+  }
+
+  .boloes-desktop-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .bolao-desktop-item {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .bolao-desktop-item:hover {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+  }
+
+  .bolao-desktop-active {
+    border: 2px solid #198754 !important;
+    background-color: #e9fbe9 !important;
+  }
+
+  .ranking-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .ranking-item {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .ranking-item:hover {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+  }
+
+  .premios-desktop-display {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .premios-desktop-display .trophy-large {
+    width: clamp(4.5rem, 6vw, 6.5rem);
+    height: clamp(4.5rem, 6vw, 6.5rem);
+  }
+
+  .premios-desktop-display .trophy-small {
+    width: clamp(3.5rem, 4.5vw, 5rem);
+    height: clamp(3.5rem, 4.5vw, 5rem);
+  }
+
+  .premios-desktop-display .trophy-fallback {
+    font-size: clamp(3rem, 4vw, 4.5rem);
+  }
+
+  .premios-desktop-display .trophy-large .trophy-fallback {
+    font-size: clamp(4.5rem, 6vw, 7rem);
+  }
+
+  .premios-desktop-display .trophy-small .trophy-fallback {
+    font-size: clamp(3rem, 4.4vw, 5rem);
+  }
+
+  .premios-desktop-display .premio-value {
+    font-size: 0.875rem;
+  }
+
+  .premios-desktop-display .premio-label {
+    font-size: 0.75rem;
+  }
+
+  .desktop-actions-container {
+    margin-top: 0;
+  }
+
+  /* Hide mobile button positioning for desktop */
+  .palpitar-button {
+    position: relative;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .desktop-action-btn {
+    font-size: 1rem;
+    font-weight: 500;
+    border-width: 2px;
+    transition: all 0.3s ease;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .desktop-action-btn.bg-white:hover {
+    background-color: #f8f9fa !important;
+    color: #1c9b60 !important;
+    border-color: #198754 !important;
+  }
+
+  .desktop-action-btn i {
+    font-size: 1.2rem;
+  }
 }

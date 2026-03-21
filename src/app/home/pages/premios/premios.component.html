@@ -1,0 +1,34 @@
+<app-cabecalho [mostrarBotaoVoltar]="true"></app-cabecalho>
+<div class="container">
+
+  <div class="row mt-4">
+    <h4 class="">Prêmios do bolão</h4>
+    <p class="text-muted">Confira todos os prêmios e premiações deste bolão</p>
+  </div>
+
+  <!-- Prêmios Cards -->
+  <div class="row mt-2">
+    <div class="col-md-6 mb-4" *ngFor="let premio of premios; let i = index">
+      <div class="card rounded-3 shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <i class="bi bi-trophy-fill" [ngClass]="getTrophyColorClass(i)" style="font-size: 32px;"></i>
+              <h5 class="mb-0">{{ i + 1 }}º Lugar</h5>
+            </div>
+          </div>
+          <p class="card-text fs-5">
+            <strong>{{ premio.descricao }}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message for when there are no prizes -->
+  <div class="row mt-4" *ngIf="!premios || premios?.length === 0">
+    <div class="col-12 text-center">
+      <p class="text-muted">Nenhum prêmio definido para este bolão.</p>
+    </div>
+  </div>
+</div>

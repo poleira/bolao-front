@@ -7,6 +7,8 @@ import { UsuarioRequest } from 'src/app/login/models/requests/usuario.request';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UsuarioService } from 'src/app/shared/services/usuario.service';
+import { VerificarUsuarioExistenteRequest } from 'src/app/shared/models/requests/verificar-usuario-existente.request';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +21,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private usuarioService: UsuarioService,
     private formBuilder: FormBuilder,
     private auth: AngularFireAuth,
     private toastr: ToastrService,
@@ -44,24 +47,43 @@ export class RegisterComponent implements OnInit {
     const usuarioRequest: UsuarioRequest = { ...this.formCadastrar.value };
     
     this.spinner.show("loadCadastroUsuario");
-    
-    const firebaseUser = await this.auth.createUserWithEmailAndPassword(
-      usuarioRequest.Email,
-      usuarioRequest.Senha
-    );
 
-    usuarioRequest.FirebaseUid = firebaseUser.user?.uid ?? '';
+    const verificarRequest = new VerificarUsuarioExistenteRequest({
+      Nome: usuarioRequest.Nome,
+      Email: usuarioRequest.Email
+    });
 
-    this.authService.inserir(usuarioRequest)
-      .pipe(finalize(() => this.spinner.hide("loadCadastroUsuario")))
+    this.usuarioService.verificarUsuarioExistente(verificarRequest)
       .subscribe({
-        next: response => {
-          this.toastr.success('Usuário criado com sucesso!', 'Sucesso');
-          this.formCadastrar.reset();
-          this.router.navigate(['/login']);
+        next: async () => {
+          try {
+            const firebaseUser = await this.auth.createUserWithEmailAndPassword(
+              usuarioRequest.Email,
+              usuarioRequest.Senha
+            );
+
+            usuarioRequest.FirebaseUid = firebaseUser.user?.uid ?? '';
+
+            this.authService.inserir(usuarioRequest)
+              .pipe(finalize(() => this.spinner.hide("loadCadastroUsuario")))
+              .subscribe({
+                next: response => {
+                  this.toastr.success('Usuário criado com sucesso!', 'Sucesso');
+                  this.formCadastrar.reset();
+                  this.router.navigate(['/login']);
+                },
+                error: error => {
+                  this.toastr.error('Erro ao salvar usuário no backend.', 'Erro');
+                }
+              });
+          } catch (firebaseError: any) {
+            this.spinner.hide("loadCadastroUsuario");
+            this.toastr.error(firebaseError.message || 'Erro ao criar usuário no Firebase.', 'Erro');
+          }
         },
-        error: error => {
-          this.toastr.error('Erro ao salvar usuário no backend.', 'Erro');
+        error: (error) => {
+          this.spinner.hide("loadCadastroUsuario");
+          this.toastr.error(error.error?.erro || 'Usuário já existe no sistema.', 'Erro');
         }
       });
   }

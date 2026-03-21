@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface RankingItem {
-  posicao: number;
-  nome: string;
-  pontuacao: number;
-}
+import { RankService } from 'src/app/home/services/rank.service';
+import { RankResponse } from 'src/app/home/models/responses/rank.response';
+import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-ranking',
@@ -14,43 +13,67 @@ interface RankingItem {
 })
 export class RankingComponent implements OnInit {
   bolaoToken: string = '';
-  jogadores: RankingItem[] = [];
+  jogadores: RankResponse[] = [];
   currentPage = 1;
   pageSize = 8;
+  modalAberto = false;
+  usuarioSelecionado = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private rankService: RankService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.capturarToken();
-    this.carregarRankingMockado();
   }
 
   capturarToken(): void {
     this.route.paramMap.subscribe(params => {
-      this.bolaoToken = params.get('tokenAcesso') ?? '';
+      const encodedToken = params.get('tokenAcesso') ?? '';
+      this.bolaoToken = encodedToken ? decodeURIComponent(encodedToken) : '';
+      if (this.bolaoToken) {
+        this.carregarRanking();
+      }
     });
   }
 
-  carregarRankingMockado(): void {
-    this.jogadores = Array.from({ length: 36 }).map((_, index) => ({
-      posicao: index + 1,
-      nome: `Jogador ${index + 1}`,
-      pontuacao: 220 - index * 3
-    }));
+  carregarRanking(): void {
+    const request = new HashBolaoRequest({ HashBolao: this.bolaoToken });
+    this.spinner.show('carregando');
+
+    this.rankService.listar(request)
+      .pipe(finalize(() => this.spinner.hide('carregando')))
+      .subscribe({
+        next: (dados: RankResponse[]) => {
+          this.jogadores = dados ?? [];
+          this.currentPage = 1;
+        },
+        error: () => {
+          this.jogadores = [];
+        }
+      });
   }
 
   get totalPages(): number {
     return Math.ceil(this.jogadores.length / this.pageSize);
   }
 
-  get paginaAtual(): RankingItem[] {
+  get paginaAtual(): RankResponse[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.jogadores.slice(start, start + this.pageSize);
   }
 
   navegarPalpites(nomeJogador: string): void {
-    // placeholder for future navigation/logic
-    console.log(`Visualizar palpites de ${nomeJogador}`);
+    this.usuarioSelecionado = nomeJogador;
+    this.modalAberto = true;
+  }
+
+  fecharModal(): void {
+    this.modalAberto = false;
+    this.usuarioSelecionado = '';
   }
 
   alterarPagina(delta: number): void {

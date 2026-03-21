@@ -1,10 +1,15 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { BolaoService } from 'src/app/home/services/bolao.service';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { BolaoUsuarioResponse } from 'src/app/home/models/responses/bolao-usuario.response';
 import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { RankService } from 'src/app/home/services/rank.service';
+import { RankResponse } from 'src/app/home/models/responses/rank.response';
+import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs';
+import { UsuarioService } from 'src/app/shared/services/usuario.service';
 
 @Component({
   selector: 'app-home',
@@ -17,33 +22,58 @@ export class HomeComponent implements OnInit {
 
   boloesUsuarios: BolaoUsuarioResponse[] = [];
   selectedBolaoUsuario: BolaoUsuarioResponse = new BolaoUsuarioResponse({});
+  ranking: RankResponse[] = [];
+  rankingPreview: RankResponse[] = [];
+  readonly rankingMaxDisplay = 8;
+  usuarioLogado: UsuarioResponse | null = null;
 
   modalRef!: BsModalRef;
 
   usuarioEhAdmin: boolean = false;
 
   constructor(
-    private bolaoService: BolaoService,
     private bolaoUsuarioService: BoloesUsuariosService,
+    private rankService: RankService,
+    private usuarioService: UsuarioService,
     private router: Router,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
-    this.recuperarBoloesUsuario();
+    this.carregarUsuarioLogado();
+  }
 
-    if (this.boloesUsuarios && this.boloesUsuarios.length > 0) {
-      this.selectedBolaoUsuario = this.boloesUsuarios[0];
-    }
+  carregarUsuarioLogado(): void {
+    this.spinner.show('carregando');
+
+    this.usuarioService.obterUsuarioLogado()
+      .pipe(finalize(() => this.spinner.hide('carregando')))
+      .subscribe({
+        next: (usuario: UsuarioResponse) => {
+          this.usuarioLogado = usuario;
+          this.recuperarBoloesUsuario();
+        },
+        error: () => {
+          this.usuarioLogado = null;
+          this.recuperarBoloesUsuario();
+        }
+      });
   }
 
   recuperarBoloesUsuario() {
-    this.bolaoUsuarioService.recuperarBoloesUsuario(this.recuperaUsuarioLogado()?.firebaseUid ?? '').subscribe({
+    this.spinner.show('carregando');
+
+    this.bolaoUsuarioService.recuperarBoloesUsuario()
+      .pipe(finalize(() => this.spinner.hide('carregando')))
+      .subscribe({
       next: (response: BolaoUsuarioResponse[]) => {
         this.boloesUsuarios = response;
 
         if (this.boloesUsuarios.length > 0) {
           this.selecionaBolao(this.boloesUsuarios[0]);
+        } else {
+          this.limparRanking();
         }
       }
     });
@@ -56,15 +86,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  recuperaUsuarioLogado(): UsuarioResponse | null {
-    const usuarioLogado = sessionStorage.getItem('auth-user');
-
-    return usuarioLogado ? JSON.parse(usuarioLogado).usuario : null;
-  }
-
   selecionaBolao(bolaoUsuario: BolaoUsuarioResponse): void {
     this.selectedBolaoUsuario = bolaoUsuario;
-    this.usuarioEhAdmin = this.selectedBolaoUsuario?.bolao?.administrador === this.recuperaUsuarioLogado()?.nome;
+    this.usuarioEhAdmin = this.selectedBolaoUsuario?.bolao?.administrador === this.usuarioLogado?.nome;
+
+    const token = this.selectedBolaoUsuario?.bolao?.tokenAcesso;
+    if (token) {
+      this.carregarRanking(token);
+    } else {
+      this.limparRanking();
+    }
   }
 
   navigateToEditBolao(): void {
@@ -89,6 +120,82 @@ export class HomeComponent implements OnInit {
       const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
       this.router.navigate(['/home', 'ranking', encodedToken]);
     }
+  }
+
+  verPremios(): void {
+    if (this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      const encodedToken = encodeURIComponent(this.selectedBolaoUsuario.bolao.tokenAcesso);
+      this.router.navigate(['/home', 'premios', encodedToken]);
+    }
+  }
+
+  carregarRanking(tokenAcesso: string): void {
+    const request = new HashBolaoRequest({ HashBolao: tokenAcesso });
+    this.spinner.show('carregando');
+
+    this.rankService.listar(request)
+      .pipe(finalize(() => this.spinner.hide('carregando')))
+      .subscribe({
+      next: (dados: RankResponse[]) => {
+        this.ranking = dados ?? [];
+        this.rankingPreview = this.ranking.slice(0, this.rankingMaxDisplay);
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 1', pontuacao: 20 }) );
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 2', pontuacao: 15 }) );
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 3', pontuacao: 10 }) );
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 1', pontuacao: 20 }) );
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 2', pontuacao: 15 }) );
+        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 3', pontuacao: 10 }) );
+      },
+      error: () => {
+        this.limparRanking();
+      }
+    });
+  }
+
+  trackRanking(index: number, item: RankResponse): string {
+    return `${index}-${item.usuario}`;
+  }
+
+  getTrophyClasses(posicao: number): string {
+    if (posicao === 0) {
+      return 'fa-solid fa-trophy text-warning fs-5 mt-1';
+    }
+
+    if (posicao === 1) {
+      return 'fa-solid fa-trophy text-secondary fs-5 mt-1';
+    }
+
+    if (posicao === 2) {
+      return 'fa-solid fa-trophy bronze-trophy fs-5 mt-1';
+    }
+
+    return 'fa-solid fa-trophy bronze-trophy fs-5 invisible';
+  }
+
+  getTrophyColorClass(index: number): string {
+    if (index === 0) return 'text-warning'; // Gold
+    if (index === 1) return 'text-secondary'; // Silver
+    if (index === 2) return 'bronze-trophy'; // Bronze
+    return 'text-muted';
+  }
+
+  getPremioValue(descricao: string | undefined): string {
+    if (!descricao) return '';
+    // Extract number and unit (e.g., "1000 reais" -> "1000")
+    const match = descricao.match(/^(\d+)/);
+    return match ? match[1] : descricao;
+  }
+
+  getPremioLabel(descricao: string | undefined): string {
+    if (!descricao) return '';
+    // Extract label after number (e.g., "1000 reais" -> "reais")
+    const match = descricao.match(/^\d+\s*(.+)/);
+    return match ? match[1] : '';
+  }
+
+  private limparRanking(): void {
+    this.ranking = [];
+    this.rankingPreview = [];
   }
 
   openModal(modal: TemplateRef<HTMLDivElement>, modalClass: string) {
