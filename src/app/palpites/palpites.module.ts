@@ -8,12 +8,12 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SharedModule } from '../shared/shared.module';
-import { FaseDeGrupoAccordionComponent } from './modais/fase-de-grupo-modal/fase-de-grupo-accordion.component';
+import { FaseDeGrupoAccordionComponent } from './modais/fase-de-grupo-accordion/fase-de-grupo-accordion.component';
 import { TabelaGrupoComponent } from './components/tabela-grupo/tabela-grupo.component';
-import { ArtilheiroModalComponent } from './modais/artilheiro-modal/artilheiro-modal.component';
+import { ArtilheiroAccordionComponent } from './modais/artilheiro-accordion/artilheiro-accordion.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FaseEliminatoriaModalComponent } from './modais/fase-eliminatoria-modal/fase-eliminatoria-modal.component';
-import { JogosBrModalComponent } from './modais/jogos-br-modal/jogos-br-modal.component';
+import { FaseEliminatoriaAccordionComponent } from './modais/fase-eliminatoria-accordion/fase-eliminatoria-accordion.component';
+import { JogosBrAccordionComponent } from './modais/jogos-br-accordion/jogos-br-accordion.component';
 import { MelhoresTerceirosAccordeonComponent } from './modais/melhores-terceiros-accordeon/melhores-terceiros-accordeon.component';
 import { TabelaTerceiroComponent } from './components/tabela-terceiro/tabela-terceiro.component';
 
@@ -22,9 +22,9 @@ import { TabelaTerceiroComponent } from './components/tabela-terceiro/tabela-ter
     PalpitesComponent,
     FaseDeGrupoAccordionComponent,
     TabelaGrupoComponent,
-    ArtilheiroModalComponent,
-    FaseEliminatoriaModalComponent,
-    JogosBrModalComponent,
+    ArtilheiroAccordionComponent,
+    FaseEliminatoriaAccordionComponent,
+    JogosBrAccordionComponent,
     MelhoresTerceirosAccordeonComponent,
     TabelaTerceiroComponent
   ],

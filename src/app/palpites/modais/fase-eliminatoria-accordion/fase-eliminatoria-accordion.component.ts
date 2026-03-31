@@ -41,10 +41,10 @@ export const FASES: Fase[] = [
 
 @Component({
   selector: 'app-fase-eliminatoria',
-  templateUrl: './fase-eliminatoria-modal.component.html',
-  styleUrls: ['./fase-eliminatoria-modal.component.css']
+  templateUrl: './fase-eliminatoria-accordion.component.html',
+  styleUrls: ['./fase-eliminatoria-accordion.component.css']
 })
-export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
+export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
 
   selecoesClassificadas: SelecoesEliminatoriaResponse[] = MOCK_SELECOES_ELIMINATORIA;
   @Input() modoClicarParaAvancarDeFase: boolean = false;
@@ -295,15 +295,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
           this.terceiroLugar.perdedor = null;
         }
       }
-
-      console.log('Eliminatórias recuperadas:', {
-        dezesseisAvos: this.dezesseisAvos,
-        oitavas: this.oitavas,
-        quartas: this.quartas,
-        semifinais: this.semifinais,
-        final: this.final,
-        terceiroLugar: this.terceiroLugar
-      });
     });
   }
   
@@ -510,16 +501,7 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     return (this.eliminatoriasForm.get('dezesseisAvos') as FormArray).controls;
   }
 
-  salvarPalpites(): void {
-    console.log('Salvando palpites das eliminatórias...');
-    console.log('Modo clique:', this.modoClicarParaAvancarDeFase);
-    console.log('Form value:', this.eliminatoriasForm.value);
-    console.log('Dezesseis avos:', this.dezesseisAvos);
-    console.log('Oitavas:', this.oitavas);
-    console.log('Quartas:', this.quartas);
-    console.log('Semifinais:', this.semifinais);
-    console.log('Final:', this.final);
-    
+  salvarPalpites(): void {    
     // No modo de clique, não validamos o formulário pois os vencedores vêm dos objetos Jogo
     const deveValidarFormulario = !this.modoClicarParaAvancarDeFase;
     
@@ -535,7 +517,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     // Processar Rodada de 16 (IdFase = 1) - Enviar todas as seleções
     this.dezesseisAvos.forEach((jogo, index) => {
       if (jogo.timeA && jogo.timeA.id) {
-        console.log(`Rodada 16 - Jogo ${index} Time A: ${jogo.timeA.nome} (ID: ${jogo.timeA.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 1,
           IdSelecao: jogo.timeA.id,
@@ -543,7 +524,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
         }));
       }
       if (jogo.timeB && jogo.timeB.id) {
-        console.log(`Rodada 16 - Jogo ${index} Time B: ${jogo.timeB.nome} (ID: ${jogo.timeB.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 1,
           IdSelecao: jogo.timeB.id,
@@ -555,7 +535,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     // Processar Oitavas (IdFase = 2) - Enviar todas as seleções
     this.oitavas.forEach((jogo, index) => {
       if (jogo.timeA && jogo.timeA.id) {
-        console.log(`Oitavas - Jogo ${index} Time A: ${jogo.timeA.nome} (ID: ${jogo.timeA.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 2,
           IdSelecao: jogo.timeA.id,
@@ -563,7 +542,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
         }));
       }
       if (jogo.timeB && jogo.timeB.id) {
-        console.log(`Oitavas - Jogo ${index} Time B: ${jogo.timeB.nome} (ID: ${jogo.timeB.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 2,
           IdSelecao: jogo.timeB.id,
@@ -575,7 +553,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     // Processar Quartas (IdFase = 3) - Enviar todas as seleções
     this.quartas.forEach((jogo, index) => {
       if (jogo.timeA && jogo.timeA.id) {
-        console.log(`Quartas - Jogo ${index} Time A: ${jogo.timeA.nome} (ID: ${jogo.timeA.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 3,
           IdSelecao: jogo.timeA.id,
@@ -583,7 +560,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
         }));
       }
       if (jogo.timeB && jogo.timeB.id) {
-        console.log(`Quartas - Jogo ${index} Time B: ${jogo.timeB.nome} (ID: ${jogo.timeB.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 3,
           IdSelecao: jogo.timeB.id,
@@ -595,7 +571,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     // Processar Semifinais (IdFase = 4) - Enviar todas as seleções
     this.semifinais.forEach((jogo, index) => {
       if (jogo.timeA && jogo.timeA.id) {
-        console.log(`Semifinais - Jogo ${index} Time A: ${jogo.timeA.nome} (ID: ${jogo.timeA.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 4,
           IdSelecao: jogo.timeA.id,
@@ -603,7 +578,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
         }));
       }
       if (jogo.timeB && jogo.timeB.id) {
-        console.log(`Semifinais - Jogo ${index} Time B: ${jogo.timeB.nome} (ID: ${jogo.timeB.id})`);
         requests.push(new CriarPalpiteFaseSelecaoRequest({
           IdFase: 4,
           IdSelecao: jogo.timeB.id,
@@ -614,7 +588,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
 
     // Processar Final (IdFase = 5) - Enviar todas as seleções
     if (this.final.timeA && this.final.timeA.id) {
-      console.log(`Final Time A: ${this.final.timeA.nome} (ID: ${this.final.timeA.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 5,
         IdSelecao: this.final.timeA.id,
@@ -622,7 +595,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
       }));
     }
     if (this.final.timeB && this.final.timeB.id) {
-      console.log(`Final Time B: ${this.final.timeB.nome} (ID: ${this.final.timeB.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 5,
         IdSelecao: this.final.timeB.id,
@@ -632,7 +604,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
 
     // Processar Terceiro Lugar (IdFase = 6) - Enviar todas as seleções
     if (this.terceiroLugar.timeA && this.terceiroLugar.timeA.id) {
-      console.log(`Terceiro Lugar Time A: ${this.terceiroLugar.timeA.nome} (ID: ${this.terceiroLugar.timeA.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 6,
         IdSelecao: this.terceiroLugar.timeA.id,
@@ -640,7 +611,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
       }));
     }
     if (this.terceiroLugar.timeB && this.terceiroLugar.timeB.id) {
-      console.log(`Terceiro Lugar Time B: ${this.terceiroLugar.timeB.nome} (ID: ${this.terceiroLugar.timeB.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 6,
         IdSelecao: this.terceiroLugar.timeB.id,
@@ -661,7 +631,6 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     }
     
     if (vencedorFinal && vencedorFinal.id) {
-      console.log(`Campeão: ${vencedorFinal.nome} (ID: ${vencedorFinal.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 7,
         IdSelecao: vencedorFinal.id,
@@ -682,16 +651,12 @@ export class FaseEliminatoriaModalComponent implements OnInit, OnChanges {
     }
     
     if (vencedorTerceiroLugar && vencedorTerceiroLugar.id) {
-      console.log(`Terceiro Lugar: ${vencedorTerceiroLugar.nome} (ID: ${vencedorTerceiroLugar.id})`);
       requests.push(new CriarPalpiteFaseSelecaoRequest({
         IdFase: 8,
         IdSelecao: vencedorTerceiroLugar.id,
         HashBolao: this.hashBolao
       }));
     }
-
-    console.log('Total de requests:', requests.length);
-    console.log('Requests:', requests);
 
     // Enviar todos os palpites para o backend
     if (requests.length > 0) {

@@ -301,7 +301,6 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       const regrasGroup = this.formularioBolao.get('regras') as FormGroup;
 
       bolao.regras.forEach(regra => {
-        console.log(`Tentando definir regra ${regra.id}`, regra);
         const regraId = regra.regra?.id ?? regra.id;
         const regraControlId = regraId.toString();
 

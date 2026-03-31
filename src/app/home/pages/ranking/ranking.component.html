@@ -28,9 +28,33 @@
                 <span class="badge bg-success bg-opacity-75 text-dark px-3 py-2">{{ jogador.pontuacao }}</span>
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-outline-success btn-sm" (click)="navegarPalpites(jogador.usuario)">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
+                <ng-container *ngIf="usuarioEhAdmin; else apenasVisualizar">
+                  <div class="dropdown">
+                    <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <button class="dropdown-item" (click)="navegarPalpites(jogador.usuario)">
+                          <i class="fa-solid fa-eye me-2"></i>Ver palpites
+                        </button>
+                      </li>
+                      <ng-container *ngIf="jogador.usuario !== nomeUsuarioLogado">
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <button class="dropdown-item text-danger" (click)="excluirJogador(jogador)">
+                            <i class="fa-solid fa-user-minus me-2"></i>Remover do bolão
+                          </button>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </ng-container>
+                <ng-template #apenasVisualizar>
+                  <button type="button" class="btn btn-outline-success btn-sm" (click)="navegarPalpites(jogador.usuario)">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </ng-template>
               </td>
             </tr>
           </tbody>

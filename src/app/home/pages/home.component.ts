@@ -10,6 +10,10 @@ import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.requ
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
 import { UsuarioService } from 'src/app/shared/services/usuario.service';
+import { BolaoService } from 'src/app/home/services/bolao.service';
+import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -33,11 +37,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private bolaoUsuarioService: BoloesUsuariosService,
+    private bolaoService: BolaoService,
     private rankService: RankService,
     private usuarioService: UsuarioService,
     private router: Router,
     private modalService: BsModalService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -89,6 +95,7 @@ export class HomeComponent implements OnInit {
   selecionaBolao(bolaoUsuario: BolaoUsuarioResponse): void {
     this.selectedBolaoUsuario = bolaoUsuario;
     this.usuarioEhAdmin = this.selectedBolaoUsuario?.bolao?.administrador === this.usuarioLogado?.nome;
+    this.bolaoUsuarioService.setAdminState(this.usuarioEhAdmin, this.usuarioLogado?.nome ?? '');
 
     const token = this.selectedBolaoUsuario?.bolao?.tokenAcesso;
     if (token) {
@@ -213,5 +220,42 @@ export class HomeComponent implements OnInit {
 
   ingressarBolao() {
     this.router.navigateByUrl('/hub-boloes');
+  }
+
+  sairBolao(): void {
+    if (!this.selectedBolaoUsuario?.bolao?.tokenAcesso) {
+      return;
+    }
+
+    Swal.fire({
+      title: 'Sair do bolão?',
+      text: `Tem certeza que deseja sair do bolão "${this.selectedBolaoUsuario.bolao.nome}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sim, sair',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const request = new AssociarUsuarioRequest({ 
+          HashBolao: this.selectedBolaoUsuario.bolao!.tokenAcesso!,
+          IdUsuarioASerAlterado: this.usuarioLogado?.id
+        });
+        this.spinner.show('carregando');
+        this.bolaoService.desassociarUsuarioBolao(request)
+          .pipe(finalize(() => this.spinner.hide('carregando')))
+          .subscribe({
+            next: () => {
+              this.toastr.success('Você saiu do bolão com sucesso.', 'Sucesso');
+              this.recuperarBoloesUsuario();
+            },
+            error: (error) => {
+              this.toastr.error(error.error?.erro || 'Erro ao sair do bolão.', 'Erro');
+              console.error('Erro ao sair do bolão:', error);
+            }
+          });
+      }
+    });
   }
 }

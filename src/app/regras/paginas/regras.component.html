@@ -2,8 +2,15 @@
 <div class="container">
 
   <div class="row mt-4">
-    <h4 class="">Regras do bolão</h4>
-    <p class="text-muted">Confira todas as regras e critérios de pontuação deste bolão</p>
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Regras do bolão</h4>
+      <button *ngIf="usuarioEhAdmin" type="button" class="btn btn-link text-success p-0 text-decoration-none flex-shrink-0"
+        (click)="navigateToEditBolao()">
+        <i class="fa-solid fa-pen-to-square me-1"></i>
+        Editar bolão
+      </button>
+    </div>
+    <p class="text-muted mt-1 mb-0">Confira todas as regras e critérios de pontuação deste bolão</p>
   </div>
 
   <!-- Regras Cards -->

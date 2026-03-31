@@ -1,14 +1,14 @@
 <app-cabecalho></app-cabecalho>
 
-<div class="container">
+<div class="container mb-5">
     <!-- Bolão "tab" selector with horizontal scrolling - Mobile/Tablet only -->
     <div class="row px-2 d-lg-none" *ngIf="boloesUsuarios.length != 0">
         <div class="col-md-12 py-3 d-flex">
             <!-- Fixed "Criar bolão" button - centered vertically -->
             <div class="d-flex flex-column align-items-center justify-content-center rounded-circle create-bolao-button me-3 flex-shrink-0"
                 [routerLink]="['/hub-boloes']">
-                <i class="fa-solid fa-circle-plus text-success fs-3"></i>
-                <span class="text-muted my-1 create-bolao-text">Novo bolão</span>
+                <i class="fa-solid fa-circle-plus text-success fs-3 mt-2"></i>
+                <span class="text-muted my-2 create-bolao-text">Novo bolão</span>
             </div>
 
             <!-- Scrollable bolões container -->
@@ -46,10 +46,9 @@
                 <div class="row ">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="text-muted fw-bold m-0">Prêmios</h6>
-                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn btn-sm btn-outline-primary"
-                            (click)="navigateToEditBolao()">
-                            <i class="fa-solid fa-pen-to-square mx-1"></i>
-                            Editar bolão
+                        <button type="button" class="btn btn-link text-primary link-no-decoration p-0"
+                            (click)="verPremios()">
+                            Ver prêmios
                         </button>
                     </div>
                 </div>
@@ -118,7 +117,7 @@
                 </div>
 
                 <div class="row justify-content-center mx-3">
-                    <div class="col-6 col-sm-4 col-md-3 px-1">
+                    <div *ngIf="!usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
                         <button class="btn btn-outline-success w-100" (click)="verRegras()">Ver regras</button>
                     </div>
                     <div *ngIf="usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
@@ -126,7 +125,10 @@
                             (click)="openModal(modalConvite, 'modal-md modal-dialog modal-dialog-centered')">Convidar</button>
                     </div>
                     <div *ngIf="!usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
-                        <button class="btn btn-outline-success w-100" (click)="verPremios()">Ver prêmios</button>
+                        <button class="btn btn-outline-success w-100" (click)="sairBolao()">Sair bolão</button>
+                    </div>
+                    <div *ngIf="usuarioEhAdmin" class="col-6 col-sm-4 col-md-3 px-1">
+                        <button class="btn btn-outline-success w-100" (click)="navigateToEditBolao()">Editar bolão</button>
                     </div>
                 </div>
 
@@ -134,7 +136,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-2 mt-4">
                         <h6 class="text-muted fw-bold m-0">Ranking</h6>
                         <button type="button" class="btn btn-link text-primary link-no-decoration p-0" (click)="verRanking()">
-                            Ver Ranking
+                            Ver jogadores
                         </button>
                     </div>
                 </div>
@@ -181,7 +183,7 @@
                         <h6 class="text-muted fw-bold m-0">Ranking</h6>
                         <button type="button" class="btn btn-link text-success link-no-decoration p-0" (click)="verRanking()">
                             <i class="fa-solid fa-eye me-1"></i>
-                            Ver Ranking
+                            Ver jogadores
                         </button>
                     </div>
 
@@ -203,9 +205,9 @@
                 <div class="desktop-actions-container">
                     <div class="row" [ngClass]="{'justify-content-end': !usuarioEhAdmin}">
                         <div class="col-4" *ngIf="usuarioEhAdmin">
-                            <button class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="verRegras()">
-                                <i class="fa-solid fa-book me-2"></i>
-                                <span>Ver regras</span>
+                            <button class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="navigateToEditBolao()">
+                                <i class="fa-solid fa-pen-to-square me-2"></i>
+                                <span>Editar bolão</span>
                             </button>
                         </div>
                         <div class="col-4">
@@ -214,9 +216,9 @@
                                 <i class="fa-solid fa-user-plus me-2"></i>
                                 <span>Convidar amigo</span>
                             </button>
-                            <button *ngIf="!usuarioEhAdmin" class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="verPremios()">
-                                <i class="fa-solid fa-trophy me-2"></i>
-                                <span>Ver prêmios</span>
+                            <button *ngIf="!usuarioEhAdmin" class="btn btn-outline-success w-100 desktop-action-btn bg-white" (click)="sairBolao()">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                <span>Sair bolão</span>
                             </button>
                         </div>
                         <div class="col-4" *ngIf="!usuarioEhAdmin">
@@ -267,10 +269,10 @@
                 <div class="p-4 border rounded bg-white desktop-card premios-card mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-muted fw-bold m-0">Prêmios</h6>
-                        <button *ngIf="usuarioEhAdmin" type="button" class="btn btn-link text-success link-no-decoration p-0"
-                            (click)="navigateToEditBolao()">
-                            <i class="fa-solid fa-pen-to-square me-1"></i>
-                            Editar bolão
+                        <button type="button" class="btn btn-link text-success link-no-decoration p-0"
+                            (click)="verPremios()">
+                            <i class="fa-solid fa-trophy me-1"></i>
+                            Ver prêmios
                         </button>
                     </div>
 
@@ -340,8 +342,6 @@
         </div>
     </ng-template>      
 </div>
-
-<app-rodape></app-rodape>
 
 <ng-template #modalConvite>
     <app-convidar-bolao-modal [bolao]="selectedBolaoUsuario.bolao!"

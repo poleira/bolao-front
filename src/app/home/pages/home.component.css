@@ -87,13 +87,13 @@
 }
 
 .trophy-large {
-  width: clamp(4rem, 18vw, 6.5rem);
-  height: clamp(4rem, 18vw, 6.5rem);
+  width: clamp(2.5rem, 18vw, 6.5rem);
+  height: clamp(2.5rem, 18vw, 6.5rem);
 }
 
 .trophy-small {
-  width: clamp(3rem, 14vw, 4.5rem);
-  height: clamp(3rem, 14vw, 4.5rem);
+  width: clamp(2rem, 14vw, 4.5rem);
+  height: clamp(2rem, 14vw, 4.5rem);
 }
 
 .trophy-icon {
@@ -103,25 +103,25 @@
 }
 
 .trophy-fallback {
-  font-size: 6rem;
+  font-size: clamp(2.5rem, 15vw, 6rem);
 }
 
 .trophy-large .trophy-fallback {
-  font-size: 8rem;
+  font-size: clamp(3rem, 18vw, 8rem);
 }
 
 .trophy-small .trophy-fallback {
-  font-size: 5rem;
+  font-size: clamp(2rem, 12vw, 5rem);
 }
 
 .premio-value {
-  font-size: 1rem;
+  font-size: clamp(0.7rem, 3vw, 1rem);
   font-weight: 600;
   color: #333;
 }
 
 .premio-label {
-  font-size: 0.875rem;
+  font-size: clamp(0.6rem, 2.5vw, 0.875rem);
 }
 
 .position-badge {
@@ -139,7 +139,7 @@
 
 @media (max-width: 576px) {
   .premio-card {
-    max-width: 90%;
+    max-width: min(120px, 28vw);
   }
 }
 
@@ -179,7 +179,19 @@
 
 /* Ensure the bolão items have a minimum width */
 .bolaoUsuario {
-  min-width: 60px;
+  min-width: 95px;
+  max-width: 95px;
+  width: 95px;
+  margin-left: 6px !important;
+  margin-right: 6px !important;
+}
+
+.bolaoUsuario .small-text {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Desktop Layout Styles */

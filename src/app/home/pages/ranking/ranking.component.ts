@@ -5,6 +5,11 @@ import { RankResponse } from 'src/app/home/models/responses/rank.response';
 import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
+import { BolaoService } from 'src/app/home/services/bolao.service';
+import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
+import { ToastrService } from 'ngx-toastr';
+import { BoloesUsuariosService } from 'src/app/shared/services/boloes-usuarios.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ranking',
@@ -18,15 +23,24 @@ export class RankingComponent implements OnInit {
   pageSize = 8;
   modalAberto = false;
   usuarioSelecionado = '';
+  usuarioEhAdmin = false;
+  nomeUsuarioLogado = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private rankService: RankService,
+    private bolaoService: BolaoService,
+    private boloesUsuariosService: BoloesUsuariosService,
+    private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
+    this.boloesUsuariosService.getAdminState().subscribe(state => {
+      this.usuarioEhAdmin = state.usuarioEhAdmin;
+      this.nomeUsuarioLogado = state.nomeUsuarioLogado;
+    });
     this.capturarToken();
   }
 
@@ -88,5 +102,37 @@ export class RankingComponent implements OnInit {
 
   voltarHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  excluirJogador(jogador: RankResponse): void {
+    Swal.fire({
+      title: 'Remover jogador?',
+      text: `Tem certeza que deseja remover "${jogador.usuario}" do bolão?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sim, remover',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const request = new AssociarUsuarioRequest({
+          HashBolao: this.bolaoToken,
+          IdUsuarioASerAlterado: jogador.idUsuario
+        });
+        this.spinner.show('carregando');
+        this.bolaoService.desassociarUsuarioBolao(request)
+          .pipe(finalize(() => this.spinner.hide('carregando')))
+          .subscribe({
+            next: () => {
+              this.toastr.success(`"${jogador.usuario}" foi removido do bolão.`, 'Sucesso');
+              this.carregarRanking();
+            },
+            error: (error) => {
+              this.toastr.error(error.error?.erro || 'Erro ao remover jogador.', 'Erro');
+            }
+          });
+      }
+    });
   }
 }

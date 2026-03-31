@@ -1,4 +1,5 @@
-<app-cabecalho></app-cabecalho>
+<app-cabecalho *ngIf="!modoEdicao"></app-cabecalho>
+<app-cabecalho *ngIf="modoEdicao" [mostrarBotaoVoltar]="true"></app-cabecalho>
 
 <div class="container">
     <div class="row mt-3">

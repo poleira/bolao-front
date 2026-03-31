@@ -12,6 +12,10 @@ export class BoloesUsuariosService {
   private apiUrl = `${environment.api}boloes-usuarios`;
 
   private bolaoUsuarioSubject = new BehaviorSubject<BolaoUsuarioResponse>({} as BolaoUsuarioResponse);
+  private adminStateSubject = new BehaviorSubject<{ usuarioEhAdmin: boolean; nomeUsuarioLogado: string }>({
+    usuarioEhAdmin: false,
+    nomeUsuarioLogado: ''
+  });
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +33,14 @@ export class BoloesUsuariosService {
 
   getBolaoUsuario(): Observable<BolaoUsuarioResponse> {
     return this.bolaoUsuarioSubject.asObservable();
+  }
+
+  setAdminState(usuarioEhAdmin: boolean, nomeUsuarioLogado: string): void {
+    this.adminStateSubject.next({ usuarioEhAdmin, nomeUsuarioLogado });
+  }
+
+  getAdminState(): Observable<{ usuarioEhAdmin: boolean; nomeUsuarioLogado: string }> {
+    return this.adminStateSubject.asObservable();
   }
 
   associarUsuarioBolaoViaHub(request: AssociarUsuarioViaHubRequest): Observable<void> {

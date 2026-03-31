@@ -1,0 +1,81 @@
+<div class="accordion" [attr.id]="'accordion-jogos-br-'+hashBolao">
+  <div class="accordion-item">
+    <h2 class="accordion-header" [id]="'heading-jogos-br-'+hashBolao">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#collapse-jogos-br-'+hashBolao"
+        aria-expanded="false"
+        [attr.aria-controls]="'collapse-jogos-br-'+hashBolao"
+      >
+        Jogos BR
+      </button>
+    </h2>
+    <div
+      [id]="'collapse-jogos-br-'+hashBolao"
+      class="accordion-collapse collapse"
+      [attr.aria-labelledby]="'heading-jogos-br-'+hashBolao"
+      [attr.data-bs-parent]="'#accordion-jogos-br-'+hashBolao"
+    >
+      <div class="accordion-body">
+        <div class="container my-2">
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="text-muted m-0">Informe o placar de cada jogo.</p>
+            <a class="text-decoration-none cursor-pointer" (click)="salvarPalpites()" href="javascript:void(0)">Salvar</a>
+          </div>
+
+          <div *ngFor="let grupo of grupos" class="mb-4">
+            <h6 class="grupo-titulo">Grupo {{ grupo.nome }}</h6>
+
+            <div class="jogo-card" *ngFor="let jogo of grupo.jogos">
+              <!-- Time A -->
+              <div class="time-wrapper">
+                <img class="flag" [src]="jogo.timeA.logo" [alt]="jogo.timeA.nome" />
+                <span class="time-nome">{{ jogo.timeA.nome }}</span>
+              </div>
+
+              <!-- Placar -->
+              <div class="placar-wrapper">
+                <input
+                  type="number"
+                  min="0"
+                  class="form-control palpite-input"
+                  [(ngModel)]="jogo.palpiteA"
+                  placeholder="-"
+                />
+                <span class="versus-x">x</span>
+                <input
+                  type="number"
+                  min="0"
+                  class="form-control palpite-input"
+                  [(ngModel)]="jogo.palpiteB"
+                  placeholder="-"
+                />
+              </div>
+
+              <!-- Time B -->
+              <div class="time-wrapper">
+                <img class="flag" [src]="jogo.timeB.logo" [alt]="jogo.timeB.nome" />
+                <span class="time-nome">{{ jogo.timeB.nome }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center mt-1">
+            <button class="btn btn-success w-100 botao-salvar" (click)="salvarPalpites()">
+              Salvar
+            </button>
+          </div>
+
+        </div>
+
+        <ngx-spinner name="jogos-br" bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="ball-spin"
+          [fullScreen]="true">
+          <p class="text-white p-0">Carregando</p>
+        </ngx-spinner>
+      </div>
+    </div>
+  </div>
+</div>

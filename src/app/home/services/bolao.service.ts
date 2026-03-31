@@ -49,6 +49,10 @@ export class BolaoService {
     return this.http.post<void>(`${this.apiUrlBoloes}/boloes-usuarios`, request);
   }
 
+  desassociarUsuarioBolao(request: AssociarUsuarioRequest): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrlBoloes}/usuarios`, { body: request });
+  }
+
   listarBoloes(request: BolaoListarRequest): Observable<BolaoListarResponse[]> {
     return this.http.get<BolaoListarResponse[]>(this.apiUrlBoloes, { params: request as any });
   }

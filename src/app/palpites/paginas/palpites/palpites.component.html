@@ -1,5 +1,5 @@
 <app-cabecalho></app-cabecalho>
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
   <div class="d-flex justify-content-between align-items-center ms-2 me-2 mb-3">
     <div class="">
       <h5 class="m-0">Sua aposta:</h5>
@@ -13,10 +13,36 @@
   <div [ngSwitch]="modoJogo?.id">
     <div *ngSwitchCase="1">
       <!-- Cada componente agora contém sua própria estrutura de accordion -->
-      <app-fase-de-grupo-accordion [hashBolao]="bolaoToken" [esconderPontuacao]="esconderPontuacao" (emitirAtualizar)="faseGrupoAtualizada = $event" (emitirPalpiteGrupoCompleto)="palpiteGrupoCompleto = $event"></app-fase-de-grupo-accordion>
-      <app-melhores-terceiros-accordeon [hashBolao]="bolaoToken" [atualizarDeFaseDeGrupo]="faseGrupoAtualizada" (emitirPalpiteTerceiroCompleto)="palpiteTerceiroCompleto = $event" class="mt-2"></app-melhores-terceiros-accordeon>
-      <app-fase-eliminatoria [hashBolao]="bolaoToken" [modoClicarParaAvancarDeFase]="true" [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto" class="mt-2"></app-fase-eliminatoria>
-      <app-artilheiro-modal [hashBolao]="bolaoToken" class="mt-2" *ngIf="contemRegra('Acertou artilheiro')"></app-artilheiro-modal> 
+      <app-fase-de-grupo-accordion 
+        [hashBolao]="bolaoToken" 
+        [esconderPontuacao]="esconderPontuacao" 
+        (emitirAtualizar)="faseGrupoAtualizada = $event" 
+        (emitirPalpiteGrupoCompleto)="palpiteGrupoCompleto = $event">
+      </app-fase-de-grupo-accordion>
+      <app-melhores-terceiros-accordeon 
+        [hashBolao]="bolaoToken" 
+        [atualizarDeFaseDeGrupo]="faseGrupoAtualizada" 
+        (emitirPalpiteTerceiroCompleto)="palpiteTerceiroCompleto = $event" 
+        class="mt-2">
+      </app-melhores-terceiros-accordeon>
+      <app-fase-eliminatoria 
+        [hashBolao]="bolaoToken" 
+        [modoClicarParaAvancarDeFase]="true" 
+        [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto" 
+        class="mt-2">
+      </app-fase-eliminatoria>
+      <app-artilheiro-accordion 
+        [hashBolao]="bolaoToken"
+        [regras]="regrasDescricoes"
+        class="mt-2" 
+        *ngIf="contemRegra('Acertou artilheiro') || contemRegra('Acertou artilheiro do Brasil')">
+      </app-artilheiro-accordion>
+      <app-jogos-br-accordion 
+        [hashBolao]="bolaoToken" 
+        class="mt-2"
+        *ngIf="contemRegra('Acertou o placar do Brasil')"
+        >
+      </app-jogos-br-accordion>
     </div>
     <div *ngSwitchDefault>
       <p>Tipo de regra não suportado.</p>

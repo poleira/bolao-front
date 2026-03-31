@@ -96,7 +96,6 @@ export class HubBoloesComponent implements OnInit {
       }
       , error: (error) => {
         this.spinner.hide("carregando");
-        console.log(error)
         this.toastr.error(error.error.erro || 'Erro ao entrar no bolão.', 'Erro');
         console.error('Erro ao pedir entrada no bolão:', error);
       }

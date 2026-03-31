@@ -71,6 +71,10 @@ export class PalpitesComponent implements OnInit {
     }
   }
 
+  get regrasDescricoes(): string[] {
+    return this.regras.map(r => r.descricao);
+  }
+
   contemRegra(descricao: string): boolean {
     return this.regras.some(r => r.descricao === descricao);
   }

@@ -98,7 +98,7 @@ export const MOCK_12_SELECOES_TERCEIROS: SelecaoResponse[] = [
   }),
 ];
 import { SelecaoResponse } from "src/app/shared/models/responses/selecao.response";
-import { SelecoesEliminatoriaResponse } from "./fase-eliminatoria-modal.component";
+import { SelecoesEliminatoriaResponse } from "./fase-eliminatoria-accordion.component";
 
 export const MOCK_SELECOES_ELIMINATORIA: SelecoesEliminatoriaResponse[] = [
   // Grupo A

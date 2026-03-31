@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MOCK_12_SELECOES_TERCEIROS } from '../../modais/fase-eliminatoria-modal/mock';
+import { MOCK_12_SELECOES_TERCEIROS } from '../../modais/fase-eliminatoria-accordion/mock';
 
 @Component({
   selector: 'app-tabela-terceiro',

@@ -9,6 +9,8 @@ import { PalpiteArtilheiroRequest } from '../shared/models/requests/palpite-arti
 import { PalpiteArtilheiroResponse } from '../shared/models/responses/palpite-artilheiro.response';
 import { JogadorResponse } from '../shared/models/responses/jogador.response';
 import { PalpiteTerceiroLugarRequest } from '../shared/models/requests/palpite-terceiro-lugar-request';
+import { PalpiteJogoGrupoRequest } from '../shared/models/requests/palpite-jogo-grupo.request';
+import { PalpiteJogoGrupoResponse } from '../shared/models/responses/palpite-jogo-grupo.response';
 import { PalpiteTerceiroLugarResponse } from '../shared/models/responses/palpite-terceiro-lugar.response';
 import { EliminatoriasResponse } from '../shared/models/responses/eliminatorias.response';
 import { CriarPalpiteFaseSelecaoRequest } from '../shared/models/requests/criar-palpite-fase-selecao.request';
@@ -48,6 +50,18 @@ export class PalpiteService {
     return this.http.get<JogadorResponse[]>(this.apiUrl + "jogadores", { params: { Nome: nome } });
   }
 
+  salvarPalpiteArtilheiroBrasil(request: PalpiteArtilheiroRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlPalpites}/artilheiros-brasil`, request);
+  }
+
+  recuperarPalpiteArtilheiroBrasil(hashBolao: string): Observable<PalpiteArtilheiroResponse> {
+    return this.http.get<PalpiteArtilheiroResponse>(`${this.apiUrlPalpites}/artilheiros-brasil`, { params: { HashBolao: hashBolao } });
+  }
+
+  listarJogadoresBrasil(nome: string): Observable<JogadorResponse[]> {
+    return this.http.get<JogadorResponse[]>(this.apiUrl + "jogadores/brasil", { params: { Nome: nome } });
+  }
+
   recuperarTerceirosLugares(hashBolao: string): Observable<SelecaoResponse[]> {
     return this.http.get<SelecaoResponse[]>(`${this.apiUrlPalpites}/terceiros-lugares`, { params: { HashBolao: hashBolao } });
   }
@@ -62,6 +76,14 @@ export class PalpiteService {
 
   recuperarEliminatorias(hashBolao: string): Observable<EliminatoriasResponse> {
     return this.http.get<EliminatoriasResponse>(`${this.apiUrlPalpites}/eliminatorias`, { params: { HashBolao: hashBolao } });
+  }
+
+  palpitarJogosGrupos(request: PalpiteJogoGrupoRequest[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlPalpites}/jogos-grupos`, request);
+  }
+
+  recuperarPalpiteJogoGrupo(hashBolao: string): Observable<PalpiteJogoGrupoResponse[]> {
+    return this.http.get<PalpiteJogoGrupoResponse[]>(`${this.apiUrlPalpites}/jogos-grupos`, { params: { HashBolao: hashBolao } });
   }
 
   palpitarEliminatorias(request: CriarPalpiteFaseSelecaoRequest[]): Observable<void> {

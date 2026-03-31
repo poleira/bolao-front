@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { GrupoResponse } from 'src/app/shared/models/responses/grupo.response';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
-import { gruposMock } from '../fase-de-grupo-modal/fase-de-grupo-accordion.component';
+import { gruposMock } from '../fase-de-grupo-accordion/fase-de-grupo-accordion.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { PalpiteGrupoSelecaoResponse } from 'src/app/shared/models/responses/paplpite-grupo-selecao.response';
