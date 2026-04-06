@@ -61,15 +61,9 @@
                                 <div class="card premio-card border-0 text-center">
                                     <div class="card-body d-flex flex-column align-items-center px-2">
                                         <div class="trophy-icon-wrapper trophy-small mb-2">
-                                            <img [src]="'assets/img/trofeu-3.png'" 
-                                                 alt="Troféu 3º lugar" 
-                                                 class="trophy-icon"
-                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                            <i class="fa-solid fa-trophy trophy-fallback" 
-                                               [ngClass]="getTrophyColorClass(2)"
-                                               style="display: none;"></i>
+                                            <img src="assets/img/terceiro-lugar.png" alt="Troféu 3º lugar" class="trophy-icon">
                                         </div>
-                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
+                                        <p class="premio-value mb-0">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
                                         <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
                                     </div>
                                 </div>
@@ -80,15 +74,9 @@
                                 <div class="card premio-card border-0 text-center">
                                     <div class="card-body d-flex flex-column align-items-center px-2">
                                         <div class="trophy-icon-wrapper trophy-large mb-2">
-                                            <img [src]="'assets/img/trofeu-1.png'" 
-                                                 alt="Troféu 1º lugar" 
-                                                 class="trophy-icon"
-                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                            <i class="fa-solid fa-trophy trophy-fallback" 
-                                               [ngClass]="getTrophyColorClass(0)"
-                                               style="display: none;"></i>
+                                            <img src="assets/img/primeiro-lugar.png" alt="Troféu 1º lugar" class="trophy-icon">
                                         </div>
-                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
+                                        <p class="premio-value mb-0">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
                                         <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
                                     </div>
                                 </div>
@@ -99,15 +87,9 @@
                                 <div class="card premio-card border-0 text-center">
                                     <div class="card-body d-flex flex-column align-items-center px-2">
                                         <div class="trophy-icon-wrapper trophy-small mb-2">
-                                            <img [src]="'assets/img/trofeu-2.png'" 
-                                                 alt="Troféu 2º lugar" 
-                                                 class="trophy-icon"
-                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                            <i class="fa-solid fa-trophy trophy-fallback" 
-                                               [ngClass]="getTrophyColorClass(1)"
-                                               style="display: none;"></i>
+                                            <img src="assets/img/segundo-lugar.png" alt="Troféu 2º lugar" class="trophy-icon">
                                         </div>
-                                        <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
+                                        <p class="premio-value mb-0">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
                                         <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
                                     </div>
                                 </div>
@@ -281,13 +263,7 @@
                             <!-- 3º Lugar -->
                             <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 3">
                                 <div class="trophy-icon-wrapper trophy-small mb-2">
-                                    <img [src]="'assets/img/trofeu-3.png'" 
-                                         alt="Troféu 3º lugar" 
-                                         class="trophy-icon"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                    <i class="fa-solid fa-trophy trophy-fallback" 
-                                       [ngClass]="getTrophyColorClass(2)"
-                                       style="display: none;"></i>
+                                    <img src="assets/img/terceiro-lugar.png" alt="Troféu 3º lugar" class="trophy-icon">
                                 </div>
                                 <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
                                 <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[2]?.descricao) }}</p>
@@ -296,13 +272,7 @@
                             <!-- 1º Lugar (maior) -->
                             <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 1">
                                 <div class="trophy-icon-wrapper trophy-large mb-2">
-                                    <img [src]="'assets/img/trofeu-1.png'" 
-                                         alt="Troféu 1º lugar" 
-                                         class="trophy-icon"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                    <i class="fa-solid fa-trophy trophy-fallback" 
-                                       [ngClass]="getTrophyColorClass(0)"
-                                       style="display: none;"></i>
+                                    <img src="assets/img/primeiro-lugar.png" alt="Troféu 1º lugar" class="trophy-icon">
                                 </div>
                                 <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
                                 <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[0]?.descricao) }}</p>
@@ -311,13 +281,7 @@
                             <!-- 2º Lugar -->
                             <div class="text-center" *ngIf="selectedBolaoUsuario.bolao?.premios && (selectedBolaoUsuario.bolao?.premios?.length || 0) >= 2">
                                 <div class="trophy-icon-wrapper trophy-small mb-2">
-                                    <img [src]="'assets/img/trofeu-2.png'" 
-                                         alt="Troféu 2º lugar" 
-                                         class="trophy-icon"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                    <i class="fa-solid fa-trophy trophy-fallback" 
-                                       [ngClass]="getTrophyColorClass(1)"
-                                       style="display: none;"></i>
+                                    <img src="assets/img/segundo-lugar.png" alt="Troféu 2º lugar" class="trophy-icon">
                                 </div>
                                 <p class="premio-value mb-1">{{ getPremioValue(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
                                 <p class="text-muted premio-label mb-0">{{ getPremioLabel(selectedBolaoUsuario.bolao?.premios?.[1]?.descricao) }}</p>
@@ -329,18 +293,16 @@
         </div>
     </div>
 
-    <ng-template #usuariosSemBoloes>
-        <div class="row" *ngIf="boloesUsuarios.length === 0">
-          <div class="d-flex justify-content-center align-items-center w-100" style="min-height: 83vh;">
-            <div class="text-center">
-              <img src="assets/img/Bola.png" width="100" height="100" alt="Ícone Bola">
-              <p class="text-muted">Você ainda não participa de nenhum bolão.</p>
-              <p class="text-muted">Crie seu próprio bolão ou entre em um existente!</p>
-              <button class="btn btn-success" (click)="ingressarBolao()">Participar de um bolão</button>
-            </div>
-          </div>
+    <div *ngIf="boloesUsuarios.length === 0">
+      <div class="d-flex justify-content-center align-items-center w-100" style="min-height: 83vh;">
+        <div class="text-center">
+          <img src="assets/img/Bola.png" width="100" height="100" alt="Ícone Bola">
+          <p class="text-muted">Você ainda não participa de nenhum bolão.</p>
+          <p class="text-muted">Crie seu próprio bolão ou entre em um existente!</p>
+          <button class="btn btn-success" (click)="ingressarBolao()">Participar de um bolão</button>
         </div>
-    </ng-template>      
+      </div>
+    </div>      
 </div>
 
 <ng-template #modalConvite>

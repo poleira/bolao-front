@@ -146,12 +146,6 @@ export class HomeComponent implements OnInit {
       next: (dados: RankResponse[]) => {
         this.ranking = dados ?? [];
         this.rankingPreview = this.ranking.slice(0, this.rankingMaxDisplay);
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 1', pontuacao: 20 }) );
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 2', pontuacao: 15 }) );
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 3', pontuacao: 10 }) );
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 1', pontuacao: 20 }) );
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 2', pontuacao: 15 }) );
-        this.rankingPreview.push(new RankResponse({ usuario: 'Usuario teste 3', pontuacao: 10 }) );
       },
       error: () => {
         this.limparRanking();
@@ -195,9 +189,9 @@ export class HomeComponent implements OnInit {
 
   getPremioLabel(descricao: string | undefined): string {
     if (!descricao) return '';
-    // Extract label after number (e.g., "1000 reais" -> "reais")
-    const match = descricao.match(/^\d+\s*(.+)/);
-    return match ? match[1] : '';
+    // Extract label after number (e.g., "1000 reais" or "1000reais" -> "reais")
+    const match = descricao.match(/^\d+\s*(\D+)/);
+    return match ? match[1].trim() : '';
   }
 
   private limparRanking(): void {

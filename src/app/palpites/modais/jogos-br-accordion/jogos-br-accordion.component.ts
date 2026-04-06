@@ -144,7 +144,7 @@ export class JogosBrAccordionComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao salvar palpites:', error);
-        this.toastr.error('Erro ao salvar os palpites. Tente novamente.', 'Erro');
+        this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar os palpites. Tente novamente.');
         this.spinner.hide('jogos-br');
       }
     });

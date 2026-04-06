@@ -13,7 +13,10 @@
                     <div class="my-3">
                         <div class="input-group rounded-0">
                             <input type="text" class="form-control rounded-0" id="nomeBolao" formControlName="NomeBolao"
-                                placeholder="Insira o nome do bolão" required />
+                                placeholder="Insira o nome do bolão" maxlength="20" required />
+                        <div *ngIf="formularioBolao.get('NomeBolao')?.errors?.['maxlength']" class="text-danger small mt-1">
+                            Máximo de 20 caracteres.
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -25,7 +28,10 @@
                 <div class="my-3">
                     <div class="input-group rounded-0">
                         <input type="text" class="form-control rounded-0" id="nomeBolaoMobile"
-                            formControlName="NomeBolao" placeholder="Insira o nome do bolão" required />
+                            formControlName="NomeBolao" placeholder="Insira o nome do bolão" maxlength="20" required />
+                        <div *ngIf="formularioBolao.get('NomeBolao')?.errors?.['maxlength']" class="text-danger small mt-1">
+                            Máximo de 20 caracteres.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -204,11 +210,14 @@
                             <label for="colocacao">{{ premio.value.Colocacao }}° Colocado</label>
                             <div class="input-group">
                                 <input type="text" class="form-control rounded-0" formControlName="Descricao"
-                                    placeholder="Descrição do prêmio" required>
+                                    placeholder="Descrição do prêmio" maxlength="15" required>
                                 <button type="button" class="btn btn-outline-danger rounded-0"
                                     (click)="removerPremio(i)" *ngIf="premios.length > 1">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button>
+                            </div>
+                            <div *ngIf="premio.get('Descricao')?.errors?.['maxlength']" class="text-danger small mt-1">
+                                Máximo de 15 caracteres.
                             </div>
                         </div>
                     </div>
@@ -223,7 +232,7 @@
                 </div>
             </div>
 
-            <!-- Mobile version of Prêmios -->
+            <!-- Mobile version de Prêmios -->
             <div class="d-md-none mx-2 ">
                 <label class="text-muted fw-bold">Prêmios</label>
                 <div class="my-3" formArrayName="Premios">
@@ -232,11 +241,14 @@
                             <label for="colocacao">{{ premio.value.Colocacao }}° Colocado</label>
                             <div class="input-group">
                                 <input type="text" class="form-control rounded-0" formControlName="Descricao"
-                                    placeholder="Descrição do prêmio" required>
+                                    placeholder="Descrição do prêmio" maxlength="15" required>
                                 <button type="button" class="btn btn-outline-danger rounded-0"
                                     (click)="removerPremio(i)" *ngIf="premios.length > 1">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button>
+                            </div>
+                            <div *ngIf="premio.get('Descricao')?.errors?.['maxlength']" class="text-danger small mt-1">
+                                Máximo de 15 caracteres.
                             </div>
                         </div>
                     </div>

@@ -16,6 +16,7 @@ import { NotificacoesService } from '../../services/notificacoes.service';
 })
 export class CabecalhoComponent implements OnInit {
     @ViewChild("modalNotificacoes", { static: true }) modalNotificacoes!: TemplateRef<HTMLDivElement>;
+    @ViewChild("modalDonate", { static: true }) modalDonate!: TemplateRef<HTMLDivElement>;
     modalRef!: BsModalRef;
 
     @Input()
@@ -76,6 +77,15 @@ export class CabecalhoComponent implements OnInit {
         return usuario;
     }
 
+    abrirModalDonate(modal: TemplateRef<HTMLDivElement>, modalClass: string) {
+        this.modalRef = this.modalService.show(modal, {
+            class: modalClass,
+            backdrop: true,
+            keyboard: false,
+            ignoreBackdropClick: true,
+        });
+    }
+
     logout() {
         this.authService.logout()
         this.toastr.success('Logout realizado com sucesso!', 'Sucesso');
@@ -110,5 +120,11 @@ export class CabecalhoComponent implements OnInit {
 
     fecharModal() {
         this.modalRef.hide();
+    }
+
+    copiarPix(): void {
+        navigator.clipboard.writeText('marcoperciano@gmail.com').then(() => {
+            this.toastr.success('Chave Pix copiada!', 'Sucesso');
+        });
     }
 }

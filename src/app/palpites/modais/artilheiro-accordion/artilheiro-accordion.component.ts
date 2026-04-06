@@ -78,8 +78,9 @@ export class ArtilheiroAccordionComponent implements OnInit {
         this.spinner.hide('artilheiro');
       },
       error: (error) => {
+        console.log(error);
         console.error('Erro ao salvar palpite do artilheiro:', error);
-        this.toastr.error('Erro!', 'Ocorreu um erro ao salvar o palpite do artilheiro. Tente novamente.');
+        this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite do artilheiro. Tente novamente.');
         this.spinner.hide('artilheiro');
       }
     });
@@ -115,7 +116,7 @@ export class ArtilheiroAccordionComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao salvar palpite do artilheiro do Brasil:', error);
-        this.toastr.error('Erro!', 'Ocorreu um erro ao salvar o palpite do artilheiro do Brasil. Tente novamente.');
+        this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite do artilheiro do Brasil. Tente novamente.');
         this.spinner.hide('artilheiro');
       }
     });

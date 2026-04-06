@@ -667,7 +667,7 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           console.error('Erro ao salvar palpites:', error);
-          this.toastr.error('Erro!', 'Ocorreu um erro ao salvar os palpites das eliminatórias. Tente novamente.');
+          this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar os palpites das eliminatórias. Tente novamente.');
         }
       });
     } else {

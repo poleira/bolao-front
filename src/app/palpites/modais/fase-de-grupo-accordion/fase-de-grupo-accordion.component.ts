@@ -145,7 +145,7 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
       },
       error: (error) => {
         console.error("Erro ao salvar palpites:", error);
-        this.toastr.error('Erro!', 'Ocorreu um erro ao salvar o palpite. Tente novamente.');
+        this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite. Tente novamente.');
         this.spinner.hide("palpite");
       }
     });

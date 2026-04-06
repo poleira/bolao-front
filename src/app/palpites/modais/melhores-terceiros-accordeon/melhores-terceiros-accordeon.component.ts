@@ -130,7 +130,7 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
       },
       error: (error) => {
         console.error('Erro ao salvar melhores terceiros:', error);
-        this.toastr.error('Erro!', 'Ocorreu um erro ao salvar a ordem dos melhores terceiros. Tente novamente.');
+        this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar a ordem dos melhores terceiros. Tente novamente.');
         this.spinner.hide('palpite');
       }
     });

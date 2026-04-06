@@ -34,16 +34,7 @@
     z-index: 1000;
 }
 
-/* For mobile devices - fixed position without floating animation */
-@media (max-width: 767px) {
-    .criar-bolao-button {
-        position: fixed;
-        bottom: 25px;
-        left: 50%;
-        transform: translateX(-50%);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-}
+
 
 /* Remove number input spinners (up/down arrows) */
 /* Chrome, Safari, Edge, Opera */

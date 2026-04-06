@@ -57,17 +57,6 @@
   background: #e9fbe9;
 }
 
-/* For mobile devices - fixed position without floating animation */
-@media (max-width: 767px) and (max-height: 812px) {
-  .palpitar-button {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-}
-
 .premio-card {
   max-width: 150px;
   background-color: transparent;

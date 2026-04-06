@@ -36,12 +36,23 @@
         </div>
 
         <!-- Artilheiro -->
-        <div class="card mb-3" *ngIf="palpites.palpiteArtilheiro">
+        <div class="card mb-3" *ngIf="palpites.palpiteArtilheiro || palpites.palpiteArtilheiroBrasil">
             <div class="card-header bg-success text-white">
                 <h6 class="mb-0">Artilheiro</h6>
             </div>
             <div class="card-body">
-                <p class="card-text">{{ palpites.palpiteArtilheiro }}</p>
+                <p class="card-text">Artilheiro geral: {{ palpites.palpiteArtilheiro }}</p>
+                <p class="card-text">Artilheiro Brasil: {{ palpites.palpiteArtilheiroBrasil }}</p>
+            </div>
+        </div>
+
+        <!-- Jogos do Brasil -->
+        <div class="card mb-3" *ngIf="palpites.palpiteResultadosJogosBrasil">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Jogos do Brasil</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text" [innerHTML]="palpites.palpiteResultadosJogosBrasil"></p>
             </div>
         </div>
     </div>

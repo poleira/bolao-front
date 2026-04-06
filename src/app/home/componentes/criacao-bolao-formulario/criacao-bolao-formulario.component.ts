@@ -43,12 +43,12 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
   inicializarFormulario(): void {
     this.formularioBolao = this.formBuilder.group({
-      NomeBolao: ['', Validators.required],
+      NomeBolao: ['', [Validators.required, Validators.maxLength(20)]],
       Logo: ['Cup'],
       ModoJogo: [1],
       Premios: this.formBuilder.array([
         this.formBuilder.group({
-          Descricao: ['', Validators.required],
+          Descricao: ['', [Validators.required, Validators.maxLength(15)]],
           Colocacao: [1]
         })
       ]),
@@ -66,7 +66,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     const position = this.premios.length + 1;
     this.premios.push(
       this.formBuilder.group({
-        Descricao: ['', Validators.required],
+        Descricao: ['', [Validators.required, Validators.maxLength(15)]],
         Colocacao: [position]
       })
     );
@@ -195,7 +195,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     }
     this.premios.push(
       this.formBuilder.group({
-        Descricao: ['', Validators.required],
+        Descricao: ['', [Validators.required, Validators.maxLength(15)]],
         Colocacao: [1]
       })
     );
@@ -265,7 +265,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
       bolao.premios.forEach(premio => {
         this.premios.push(
           this.formBuilder.group({
-            Descricao: [premio.descricao, Validators.required],
+            Descricao: [premio.descricao, [Validators.required, Validators.maxLength(15)]],
             Colocacao: [premio.colocacao]
           })
         );
@@ -273,7 +273,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     } else {
       this.premios.push(
         this.formBuilder.group({
-          Descricao: ['', Validators.required],
+          Descricao: ['', [Validators.required, Validators.maxLength(15)]],
           Colocacao: [1]
         })
       );
