@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { Subject, finalize, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
@@ -28,7 +27,6 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
 
   constructor(
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     private router: Router,
     private bolaoService: BolaoService,
     private usuarioService: UsuarioService
@@ -76,15 +74,12 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
     this.request.HashBolao = this.token;
     this.request.Senha = this.senha;
 
-    this.spinner.show("carregando");
-
     const usuarioLogado: UsuarioResponse = this.recuperarUsuarioLogado();
   
     if (usuarioLogado.email !== "") {
       this.bolaoService.associarUsuarioBolao(this.request)
         .pipe(
-          takeUntil(this.destroyed$),
-          finalize(() => this.spinner.hide("carregando"))
+          takeUntil(this.destroyed$)
         )
         .subscribe({
           next: () => {
@@ -100,7 +95,6 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
         queryParams: this.possuiSenha ? { senha: this.senha } : {} 
       });
 
-      this.spinner.hide("carregando");
       this.toastr.info('Por favor, faça login para associar-se ao bolão.');
     }
   }

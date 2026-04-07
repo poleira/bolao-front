@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BolaoFiltrado } from 'src/app/hub-boloes/paginas/hub-boloes.component';
 import { AssociarUsuarioViaHubRequest } from 'src/app/shared/models/requests/associar-usuario-hub.request';
@@ -17,7 +16,7 @@ export class SenhaBolaoModalComponent implements OnInit {
   @Output() fecharModal = new EventEmitter<void>();
   senhaBolao: string = '';
   
-  constructor(private toastr: ToastrService, private spinner: NgxSpinnerService, private bolaoUsuarioService: BoloesUsuariosService, private router: Router,) { }
+  constructor(private toastr: ToastrService, private bolaoUsuarioService: BoloesUsuariosService, private router: Router,) { }
 
   ngOnInit(): void {
   }
@@ -32,8 +31,6 @@ export class SenhaBolaoModalComponent implements OnInit {
       return;
     }
 
-    this.spinner.show('carregando');
-    
     this.bolaoUsuarioService.associarUsuarioBolaoViaHub(new AssociarUsuarioViaHubRequest({NomeBolao: this.bolao.nome, Senha: this.senhaBolao})).subscribe({
       next: () => {
         this.router.navigate(['/home']);
@@ -42,9 +39,6 @@ export class SenhaBolaoModalComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error(error.error?.erro || 'Erro ao entrar no bolão.', 'Erro');
-      },
-      complete: () => {
-        this.spinner.hide('carregando');
       }
     });
   }

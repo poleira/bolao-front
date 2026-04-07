@@ -5,7 +5,6 @@ import { debounceTime, distinctUntilChanged, merge, Observable, of, Subject, swi
 import { PalpiteArtilheiroRequest } from 'src/app/shared/models/requests/palpite-artilheiro.request';
 import { ToastrService } from 'ngx-toastr';
 import { PalpiteArtilheiroResponse } from 'src/app/shared/models/responses/palpite-artilheiro.response';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-artilheiro-accordion',
@@ -28,7 +27,7 @@ export class ArtilheiroAccordionComponent implements OnInit {
   @Input() hashBolao: string = "string";
   @Input() regras: string[] = [];
 
-  constructor(private palpiteService: PalpiteService, private toastr: ToastrService, private spinner: NgxSpinnerService) {
+  constructor(private palpiteService: PalpiteService, private toastr: ToastrService) {
     this.jogadoresTypeahead$ = this.inputBusca$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -52,7 +51,6 @@ export class ArtilheiroAccordionComponent implements OnInit {
   // --- Artilheiro Geral ---
 
   recuperarPalpite(): void {
-    this.spinner.show('artilheiro');
     this.palpiteService.recuperarPalpiteArtilheiro(this.hashBolao).subscribe({
       next: (palpite: PalpiteArtilheiroResponse) => {
         if (palpite && palpite.jogadorId != 0) {
@@ -61,27 +59,22 @@ export class ArtilheiroAccordionComponent implements OnInit {
             this.jogadores$ = merge(of(jogadores), this.jogadoresTypeahead$);
           });
         }
-        this.spinner.hide('artilheiro');
       },
       error: (error) => {
         console.error('Erro ao recuperar palpite do artilheiro:', error);
-        this.spinner.hide('artilheiro');
       }
     });
   }
 
   salvarPalpite(): void {
-    this.spinner.show('artilheiro');
     this.palpiteService.salvarPalpiteArtilheiro(new PalpiteArtilheiroRequest({ HashBolao: this.hashBolao, JogadorId: this.jogadorSelecionado })).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite artilheiro salvo com sucesso.');
-        this.spinner.hide('artilheiro');
       },
       error: (error) => {
         console.log(error);
         console.error('Erro ao salvar palpite do artilheiro:', error);
         this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite do artilheiro. Tente novamente.');
-        this.spinner.hide('artilheiro');
       }
     });
   }
@@ -89,7 +82,6 @@ export class ArtilheiroAccordionComponent implements OnInit {
   // --- Artilheiro do Brasil ---
 
   recuperarPalpiteBrasil(): void {
-    this.spinner.show('artilheiro');
     this.palpiteService.recuperarPalpiteArtilheiroBrasil(this.hashBolao).subscribe({
       next: (palpite: PalpiteArtilheiroResponse) => {
         if (palpite && palpite.jogadorId != 0) {
@@ -98,26 +90,21 @@ export class ArtilheiroAccordionComponent implements OnInit {
             this.jogadoresBrasil$ = merge(of(jogadores), this.jogadoresBrasilTypeahead$);
           });
         }
-        this.spinner.hide('artilheiro');
       },
       error: (error) => {
         console.error('Erro ao recuperar palpite do artilheiro do Brasil:', error);
-        this.spinner.hide('artilheiro');
       }
     });
   }
 
   salvarPalpiteBrasil(): void {
-    this.spinner.show('artilheiro');
     this.palpiteService.salvarPalpiteArtilheiroBrasil(new PalpiteArtilheiroRequest({ HashBolao: this.hashBolao, JogadorId: this.jogadorBrasilSelecionado })).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite artilheiro do Brasil salvo com sucesso.');
-        this.spinner.hide('artilheiro');
       },
       error: (error) => {
         console.error('Erro ao salvar palpite do artilheiro do Brasil:', error);
         this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite do artilheiro do Brasil. Tente novamente.');
-        this.spinner.hide('artilheiro');
       }
     });
   }

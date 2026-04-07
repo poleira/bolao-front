@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BolaoListarResponse } from 'src/app/home/models/responses/bolao-listar.response';
 import { BolaoService } from 'src/app/home/services/bolao.service';
@@ -32,7 +31,7 @@ export class HubBoloesComponent implements OnInit {
 
   boloesFiltrados: BolaoFiltrado[] = [];
 
-  constructor(private router: Router, private bolaoService: BolaoService, private spinner: NgxSpinnerService, private bolaoUsuarioService: BoloesUsuariosService, private modalService: BsModalService, private toastr: ToastrService,) { }
+  constructor(private router: Router, private bolaoService: BolaoService, private bolaoUsuarioService: BoloesUsuariosService, private modalService: BsModalService, private toastr: ToastrService,) { }
 
   ngOnInit(): void {
     this.boloesFiltrados = this.boloes;
@@ -40,7 +39,6 @@ export class HubBoloesComponent implements OnInit {
   }
 
   buscarBoloes(): void {
-    this.spinner.show("carregando");
     this.bolaoService.listarBoloes({ Nome: this.termoBusca }).subscribe({
       next: (response: BolaoListarResponse[]) => {
         this.boloesFiltrados = response.map(bolao => ({
@@ -49,26 +47,21 @@ export class HubBoloesComponent implements OnInit {
           premio: bolao.premio[0] || 'Sem prêmio definido',
           status: bolao.privado ? 'pedir-entrada' : (bolao.temSenha ? 'com-senha' : 'disponivel')
         }));
-        this.spinner.hide("carregando");
       }
       , error: (error) => {
         console.error('Erro ao buscar bolões:', error);
-        this.spinner.hide("carregando");
       }
     });
   }
 
   entrarBolao(bolao: BolaoFiltrado): void {
     if (bolao.status === 'disponivel') {
-      this.spinner.show("carregando");
       this.bolaoUsuarioService.associarUsuarioBolaoViaHub(new AssociarUsuarioViaHubRequest({NomeBolao: bolao.nome, Senha: ""})).subscribe({
         next: () => {
           this.toastr.success(`Você entrou no bolão ${bolao.nome}`, 'Sucesso');
-          this.spinner.hide("carregando");
           this.router.navigate(['home']);
         }
         ,error: (error) => {
-          this.spinner.hide("carregando");
           this.toastr.error('Erro ao entrar no bolão. Verifique se o bolão existe ou se você já está participando.', 'Erro');
           console.error('Erro ao associar usuário ao bolão:', error);
         }
@@ -88,14 +81,11 @@ export class HubBoloesComponent implements OnInit {
   }
 
   pedirEntrada(bolao: BolaoFiltrado): void {
-    this.spinner.show("carregando");
     this.bolaoUsuarioService.associarUsuarioBolaoViaHub(new AssociarUsuarioViaHubRequest({ NomeBolao: bolao.nome, Senha: "" })).subscribe({
       next: () => {
         this.toastr.success(`Pedido de entrada enviado para o bolão ${bolao.nome}`, 'Sucesso');
-        this.spinner.hide("carregando");
       }
       , error: (error) => {
-        this.spinner.hide("carregando");
         this.toastr.error(error.error.erro || 'Erro ao entrar no bolão.', 'Erro');
         console.error('Erro ao pedir entrada no bolão:', error);
       }

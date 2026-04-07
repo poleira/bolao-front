@@ -3,8 +3,6 @@ import { Location } from '@angular/common';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NotificacoesService } from '../../services/notificacoes.service';
@@ -32,7 +30,6 @@ export class CabecalhoComponent implements OnInit {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private spinner: NgxSpinnerService,
         private toastr: ToastrService,
         private modalService: BsModalService, 
         private notificacoesService: NotificacoesService,
@@ -40,9 +37,7 @@ export class CabecalhoComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { 
-        this.spinner.show('carregando');
         this.notificacoesService.validarSeUsuarioPossuiAlgumaNotificacaoNaoLida()
-            .pipe(finalize(() => this.spinner.hide('carregando')))
             .subscribe({
                 next: (existe: boolean) => {
                     this.existeNotificacoes = existe;

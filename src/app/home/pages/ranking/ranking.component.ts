@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RankService } from 'src/app/home/services/rank.service';
 import { RankResponse } from 'src/app/home/models/responses/rank.response';
 import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 import { ToastrService } from 'ngx-toastr';
@@ -32,8 +30,7 @@ export class RankingComponent implements OnInit {
     private rankService: RankService,
     private bolaoService: BolaoService,
     private boloesUsuariosService: BoloesUsuariosService,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -56,10 +53,8 @@ export class RankingComponent implements OnInit {
 
   carregarRanking(): void {
     const request = new HashBolaoRequest({ HashBolao: this.bolaoToken });
-    this.spinner.show('carregando');
 
     this.rankService.listar(request)
-      .pipe(finalize(() => this.spinner.hide('carregando')))
       .subscribe({
         next: (dados: RankResponse[]) => {
           this.jogadores = dados ?? [];
@@ -120,9 +115,7 @@ export class RankingComponent implements OnInit {
           HashBolao: this.bolaoToken,
           IdUsuarioASerAlterado: jogador.idUsuario
         });
-        this.spinner.show('carregando');
         this.bolaoService.desassociarUsuarioBolao(request)
-          .pipe(finalize(() => this.spinner.hide('carregando')))
           .subscribe({
             next: () => {
               this.toastr.success(`"${jogador.usuario}" foi removido do bolão.`, 'Sucesso');

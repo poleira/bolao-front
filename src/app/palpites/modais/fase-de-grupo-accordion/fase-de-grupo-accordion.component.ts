@@ -4,7 +4,6 @@ import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.respons
 import { PalpiteService } from '../../palpite.service';
 import { PalpiteGrupoSelecaoRequest } from 'src/app/shared/models/requests/palpite-grupo-selecao.request';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { PalpiteGrupoSelecaoResponse } from 'src/app/shared/models/responses/paplpite-grupo-selecao.response';
 import Swal from 'sweetalert2';
 
@@ -39,7 +38,7 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
   atualizar: boolean = false;
   palpitePreenchido: boolean = false;
 
-  constructor(private palpiteService: PalpiteService, private toastr: ToastrService, private spinner: NgxSpinnerService,) { }
+  constructor(private palpiteService: PalpiteService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.listarSelecoes();
@@ -51,22 +50,18 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
   }
 
   listarSelecoes(){
-    this.spinner.show("palpite");
     this.palpiteService.listarSelecoes().subscribe({
       next: (selecoes: SelecaoResponse[]) => {
         this.selecoes = selecoes;
-        this.spinner.hide("palpite");
       },
       error: (error) => {
         console.error('Erro ao listar seleções:', error);
         this.toastr.error('Erro!', 'Ocorreu um erro ao listar as seleções. Tente novamente.');
-        this.spinner.hide("palpite");
       }
     });
   }
 
   recuperarPalpites(){
-    this.spinner.show("palpite");
     this.palpiteService.recuperarPalpiteGrupoSelecao(this.hashBolao).subscribe({
       next: (palpites: PalpiteGrupoSelecaoResponse[]) => {
         if(palpites.length > 0) {
@@ -85,13 +80,10 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
         // Verifica se o palpite está completo (48 seleções com posição preenchida)
         const palpitesCompletos = this.selecoes.filter(s => s.posicaoSelecaoFaseDeGrupos > 0).length;
         this.emitirPalpiteGrupoCompleto.emit(palpitesCompletos === 48);
-        
-        this.spinner.hide("palpite");
       },
       error: (error) => {
         console.error('Erro ao recuperar palpites:', error);
         this.toastr.error('Erro!', 'Ocorreu um erro ao recuperar os palpites. Tente novamente.');
-        this.spinner.hide("palpite");
       }
     });
   }
@@ -131,11 +123,9 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
   }
 
   private executarSalvar(palpiteGrupoSelecao: PalpiteGrupoSelecaoRequest[]): void {
-    this.spinner.show("palpite");
     this.palpiteService.palpitarGrupoSelecao(palpiteGrupoSelecao).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite fase de grupos salvo com sucesso.');
-        this.spinner.hide("palpite");
         
         // Verifica se o palpite está completo (48 seleções com posição preenchida)
         const palpitesCompletos = palpiteGrupoSelecao.filter(p => p.PosicaoSelecao > 0).length;
@@ -146,7 +136,6 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
       error: (error) => {
         console.error("Erro ao salvar palpites:", error);
         this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar o palpite. Tente novamente.');
-        this.spinner.hide("palpite");
       }
     });
   }

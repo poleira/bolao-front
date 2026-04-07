@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-convidar-bolao-modal',
@@ -17,7 +16,6 @@ export class ConvidarBolaoModalComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     // private clipboard: Clipboard
   ) { }
 

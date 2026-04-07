@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { JogosService } from '../../jogos.service';
@@ -37,7 +36,6 @@ export class JogosBrAccordionComponent implements OnInit {
     private jogosService: JogosService,
     private palpiteService: PalpiteService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
   ) { }
 
   ngOnInit(): void {
@@ -45,17 +43,14 @@ export class JogosBrAccordionComponent implements OnInit {
   }
 
   carregarJogosBrasil(): void {
-    this.spinner.show('jogos-br');
     this.jogosService.listarJogosBrasil().subscribe({
       next: (jogos: JogoGrupoResponse[]) => {
         this.grupos = this.agruparPorGrupo(jogos);
-        this.spinner.hide('jogos-br');
         this.recuperarPalpites();
       },
       error: (error) => {
         console.error('Erro ao carregar jogos do Brasil:', error);
         this.toastr.error('Erro!', 'Ocorreu um erro ao carregar os jogos. Tente novamente.');
-        this.spinner.hide('jogos-br');
       }
     });
   }
@@ -85,16 +80,13 @@ export class JogosBrAccordionComponent implements OnInit {
   }
 
   recuperarPalpites(): void {
-    this.spinner.show('jogos-br');
     this.palpiteService.recuperarPalpiteJogoGrupo(this.hashBolao).subscribe({
       next: (palpites: PalpiteJogoGrupoResponse[]) => {
         this.preencherPalpites(palpites);
-        this.spinner.hide('jogos-br');
       },
       error: (error) => {
         console.error('Erro ao recuperar palpites dos jogos:', error);
         this.toastr.error('Erro ao recuperar os palpites. Tente novamente.', 'Erro');
-        this.spinner.hide('jogos-br');
       }
     });
   }
@@ -136,16 +128,13 @@ export class JogosBrAccordionComponent implements OnInit {
       return;
     }
 
-    this.spinner.show('jogos-br');
     this.palpiteService.palpitarJogosGrupos(requests).subscribe({
       next: () => {
         this.toastr.success('Palpites salvos com sucesso!', 'Sucesso');
-        this.spinner.hide('jogos-br');
       },
       error: (error) => {
         console.error('Erro ao salvar palpites:', error);
         this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar os palpites. Tente novamente.');
-        this.spinner.hide('jogos-br');
       }
     });
   }

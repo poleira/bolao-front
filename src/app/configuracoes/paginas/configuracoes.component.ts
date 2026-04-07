@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { UsuarioService } from 'src/app/shared/services/usuario.service';
 import { AlterarNomeUsuarioRequest } from 'src/app/shared/models/requests/alterar-nome-usuario.request';
@@ -25,7 +23,6 @@ export class ConfiguracoesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private afAuth: AngularFireAuth,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     private router: Router,
     private usuarioService: UsuarioService
   ) { }
@@ -85,15 +82,12 @@ export class ConfiguracoesComponent implements OnInit {
 
     const { senhaAtual, novaSenha } = this.alterarSenhaForm.value;
 
-    this.spinner.show('alterando-senha');
-
     try {
       // Obter o usuário atual do Firebase
       const user = await this.afAuth.currentUser;
       
       if (!user || !user.email) {
         this.toastr.error('Usuário não autenticado.', 'Erro');
-        this.spinner.hide('alterando-senha');
         return;
       }
 
@@ -101,19 +95,16 @@ export class ConfiguracoesComponent implements OnInit {
       const credential = await this.reautenticarUsuario(user.email, senhaAtual);
       
       if (!credential) {
-        this.spinner.hide('alterando-senha');
         return;
       }
 
       // Alterar a senha
       await user.updatePassword(novaSenha);
 
-      this.spinner.hide('alterando-senha');
       this.toastr.success('Senha alterada com sucesso!', 'Sucesso');
       this.alterarSenhaForm.reset();
 
     } catch (error: any) {
-      this.spinner.hide('alterando-senha');
       this.tratarErroAlteracaoSenha(error);
     }
   }
@@ -173,12 +164,9 @@ export class ConfiguracoesComponent implements OnInit {
       return;
     }
 
-    this.spinner.show('alterando-nome');
-
     const request = new AlterarNomeUsuarioRequest({ novoNome: this.novoNome.trim() });
 
     this.usuarioService.alterarNome(request)
-      .pipe(finalize(() => this.spinner.hide('alterando-nome')))
       .subscribe({
         next: (response) => {
           this.toastr.success(response.mensagem || 'Nome alterado com sucesso!', 'Sucesso');

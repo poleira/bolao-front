@@ -7,8 +7,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RankService } from 'src/app/home/services/rank.service';
 import { RankResponse } from 'src/app/home/models/responses/rank.response';
 import { HashBolaoRequest } from 'src/app/shared/models/requests/hash-bolao.request';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
 import { UsuarioService } from 'src/app/shared/services/usuario.service';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
@@ -42,7 +40,6 @@ export class HomeComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router,
     private modalService: BsModalService,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService
   ) { }
 
@@ -51,10 +48,7 @@ export class HomeComponent implements OnInit {
   }
 
   carregarUsuarioLogado(): void {
-    this.spinner.show('carregando');
-
     this.usuarioService.obterUsuarioLogado()
-      .pipe(finalize(() => this.spinner.hide('carregando')))
       .subscribe({
         next: (usuario: UsuarioResponse) => {
           this.usuarioLogado = usuario;
@@ -68,10 +62,7 @@ export class HomeComponent implements OnInit {
   }
 
   recuperarBoloesUsuario() {
-    this.spinner.show('carregando');
-
     this.bolaoUsuarioService.recuperarBoloesUsuario()
-      .pipe(finalize(() => this.spinner.hide('carregando')))
       .subscribe({
       next: (response: BolaoUsuarioResponse[]) => {
         this.boloesUsuarios = response;
@@ -138,10 +129,8 @@ export class HomeComponent implements OnInit {
 
   carregarRanking(tokenAcesso: string): void {
     const request = new HashBolaoRequest({ HashBolao: tokenAcesso });
-    this.spinner.show('carregando');
 
     this.rankService.listar(request)
-      .pipe(finalize(() => this.spinner.hide('carregando')))
       .subscribe({
       next: (dados: RankResponse[]) => {
         this.ranking = dados ?? [];
@@ -236,9 +225,7 @@ export class HomeComponent implements OnInit {
           HashBolao: this.selectedBolaoUsuario.bolao!.tokenAcesso!,
           IdUsuarioASerAlterado: this.usuarioLogado?.id
         });
-        this.spinner.show('carregando');
         this.bolaoService.desassociarUsuarioBolao(request)
-          .pipe(finalize(() => this.spinner.hide('carregando')))
           .subscribe({
             next: () => {
               this.toastr.success('Você saiu do bolão com sucesso.', 'Sucesso');

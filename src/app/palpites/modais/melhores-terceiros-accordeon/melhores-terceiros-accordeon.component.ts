@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, OnChanges, S
 import { GrupoResponse } from 'src/app/shared/models/responses/grupo.response';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { gruposMock } from '../fase-de-grupo-accordion/fase-de-grupo-accordion.component';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { PalpiteGrupoSelecaoResponse } from 'src/app/shared/models/responses/paplpite-grupo-selecao.response';
 import { PalpiteTerceiroLugarResponse } from 'src/app/shared/models/responses/palpite-terceiro-lugar.response';
@@ -33,7 +32,7 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
     return this.selecoes;
   }
 
-  constructor(private palpiteService: PalpiteService, private toastr: ToastrService, private spinner: NgxSpinnerService,) { }
+  constructor(private palpiteService: PalpiteService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.recuperarTerceirosColocados();
@@ -47,7 +46,6 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
   }
 
   recuperarTerceirosColocados() {
-    this.spinner.show("palpite");
     this.palpiteService.recuperarTerceirosLugares(this.hashBolao).subscribe({
       next: (palpites: SelecaoResponse[]) => {
         this.selecoes = palpites;
@@ -72,19 +70,16 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
                 return pa - pb;
               });
             }
-            this.spinner.hide("palpite");
           },
           error: (err) => {
             // se falhar ao recuperar palpites salvos, apenas continua com as selecoes recuperadas
             console.error('Erro ao recuperar palpites salvos de terceiros:', err);
-            this.spinner.hide("palpite");
           }
         });
       },
       error: (error) => {
         console.error('Erro ao recuperar palpites:', error);
         this.toastr.error('Erro!', 'Ocorreu um erro ao recuperar os palpites. Tente novamente.');
-        this.spinner.hide("palpite");
       }
     });
   }
@@ -120,18 +115,15 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
       new PalpiteTerceiroLugarRequest({ HashBolao: this.hashBolao, IdSelecao: s.id, Posicao: idx + 1 })
     );
 
-    this.spinner.show('palpite');
     this.palpiteService.palpitarTerceiroLugar(requests).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Ordem dos melhores terceiros salva com sucesso!');
-        this.spinner.hide('palpite');
         this.emitirAtualizar.emit(!this.atualizar);
         this.emitirPalpiteTerceiroCompleto.emit(this.temTodosTerceiros);
       },
       error: (error) => {
         console.error('Erro ao salvar melhores terceiros:', error);
         this.toastr.error('Erro!', error.error?.erro || 'Ocorreu um erro ao salvar a ordem dos melhores terceiros. Tente novamente.');
-        this.spinner.hide('palpite');
       }
     });
   }

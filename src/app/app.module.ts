@@ -13,6 +13,7 @@ import { firebaseConfig } from 'src/environments/firebase.config';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { AuthService } from './shared/services/auth.service';
 import { SharedModule } from "./shared/shared.module";
 import { PalpitesComponent } from './palpites/paginas/palpites/palpites.component';
@@ -50,7 +51,8 @@ export function tokenGetter() {
 ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

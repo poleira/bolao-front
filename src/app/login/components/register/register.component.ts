@@ -4,8 +4,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuarioRequest } from 'src/app/login/models/requests/usuario.request';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from 'src/app/shared/services/usuario.service';
 import { VerificarUsuarioExistenteRequest } from 'src/app/shared/models/requests/verificar-usuario-existente.request';
@@ -25,7 +24,6 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private auth: AngularFireAuth,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -46,8 +44,6 @@ export class RegisterComponent implements OnInit {
   async cadastrar() {
     const usuarioRequest: UsuarioRequest = { ...this.formCadastrar.value };
     
-    this.spinner.show("loadCadastroUsuario");
-
     const verificarRequest = new VerificarUsuarioExistenteRequest({
       Nome: usuarioRequest.Nome,
       Email: usuarioRequest.Email
@@ -65,7 +61,6 @@ export class RegisterComponent implements OnInit {
             usuarioRequest.FirebaseUid = firebaseUser.user?.uid ?? '';
 
             this.authService.inserir(usuarioRequest)
-              .pipe(finalize(() => this.spinner.hide("loadCadastroUsuario")))
               .subscribe({
                 next: response => {
                   this.toastr.success('Usuário criado com sucesso!', 'Sucesso');
@@ -77,12 +72,10 @@ export class RegisterComponent implements OnInit {
                 }
               });
           } catch (firebaseError: any) {
-            this.spinner.hide("loadCadastroUsuario");
             this.toastr.error(firebaseError.message || 'Erro ao criar usuário no Firebase.', 'Erro');
           }
         },
         error: (error) => {
-          this.spinner.hide("loadCadastroUsuario");
           this.toastr.error(error.error?.erro || 'Usuário já existe no sistema.', 'Erro');
         }
       });

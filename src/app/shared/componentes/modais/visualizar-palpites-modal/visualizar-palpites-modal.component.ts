@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { PalpiteService } from 'src/app/palpites/palpite.service';
 import { PalpitesPorEscritoResponse } from 'src/app/shared/models/responses/palpites-por-escrito.response';
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-visualizar-palpites-modal',
@@ -20,8 +18,7 @@ export class VisualizarPalpitesModalComponent implements OnInit {
 
   constructor(
     private palpiteService: PalpiteService,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -29,10 +26,7 @@ export class VisualizarPalpitesModalComponent implements OnInit {
   }
 
   carregarPalpites(): void {
-    this.spinner.show('carregando-palpites');
-    
     this.palpiteService.obterPalpitesPorEscrito(this.nomeUsuario, this.hashBolao)
-      .pipe(finalize(() => this.spinner.hide('carregando-palpites')))
       .subscribe({
         next: (dados: PalpitesPorEscritoResponse) => {
           this.palpites = dados;

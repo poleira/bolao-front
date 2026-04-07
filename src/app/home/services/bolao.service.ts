@@ -60,5 +60,9 @@ export class BolaoService {
   listarRegrasBolao(request: HashBolaoRequest): Observable<BolaoRegraResponse[]> {
     return this.http.get<BolaoRegraResponse[]>(`${this.apiUrlBoloes}/regras-boloes`, { params: request as any });
   }
+
+  excluirBolao(tokenAcesso: string): Observable<void> {
+    return this.http.delete<void>(this.apiUrlBoloes, { params: new HashBolaoRequest({ HashBolao: tokenAcesso }) as any });
+  }
   
 }

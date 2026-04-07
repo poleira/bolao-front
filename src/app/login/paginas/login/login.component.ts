@@ -6,8 +6,6 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { AutenticacaoResponse } from 'src/app/login/models/responses/autenticacao.response';
 import { LoginRequest } from 'src/app/login/models/requests/login.request';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
 import firebase from 'firebase/compat/app';
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
@@ -29,7 +27,6 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
     private bolaoService: BolaoService
   ) { }
 
@@ -60,13 +57,11 @@ export class LoginComponent implements OnInit {
     }
 
     const loginRequest: LoginRequest = { ...this.loginForm.value };
-    this.spinner.show('loadLogin');
 
     try {
       const firebaseUserCredential = await this.autenticarFirebase(loginRequest);
 
       if (!firebaseUserCredential || !firebaseUserCredential.user) {
-        this.spinner.hide('loadLogin');
         return;
       }
 
@@ -78,7 +73,6 @@ export class LoginComponent implements OnInit {
       loginRequest.token = firebaseToken ?? '';
 
       this.authService.login(loginRequest)
-        .pipe(finalize(() => this.spinner.hide('loadLogin')))
         .subscribe({
           next: (response: AutenticacaoResponse) => {
             this.authService.completeFirebaseSession(expirationTimeEpoch);
@@ -97,7 +91,6 @@ export class LoginComponent implements OnInit {
         });
 
     } catch (firebaseError) {
-      this.spinner.hide('loadLogin');
     }
   }
 
@@ -144,15 +137,12 @@ export class LoginComponent implements OnInit {
   private associarUsuarioBolao(): void {
     if (!this.bolaoToken) return;
 
-    this.spinner.show('loadAssociacao');
-
     const request = new AssociarUsuarioRequest({
       HashBolao: this.bolaoToken,
       Senha: this.bolaoSenha || ''
     });
 
     this.bolaoService.associarUsuarioBolao(request)
-      .pipe(finalize(() => this.spinner.hide('loadAssociacao')))
       .subscribe({
         next: () => {
           this.router.navigate(['/home']);

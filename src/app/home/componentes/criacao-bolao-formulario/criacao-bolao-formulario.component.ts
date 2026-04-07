@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { BolaoRequest } from 'src/app/home/models/requests/bolao.request';
 import { InserirPremioBolaoRequest } from 'src/app/home/models/requests/inserir-premio-bolao.request';
@@ -6,8 +7,6 @@ import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.respons
 import { BolaoService } from 'src/app/home/services/bolao.service';
 import { RegraResponse } from 'src/app/home/models/responses/regra.response';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs';
 import { InserirRegraBolaoRequest } from 'src/app/home/models/requests/inserir-regra-bolao.request';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BolaoResponse } from 'src/app/home/models/responses/bolao.response';
@@ -31,7 +30,6 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bolaoService: BolaoService,
     private toast: ToastrService,
-    private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -138,10 +136,8 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
 
   criarBolao(): void {
     const request: BolaoRequest = this.buildBolaoRequest() as BolaoRequest;
-    this.spinner.show("loadCriacaoBolao");
 
     this.bolaoService.criarBolao(request)
-      .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
       .subscribe({
         next: (response) => {
           this.toast.success(this.modoEdicao ? 'Bolão atualizado com sucesso' : 'Bolão criado com sucesso');
@@ -162,10 +158,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
     const request = this.buildBolaoRequest() as BolaoEditarRequest;
     request.HashBolao = this.bolao.tokenAcesso;
 
-    this.spinner.show("loadCriacaoBolao");
-
     this.bolaoService.editarBolao(request)
-      .pipe(finalize(() => this.spinner.hide("loadCriacaoBolao")))
       .subscribe({
         next: () => {
           this.toast.success('Bolão editado com sucesso');
@@ -309,6 +302,36 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
         }
       });
     }
+  }
+
+  confirmarExclusao(): void {
+    Swal.fire({
+      title: 'Excluir bolão?',
+      text: `Tem certeza que deseja excluir o bolão "${this.bolao.nome}"? Esta ação não pode ser desfeita.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.excluirBolao();
+      }
+    });
+  }
+
+  excluirBolao(): void {
+    this.bolaoService.excluirBolao(this.bolao.tokenAcesso!)
+      .subscribe({
+        next: () => {
+          this.toast.success('Bolão excluído com sucesso');
+          this.router.navigate(['/home']);
+        },
+        error: () => {
+          this.toast.error('Erro ao excluir o bolão');
+        }
+      });
   }
 
   voltar(): void {
