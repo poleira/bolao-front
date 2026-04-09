@@ -67,6 +67,10 @@ export class ArtilheiroAccordionComponent implements OnInit {
   }
 
   salvarPalpite(): void {
+    if (!this.jogadorSelecionado) {
+      this.toastr.warning('Selecione um jogador antes de salvar.', 'Atenção');
+      return;
+    }
     this.palpiteService.salvarPalpiteArtilheiro(new PalpiteArtilheiroRequest({ HashBolao: this.hashBolao, JogadorId: this.jogadorSelecionado })).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite artilheiro salvo com sucesso.');
@@ -98,6 +102,10 @@ export class ArtilheiroAccordionComponent implements OnInit {
   }
 
   salvarPalpiteBrasil(): void {
+    if (!this.jogadorBrasilSelecionado) {
+      this.toastr.warning('Selecione um jogador antes de salvar.', 'Atenção');
+      return;
+    }
     this.palpiteService.salvarPalpiteArtilheiroBrasil(new PalpiteArtilheiroRequest({ HashBolao: this.hashBolao, JogadorId: this.jogadorBrasilSelecionado })).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Palpite artilheiro do Brasil salvo com sucesso.');

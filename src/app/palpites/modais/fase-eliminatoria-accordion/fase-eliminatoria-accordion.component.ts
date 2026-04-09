@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { debounceTime } from 'rxjs/operators';
@@ -50,7 +50,9 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
   @Input() modoClicarParaAvancarDeFase: boolean = false;
   @Input() habilitado: boolean = true;
   @Input() hashBolao: string = '';
+  @Input() atualizarDeTerceiro: boolean = false;
   @Output() salvar = new EventEmitter<any>();
+  @ViewChild('collapseRef') collapseRef!: ElementRef;
 
   eliminatoriasForm: FormGroup;
   dezesseisAvos: Jogo[] = Array.from({ length: 16 }, () => ({ timeA: null, timeB: null }));
@@ -136,6 +138,35 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
       if (!this.modoClicarParaAvancarDeFase) {
         this.escutarMudancasNosPalpites();
       }
+    }
+    if (changes['atualizarDeTerceiro'] && !changes['atualizarDeTerceiro'].firstChange) {
+      this.resetarEstado();
+      this.fecharAccordion();
+      this.recuperarEliminatorias();
+    }
+    if (changes['habilitado'] && !changes['habilitado'].firstChange && !this.habilitado) {
+      this.fecharAccordion();
+    }
+  }
+
+  private resetarEstado(): void {
+    this.dezesseisAvos = Array.from({ length: 16 }, () => ({ timeA: null, timeB: null }));
+    this.oitavas = Array.from({ length: 8 }, () => ({ timeA: null, timeB: null }));
+    this.quartas = Array.from({ length: 4 }, () => ({ timeA: null, timeB: null }));
+    this.semifinais = Array.from({ length: 2 }, () => ({ timeA: null, timeB: null }));
+    this.terceiroLugar = { timeA: null, timeB: null };
+    this.final = { timeA: null, timeB: null };
+    this.eliminatoriasForm = this.criarFormularioVazio();
+  }
+
+  private fecharAccordion(): void {
+    if (!this.collapseRef) return;
+    const el = this.collapseRef.nativeElement;
+    const bsCollapse = (window as any).bootstrap?.Collapse?.getInstance(el);
+    if (bsCollapse) {
+      bsCollapse.hide();
+    } else {
+      el.classList.remove('show');
     }
   }
 

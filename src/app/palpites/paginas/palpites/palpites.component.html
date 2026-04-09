@@ -22,13 +22,15 @@
       <app-melhores-terceiros-accordeon 
         [hashBolao]="bolaoToken" 
         [atualizarDeFaseDeGrupo]="faseGrupoAtualizada" 
+        (emitirAtualizar)="terceiroAtualizado = $event"
         (emitirPalpiteTerceiroCompleto)="palpiteTerceiroCompleto = $event" 
         class="mt-2">
       </app-melhores-terceiros-accordeon>
       <app-fase-eliminatoria 
         [hashBolao]="bolaoToken" 
         [modoClicarParaAvancarDeFase]="true" 
-        [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto" 
+        [habilitado]="palpiteGrupoCompleto && palpiteTerceiroCompleto"
+        [atualizarDeTerceiro]="terceiroAtualizado"
         class="mt-2">
       </app-fase-eliminatoria>
       <app-artilheiro-accordion 

@@ -80,6 +80,9 @@ export class LoginComponent implements OnInit {
 
             if (this.bolaoToken) {
               this.associarUsuarioBolao();
+            } else if (sessionStorage.getItem('novo-cadastro')) {
+              sessionStorage.removeItem('novo-cadastro');
+              this.router.navigate(['/hub-boloes']);
             } else {
               this.router.navigate(['/home']);
             }

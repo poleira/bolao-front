@@ -22,7 +22,11 @@ export class TabelaGrupoComponent implements OnInit {
     if (this.ordemManual) {
       lista = this.ordemManual;
     } else {
+      const temPosicaoSalva = this.selecoes.some(s => s.posicaoSelecaoFaseDeGrupos > 0);
       lista = [...this.selecoes].sort((a, b) => {
+        if (temPosicaoSalva) {
+          return (a.posicaoSelecaoFaseDeGrupos || 0) - (b.posicaoSelecaoFaseDeGrupos || 0);
+        }
         if (b.pontuacaoSelecao === a.pontuacaoSelecao) {
           return a.nome.localeCompare(b.nome);
         }

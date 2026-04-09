@@ -15,6 +15,7 @@ export class PalpitesComponent implements OnInit {
   bolaoToken!: string;
   modoJogo: ModoJogoResponse | null = null;
   faseGrupoAtualizada: boolean = false;
+  terceiroAtualizado: boolean = false;
   palpiteGrupoCompleto: boolean = false;
   palpiteTerceiroCompleto: boolean = false;
   @Input() esconderPontuacao: boolean = false;

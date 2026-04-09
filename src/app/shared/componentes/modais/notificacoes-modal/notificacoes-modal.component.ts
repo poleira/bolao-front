@@ -13,6 +13,7 @@ import { NotificacoesService } from 'src/app/shared/services/notificacoes.servic
 export class NotificacoesModalComponent implements OnInit {
 
   @Output() fecharModal = new EventEmitter<void>();
+  @Output() semNotificacoes = new EventEmitter<void>();
   notificacoes: NotificacaoResponse[] = [];
 
   constructor(private toastr: ToastrService, private notificacoesService: NotificacoesService, private bolaoService: BolaoService ) { }
@@ -29,6 +30,9 @@ export class NotificacoesModalComponent implements OnInit {
     this.notificacoesService.listarNotificacoesPorUsuario().subscribe({
       next: (notificacoes: NotificacaoResponse[]) => {
         this.notificacoes = notificacoes;
+        if (notificacoes.length === 0) {
+          this.semNotificacoes.emit();
+        }
       },
       error: (error) => {
         this.toastr.error('Erro ao listar notificações.', 'Erro');

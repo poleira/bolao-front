@@ -64,6 +64,7 @@ export class RegisterComponent implements OnInit {
               .subscribe({
                 next: response => {
                   this.toastr.success('Usuário criado com sucesso!', 'Sucesso');
+                  sessionStorage.setItem('novo-cadastro', 'true');
                   this.formCadastrar.reset();
                   this.router.navigate(['/login']);
                 },

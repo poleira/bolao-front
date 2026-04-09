@@ -8,7 +8,7 @@
 				{{ titulo }}
 			</button>
 		</h2>
-		<div [id]="'collapse-melhores-terceiros-'+hashBolao" class="accordion-collapse collapse"
+		<div #collapseRef [id]="'collapse-melhores-terceiros-'+hashBolao" class="accordion-collapse collapse"
 			[attr.aria-labelledby]="'heading-melhores-terceiros-'+hashBolao" [attr.data-bs-parent]="'#accordion-melhores-terceiros-'+hashBolao">
 			<div class="accordion-body">
 				<div class="container my-2">

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { GrupoResponse } from 'src/app/shared/models/responses/grupo.response';
 import { SelecaoResponse } from 'src/app/shared/models/responses/selecao.response';
 import { gruposMock } from '../fase-de-grupo-accordion/fase-de-grupo-accordion.component';
@@ -23,6 +23,7 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
   @Input() hashBolao: string = "string";
   @Input() atualizarDeFaseDeGrupo: boolean = false;
   @ViewChild(TabelaTerceiroComponent) tabelaTerceiro!: TabelaTerceiroComponent;
+  @ViewChild('collapseRef') collapseRef!: ElementRef;
   @Output() emitirAtualizar = new EventEmitter<boolean>();
   @Output() emitirPalpiteTerceiroCompleto = new EventEmitter<boolean>();
   atualizar: boolean = false;
@@ -39,9 +40,23 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Quando atualizarDeFaseDeGrupo muda, recarrega os terceiros
     if (changes['atualizarDeFaseDeGrupo'] && !changes['atualizarDeFaseDeGrupo'].firstChange) {
+      this.palpitePreenchido = false;
+      this.selecoes = [];
+      this.emitirPalpiteTerceiroCompleto.emit(false);
+      this.fecharAccordion();
       this.recuperarTerceirosColocados();
+    }
+  }
+
+  private fecharAccordion(): void {
+    if (!this.collapseRef) return;
+    const el = this.collapseRef.nativeElement;
+    const bsCollapse = (window as any).bootstrap?.Collapse?.getInstance(el);
+    if (bsCollapse) {
+      bsCollapse.hide();
+    } else {
+      el.classList.remove('show');
     }
   }
 

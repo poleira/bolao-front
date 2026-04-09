@@ -42,17 +42,19 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarSelecoes();
-    this.recuperarPalpites();
   }
 
   getSelecoesPorGrupo(grupoId: number) {
-    return this.selecoes.filter(s => s.grupo?.id === grupoId);
+    return this.selecoes
+      .filter(s => s.grupo?.id === grupoId)
+      .sort((a, b) => (a.posicaoSelecaoFaseDeGrupos || 0) - (b.posicaoSelecaoFaseDeGrupos || 0));
   }
 
   listarSelecoes(){
     this.palpiteService.listarSelecoes().subscribe({
       next: (selecoes: SelecaoResponse[]) => {
         this.selecoes = selecoes;
+        this.recuperarPalpites();
       },
       error: (error) => {
         console.error('Erro ao listar seleções:', error);
@@ -70,7 +72,7 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
         this.selecoes.forEach((selecao:SelecaoResponse) => {
           const palpite = palpites.find(p => p.selecao.id === selecao.id);
           if (palpite) {
-            if (palpite.pontuacaoSelecao) {
+            if (palpite.pontuacaoSelecao != null) {
               selecao.pontuacaoSelecao = palpite.pontuacaoSelecao;
             }
             selecao.posicaoSelecaoFaseDeGrupos = palpite.posicaoSelecao;
@@ -131,7 +133,8 @@ export class FaseDeGrupoAccordionComponent implements OnInit {
         const palpitesCompletos = palpiteGrupoSelecao.filter(p => p.PosicaoSelecao > 0).length;
         this.emitirPalpiteGrupoCompleto.emit(palpitesCompletos === 48);
         
-        this.emitirAtualizar.emit(!this.atualizar); 
+        this.atualizar = !this.atualizar;
+        this.emitirAtualizar.emit(this.atualizar); 
       },
       error: (error) => {
         console.error("Erro ao salvar palpites:", error);

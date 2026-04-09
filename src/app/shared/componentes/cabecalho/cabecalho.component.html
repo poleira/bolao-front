@@ -90,7 +90,8 @@
 
 <ng-template #modalNotificacoes>
   <app-notificacoes-modal 
-    (fecharModal)="fecharModal()">
+    (fecharModal)="fecharModal()"
+    (semNotificacoes)="existeNotificacoes = false">
   </app-notificacoes-modal>
 </ng-template>
 
