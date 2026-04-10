@@ -27,7 +27,7 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
   @Output() emitirAtualizar = new EventEmitter<boolean>();
   @Output() emitirPalpiteTerceiroCompleto = new EventEmitter<boolean>();
   atualizar: boolean = false;
-  palpitePreenchido: boolean = false;
+  @Input() palpitePreenchido: boolean = false;
 
   get selecoesTerceiros(): SelecaoResponse[] {
     return this.selecoes;
@@ -41,7 +41,6 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['atualizarDeFaseDeGrupo'] && !changes['atualizarDeFaseDeGrupo'].firstChange) {
-      this.palpitePreenchido = false;
       this.selecoes = [];
       this.emitirPalpiteTerceiroCompleto.emit(false);
       this.fecharAccordion();
@@ -73,7 +72,6 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
           next: (palpitesSalvos: PalpiteTerceiroLugarResponse[]) => {
             if (palpitesSalvos && palpitesSalvos.length > 0) {
               this.emitirPalpiteTerceiroCompleto.emit(true);
-              this.palpitePreenchido = true
               // mapa idSelecao -> posicao
               const posMap = new Map<number, number>();
               palpitesSalvos.forEach(p => posMap.set(p.selecao.id, p.posicao));
@@ -133,7 +131,8 @@ export class MelhoresTerceirosAccordeonComponent implements OnInit, OnChanges {
     this.palpiteService.palpitarTerceiroLugar(requests).subscribe({
       next: () => {
         this.toastr.success('Sucesso!', 'Ordem dos melhores terceiros salva com sucesso!');
-        this.emitirAtualizar.emit(!this.atualizar);
+        this.atualizar = !this.atualizar;
+        this.emitirAtualizar.emit(this.atualizar);
         this.emitirPalpiteTerceiroCompleto.emit(this.temTodosTerceiros);
       },
       error: (error) => {

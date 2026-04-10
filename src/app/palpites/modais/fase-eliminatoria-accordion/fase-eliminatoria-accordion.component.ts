@@ -52,6 +52,7 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
   @Input() hashBolao: string = '';
   @Input() atualizarDeTerceiro: boolean = false;
   @Output() salvar = new EventEmitter<any>();
+  @Output() emitirEliminatoriaPreenchida = new EventEmitter<boolean>();
   @ViewChild('collapseRef') collapseRef!: ElementRef;
 
   eliminatoriasForm: FormGroup;
@@ -326,6 +327,13 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
           this.terceiroLugar.perdedor = null;
         }
       }
+
+      const temDados = (response.rodadaDe16?.length > 0) ||
+                       (response.oitavas?.length > 0) ||
+                       (response.quartas?.length > 0) ||
+                       (response.semis?.length > 0) ||
+                       !!response.finais;
+      this.emitirEliminatoriaPreenchida.emit(temDados);
     });
   }
   
@@ -695,6 +703,7 @@ export class FaseEliminatoriaAccordionComponent implements OnInit, OnChanges {
         next: () => {
           this.toastr.success('Sucesso!', 'Palpites das eliminatórias salvos com sucesso.');
           this.salvar.emit(this.eliminatoriasForm.value);
+          this.emitirEliminatoriaPreenchida.emit(true);
         },
         error: (error) => {
           console.error('Erro ao salvar palpites:', error);

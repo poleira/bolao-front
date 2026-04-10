@@ -18,6 +18,7 @@ export class PalpitesComponent implements OnInit {
   terceiroAtualizado: boolean = false;
   palpiteGrupoCompleto: boolean = false;
   palpiteTerceiroCompleto: boolean = false;
+  eliminatoriaPreenchida: boolean = false;
   @Input() esconderPontuacao: boolean = false;
 
   constructor(
