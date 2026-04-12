@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isApiUrl = request.url.startsWith(environment.api);
-    const isLoginOrRegister = request.url.includes('/usuario/autenticar') || request.url.includes('/usuario/inserir') || request.url.includes('/usuario/verificar-existente');
+    const isLoginOrRegister = request.url.includes('/usuario/autenticar') || request.url.includes('/usuario/inserir') || request.url.includes('/usuario/verificar-existente') || request.url.includes('/convidados');
 
     if (isApiUrl && !isLoginOrRegister) { 
       if (this.authService.isTokenLogicallyExpired()) {
