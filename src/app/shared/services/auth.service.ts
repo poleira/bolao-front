@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from 'src/app/login/models/requests/login.request';
@@ -20,17 +20,40 @@ export class AuthService {
   private readonly url = environment.api + "usuario";
 
   authStatus = new BehaviorSubject<boolean>(this.calculateInitialAuthStatus());
-  
+  firebaseReady$ = new ReplaySubject<void>(1);
+  private firebaseInitDone = false;
+
   constructor(private http: HttpClient, private router: Router, private afAuth: AngularFireAuth) {
-    this.afAuth.idToken.subscribe(async (token: string | null) => {
-      if (token && this.isBackendTokenPresent()) {
-        const user = await this.afAuth.currentUser;
-        if (user) {
-          const result = await user.getIdTokenResult();
+    // authState só emite APÓS o Firebase resolver a sessão (após accounts:lookup)
+    this.afAuth.authState.subscribe(user => {
+      if (user && this.isBackendTokenPresent()) {
+        user.getIdTokenResult().then(result => {
           const expirationEpoch = new Date(result.expirationTime).getTime();
           sessionStorage.setItem(FIREBASE_TOKEN_EXPIRATION_KEY, expirationEpoch.toString());
           this.authStatus.next(true);
+          if (!this.firebaseInitDone) {
+            this.firebaseInitDone = true;
+            this.firebaseReady$.next();
+          }
+        });
+      } else {
+        if (!this.firebaseInitDone) {
+          this.firebaseInitDone = true;
+          this.firebaseReady$.next();
         }
+      }
+    });
+
+    // idToken para renovações contínuas após a inicialização
+    this.afAuth.idToken.subscribe((token: string | null) => {
+      if (token && this.firebaseInitDone && this.isBackendTokenPresent()) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload.exp) {
+            sessionStorage.setItem(FIREBASE_TOKEN_EXPIRATION_KEY, (payload.exp * 1000).toString());
+            this.authStatus.next(true);
+          }
+        } catch {}
       }
     });
   }

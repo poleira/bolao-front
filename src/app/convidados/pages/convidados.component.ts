@@ -6,6 +6,7 @@ import { BolaoService } from 'src/app/home/services/bolao.service';
 import { AssociarUsuarioRequest } from 'src/app/shared/models/requests/associar-usuario.request';
 import { UsuarioResponse } from 'src/app/shared/models/responses/usuario.response';
 import { UsuarioService } from 'src/app/shared/services/usuario.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-convidados',
@@ -29,12 +30,15 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private router: Router,
     private bolaoService: BolaoService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
-    this.carregarUsuarioLogado();
+    if (this.authService.isUserAuthenticatedSync()) {
+      this.carregarUsuarioLogado();
+    }
   }
 
   carregarUsuarioLogado(): void {
@@ -95,7 +99,7 @@ export class ConvidadosComponent implements OnInit, OnDestroy {
         queryParams: this.possuiSenha ? { senha: this.senha } : {} 
       });
 
-      this.toastr.info('Por favor, faça login para associar-se ao bolão.');
+      this.toastr.info('Por favor, faça login ou cadastre-se para associar-se ao bolão.');
     }
   }
 

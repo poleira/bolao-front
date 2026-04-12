@@ -7,8 +7,8 @@
     <div class="card mb-3">
         <div class="card-body">
         <p class="text-center text-muted fw-bold">Notificações:</p>
-        <div class="input-group mb-3">
-            <ul class="list-group">
+        <div class="mb-3">
+            <ul class="list-group w-100">
                 <li class="list-group-item" *ngFor="let notificacao of notificacoes">
                     {{ notificacao.mensagem }}
                     <div *ngIf="notificacao.tipo === 2">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </li>
-                <li *ngIf="notificacoes.length === 0" class="list-group-item text-center text-muted">
+                <li *ngIf="notificacoes.length === 0" class="list-group-item text-center text-muted w-100">
                     Nenhuma notificação encontrada.
                 </li>
             </ul>
