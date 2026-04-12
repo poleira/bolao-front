@@ -7,6 +7,7 @@ import { LoginRequest } from 'src/app/login/models/requests/login.request';
 import { AutenticacaoResponse } from 'src/app/login/models/responses/autenticacao.response';
 import { UsuarioRequest } from 'src/app/login/models/requests/usuario.request';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 const AUTH_TOKEN_KEY = 'auth-token'; // Backend token
 const AUTH_USER_KEY = 'auth-user';
@@ -20,7 +21,19 @@ export class AuthService {
 
   authStatus = new BehaviorSubject<boolean>(this.calculateInitialAuthStatus());
   
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private afAuth: AngularFireAuth) {
+    this.afAuth.idToken.subscribe(async (token: string | null) => {
+      if (token && this.isBackendTokenPresent()) {
+        const user = await this.afAuth.currentUser;
+        if (user) {
+          const result = await user.getIdTokenResult();
+          const expirationEpoch = new Date(result.expirationTime).getTime();
+          sessionStorage.setItem(FIREBASE_TOKEN_EXPIRATION_KEY, expirationEpoch.toString());
+          this.authStatus.next(true);
+        }
+      }
+    });
+  }
 
   private calculateInitialAuthStatus(): boolean {
     const tokenPresent = !!sessionStorage.getItem(AUTH_TOKEN_KEY);
