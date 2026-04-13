@@ -149,7 +149,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.toast.error(this.modoEdicao ? 'Erro ao atualizar o bolão' : 'Erro ao criar o bolão');
+          this.toast.error(this.modoEdicao ? 'Erro ao atualizar o bolão' : 'Erro ao criar o bolão', error.error?.erro || 'Ocorreu um erro. Tente novamente.');
         }
       });
   }
@@ -165,7 +165,7 @@ export class CriacaoBolaoFormularioComponent implements OnInit {
           this.router.navigate(['/home']);
         },
         error: (error) => {
-          this.toast.error('Erro ao editar o bolão');
+           this.toast.error('Erro!', error.error?.erro || 'Ocorreu um erro ao editar o bolão. Tente novamente.');
         }
       });
   }
