@@ -76,6 +76,11 @@ export class RankingComponent implements OnInit {
   }
 
   navegarPalpites(nomeJogador: string): void {
+    const inicioCopa = new Date(2026, 5, 11); // 11/06/2026
+    if (new Date() < inicioCopa) {
+      this.toastr.info('Visualizar palpites de jogadores estará disponível a partir do início da Copa (11/06).', 'Em breve');
+      return;
+    }
     this.usuarioSelecionado = nomeJogador;
     this.modalAberto = true;
   }
