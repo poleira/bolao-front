@@ -17,9 +17,12 @@
                 <span class="ms-2">Voltar</span>
             </button>
 
-            <button class="navbar-toggler" type="button" (click)="toggleSideMenu()"
+            <button class="navbar-toggler position-relative" type="button" (click)="toggleSideMenu()"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
+                <span *ngIf="existeNotificacoes" class="position-absolute bottom-0 start-100 bg-danger border border-light rounded-circle d-flex align-items-center justify-content-center" style="width: 20px; height: 20px; transform: translateX(-50%) translateY(30%);">
+                    <i class="fa-solid fa-envelope text-white" style="font-size: 10px;"></i>
+                </span>
             </button>
 
             <div class="d-none d-lg-flex justify-content-center align-items-center">
@@ -30,8 +33,11 @@
 
                 <div class="border mx-2" style="height: 30px;"></div>
 
-                <button class="btn btn-success btn-sm" (click)="toggleSideMenu()">
+                <button class="btn btn-success btn-sm position-relative" (click)="toggleSideMenu()">
                     <i class="fa-solid fa-bars"></i>
+                    <span *ngIf="existeNotificacoes" class="position-absolute bottom-0 start-100 translate-middle-x p-1 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">pendência</span>
+                    </span>
                 </button>
             </div>
 
